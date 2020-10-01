@@ -287,7 +287,7 @@ class CustomerTransactionController extends Controller
 			session()->put('transaction.code', $code);
 
 			$request_body = Helper::digipep_transaction([
-				'title' => "Application Payment",
+				'title' => $transaction->application_name,
 				'trans_token' => $code,
 				'transaction_type' => "", 
 				'amount' => $amount,
