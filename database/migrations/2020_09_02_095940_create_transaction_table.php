@@ -44,6 +44,7 @@ class CreateTransactionTable extends Migration
             $table->string('convenience_fee')->nullable();
             $table->date('payment_date')->nullable();
             $table->string('amount')->nullable();
+            $table->text('eor_url')->nullable();
 
             $table->string('application_payment_reference')->nullable();
             $table->string('application_payment_type')->nullable();
@@ -54,7 +55,8 @@ class CreateTransactionTable extends Migration
             $table->string('application_total_amount')->nullable();
             $table->string('application_convenience_fee')->nullable();
             $table->timestamp('application_payment_date')->nullable();
-
+            $table->text('application_eor_url')->nullable();
+            
             $table->string('processor_user_id')->nullable();
             $table->string('status')->nullable()->default('PENDING');
             $table->timestamp('application_date')->nullable();
