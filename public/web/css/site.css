@@ -1,0 +1,27 @@
+@font-face {
+	font-family:'SF Pro Display';
+	font-style:normal;
+	font-weight:400;
+	src: url("../fonts/SF-Pro-Display-Regular.woff2") format("woff2"), url("../fonts/SF-Pro-Display-Regular.woff") format("woff"), url("../fonts/SF-Pro-Display-Regular.eot") format("eot"), url("../fonts/SF-Pro-Display-Regular.otf") format("otf"), url("/../fonts/SF-Pro-Display-Regular.ttf") format("truetype");
+}
+
+@font-face {
+	font-family:'SF Pro Display';
+	font-style:normal;
+	font-weight:200;
+	src: url("../fonts/SF-Pro-Display-Thin.woff2") format("woff2"), url("../fonts/SF-Pro-Display-Thin.woff") format("woff"), url("../fonts/SF-Pro-Display-Thin.eot") format("eot"), url("../fonts/SF-Pro-Display-Thin.otf") format("otf"), url("/../fonts/SF-Pro-Display-Thin.ttf") format("truetype");
+}
+
+@font-face {
+	font-family:'SF Pro Display';
+	font-style: bold;
+	font-weight: 600;
+	src: url("../fonts/SF-Pro-Display-Bold.woff2") format("woff2"), url("../fonts/SF-Pro-Display-Bold.woff") format("woff"), url("../fonts/SF-Pro-Display-Bold.eot") format("eot"), url("../fonts/SF-Pro-Display-Bold.otf") format("otf"), url("/../fonts/SF-Pro-Display-Bold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family:'SF Pro Display';
+	font-style: bold;
+	font-weight: 700;
+	src: url("../fonts/SF-Pro-Display-Heavy.woff2") format("woff2"), url("../fonts/SF-Pro-Display-Heavy.woff") format("woff"), url("../fonts/SF-Pro-Display-Heavy.eot") format("eot"), url("../fonts/SF-Pro-Display-Heavy.otf") format("otf"), url("/../fonts/SF-Pro-Display-Heavy.ttf") format("truetype");
+}
