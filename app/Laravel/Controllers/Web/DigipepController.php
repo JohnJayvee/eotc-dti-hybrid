@@ -86,7 +86,7 @@ class DigipepController extends Controller
 					$transaction->transaction_status  = "COMPLETED";
 				
 					$transaction->convenience_fee = 0; 
-					$transaction->total_amount = $transaction->processing_fee + $convenience_fee;
+					$transaction->total_amount = 0;
 					$transaction->save();
 					DB::commit();
 
