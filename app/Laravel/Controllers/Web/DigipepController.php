@@ -81,7 +81,7 @@ class DigipepController extends Controller
 					$transaction->payment_date = Carbon::now();
 					$transaction->payment_status  = "PAID";
 					$transaction->transaction_status  = "COMPLETED";
-					$transaction->eor_url = $response->eorURL;
+					$transaction->eor_url = $response->eorUrl;
 					
 					$transaction->save();
 					DB::commit();
