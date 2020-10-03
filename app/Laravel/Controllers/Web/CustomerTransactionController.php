@@ -119,7 +119,7 @@ class CustomerTransactionController extends Controller
 				}
 			}
 			if($new_transaction->processing_fee > 0){
-				return redirect()->route('web.transaction.payment', [$new_transaction->processing_fee_code]);
+				return redirect()->route('web.transaction.pay', [$new_transaction->processing_fee_code]);
 			}
 
 			session()->flash('notification-status', "success");
