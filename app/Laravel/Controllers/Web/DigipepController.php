@@ -59,9 +59,7 @@ class DigipepController extends Controller
 					$transaction->application_transaction_status  = "COMPLETED";
 					$transaction->application_eor_url = $response->payment->eorURL;
 
-					// $convenience_fee = $response->payment->convenienceFee;
-					// $transaction->application_convenience_fee = $convenience_fee; 
-					// $transaction->application_total_amount = $transaction->amount + $convenience_fee;
+					
 					$transaction->save();
 					DB::commit();
 
@@ -85,9 +83,7 @@ class DigipepController extends Controller
 					$transaction->payment_status  = "PAID";
 					$transaction->transaction_status  = "COMPLETED";
 					$transaction->eor_url = $response->payment->eorURL;
-					// $convenience_fee = $response->payment->convenienceFee;
-					// $transaction->convenience_fee = $convenience_fee; 
-					// $transaction->total_amount = $transaction->processing_fee + $convenience_fee;
+					
 					$transaction->save();
 					DB::commit();
 
