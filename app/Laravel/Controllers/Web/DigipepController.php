@@ -57,9 +57,11 @@ class DigipepController extends Controller
 					$transaction->application_payment_date = Carbon::now();
 					$transaction->application_payment_status  = "PAID";
 					$transaction->application_transaction_status  = "COMPLETED";
-					$transaction->application_eor_url = $response->payment->eorURL;
+					$transaction->application_eor_url = $response->eorUrl;
 
-					
+					// $convenience_fee = $response->payment->convenienceFee;
+					// $transaction->application_convenience_fee = $convenience_fee; 
+					// $transaction->application_total_amount = $transaction->amount + $convenience_fee;
 					$transaction->save();
 					DB::commit();
 
@@ -71,7 +73,8 @@ class DigipepController extends Controller
 
 			if(isset($response->payment) AND Str::upper($response->payment->status) == "PAID" AND $transaction->transaction_status != "COMPLETED" AND $prefix == "PF"){
 
-				
+				DB::beginTransaction();
+				try{
 					$transaction->payment_reference = $response->transactionCode;
 					$transaction->payment_method  = $response->payment->paymentMethod;
 					$transaction->payment_type  = $response->payment->paymentType;
@@ -82,11 +85,16 @@ class DigipepController extends Controller
 					$transaction->payment_status  = "PAID";
 					$transaction->transaction_status  = "COMPLETED";
 					$transaction->eor_url = $response->eorUrl;
-					
+					// $convenience_fee = $response->payment->convenienceFee;
+					// $transaction->convenience_fee = $convenience_fee; 
+					// $transaction->total_amount = $transaction->processing_fee + $convenience_fee;
 					$transaction->save();
 					DB::commit();
 
-				
+				}catch(\Exception $e){
+					DB::rollBack();
+					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
+				}
 			}
 			
 		}
