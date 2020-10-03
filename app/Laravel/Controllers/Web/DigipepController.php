@@ -46,13 +46,11 @@ class DigipepController extends Controller
 
 			if(isset($response->payment) AND Str::upper($response->payment->status) == "PAID" AND $transaction->application_transaction_status != "COMPLETED" AND $prefix == "APP"){
 
-				DB::beginTransaction();
-				try{
 					$transaction->application_payment_reference = $response->transactionCode;
 					$transaction->application_payment_method  = $response->payment->paymentMethod;
 					$transaction->application_payment_type  = $response->payment->paymentType;
 
-					$transaction->application_payment_option  = "DIGIPEP";
+					$transaction->application_payment_option  = "DTIPAY";
 
 					$transaction->application_payment_date = Carbon::now();
 					$transaction->application_payment_status  = "PAID";
@@ -65,16 +63,12 @@ class DigipepController extends Controller
 					$transaction->save();
 					DB::commit();
 
-				}catch(\Exception $e){
-					DB::rollBack();
-					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
-				}
+				
 			}
 
 			if(isset($response->payment) AND Str::upper($response->payment->status) == "PAID" AND $transaction->transaction_status != "COMPLETED" AND $prefix == "PF"){
 
-				DB::beginTransaction();
-				try{
+				
 					$transaction->payment_reference = $response->transactionCode;
 					$transaction->payment_method  = $response->payment->paymentMethod;
 					$transaction->payment_type  = $response->payment->paymentType;
@@ -91,10 +85,7 @@ class DigipepController extends Controller
 					$transaction->save();
 					DB::commit();
 
-				}catch(\Exception $e){
-					DB::rollBack();
-					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
-				}
+				
 			}
 			
 		}
