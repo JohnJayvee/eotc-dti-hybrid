@@ -23,7 +23,7 @@
         {!!csrf_field()!!}
         <div class="form-group">
           <label for="input_title">Name</label>
-          <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title" name="name" placeholder="Department/Agency Name" value="{{old('name',$application_requirements->name)}}">
+          <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title" name="name" placeholder="Name" value="{{old('name',$application_requirements->name)}}">
           @if($errors->first('name'))
           <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
           @endif

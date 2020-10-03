@@ -72,7 +72,7 @@ class ApplicationRequirementController extends Controller
 
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Department had been modified.");
+			session()->flash('notification-msg', "Application Requirement had been modified.");
 			return redirect()->route('system.application_requirements.index');
 		}catch(\Exception $e){
 			DB::rollback();

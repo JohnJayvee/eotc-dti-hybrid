@@ -5,7 +5,7 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('system.dashboard')}}">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="{{route('system.regional_office.index')}}">Regional Office Management</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Add New Zone Location</li>
+    <li class="breadcrumb-item active" aria-current="page">Add New Regional Office</li>
   </ol>
 </nav>
 @stop

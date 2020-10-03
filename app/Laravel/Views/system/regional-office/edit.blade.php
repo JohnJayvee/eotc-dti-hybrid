@@ -4,8 +4,8 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('system.dashboard')}}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{route('system.regional_office.index')}}">Zone Location Management</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Update Zone Location</li>
+    <li class="breadcrumb-item"><a href="{{route('system.regional_office.index')}}">Regional Office Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Update Regional Office</li>
   </ol>
 </nav>
 @stop
@@ -14,7 +14,7 @@
 <div class="col-md-10 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Zone Location Update Form</h4>
+      <h4 class="card-title">Regional Office Update Form</h4>
       <p class="card-description">
         Fill up the <strong class="text-danger">* required</strong> fields.
       </p>
@@ -35,7 +35,7 @@
           
 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
-        <a href="{{route('system.regional_office.index')}}" class="btn btn-light">Return to Zone Location list</a>
+        <a href="{{route('system.regional_office.index')}}" class="btn btn-light">Return to Regional Office list</a>
       </form>
     </div>
   </div>

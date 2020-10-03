@@ -11,7 +11,7 @@ class ApplicationRequest extends RequestManager{
 			'name' => "required",
 			'department_id' => "required",
 			'processing_fee' => "required|numeric|min:0",
-			'processing_days' => "required|integer",
+			// 'processing_days' => "required|integer",
 			'requirements_id' => "required"
 		];
 

@@ -43,13 +43,13 @@
           <p class="mt-1 text-danger">{!!$errors->first('processing_fee')!!}</p>
           @endif
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="input_title">Processing Days</label>
           <input type="text" class="form-control {{$errors->first('processing_days') ? 'is-invalid' : NULL}}" id="input_processing_days" name="processing_days" placeholder="Processing Days" value="{{old('processing_days',$application->processing_days)}}">
           @if($errors->first('processing_days'))
           <p class="mt-1 text-danger">{!!$errors->first('processing_days')!!}</p>
           @endif
-        </div>
+        </div> -->
         <div class="form-group">
           <label for="input_suffix">Application Requirements</label>
           {!!Form::select("requirements_id[]", $requirements, old('requirements_id',explode(",", $application->requirements_id)), ['id' => "input_requirements_id", 'multiple' => 'multiple','class' => "custom-select select2 mb-2 mr-sm-2 ".($errors->first('requirements_id') ? 'is-invalid' : NULL)])!!}

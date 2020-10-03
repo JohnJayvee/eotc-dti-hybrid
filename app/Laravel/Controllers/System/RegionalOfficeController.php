@@ -85,6 +85,23 @@ class RegionalOfficeController extends Controller
 		}
 	}
 
+	public function  destroy(PageRequest $request,$id = NULL){
+		$regional_office = $request->get('regional_office_data');
+		DB::beginTransaction();
+		try{
+			$regional_office->delete();
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Regional Office removed successfully.");
+			return redirect()->route('system.regional_office.index');
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
+	}
+
 	// public function get_region(PageRequest $request){
 	// 	$id = $request->get('region_code');
 	// 	$region = Region::pluck('regDesc', 'regCode');

@@ -43,13 +43,13 @@
           <p class="mt-1 text-danger">{!!$errors->first('processing_fee')!!}</p>
           @endif
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="input_title">Processing Days</label>
           <input type="text" class="form-control {{$errors->first('processing_days') ? 'is-invalid' : NULL}}" id="input_processing_days" name="processing_days" placeholder="Processing Days" value="{{old('processing_days')}}">
           @if($errors->first('processing_days'))
           <p class="mt-1 text-danger">{!!$errors->first('processing_days')!!}</p>
           @endif
-        </div>
+        </div> -->
         <div class="form-group">
           <label for="input_suffix">Application Requirements</label>
           {!!Form::select("requirements_id[]", $requirements, old('requirements_id'), ['id' => "input_requirements_id", 'multiple' => 'multiple','class' => "custom-select select2 mb-2 mr-sm-2 ".($errors->first('requirements_id') ? 'is-invalid' : NULL)])!!}
@@ -74,6 +74,9 @@
   }
   .select2-container--default .select2-selection--multiple .select2-selection__choice{
     font-size: 18px;
+  }
+  span.select2.select2-container{
+    width: 100% !important;
   }
 </style>
 @endsection

@@ -46,7 +46,7 @@ class DepartmentController extends Controller
 			$new_department->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "New Peza Unit has been added.");
+			session()->flash('notification-msg', "New Department has been added.");
 			return redirect()->route('system.department.index');
 		}catch(\Exception $e){
 			DB::rollback();

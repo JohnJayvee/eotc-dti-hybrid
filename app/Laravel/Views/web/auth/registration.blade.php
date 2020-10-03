@@ -24,7 +24,8 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Password</label>
-                                <input type="password" class="form-control {{ $errors->first('password') ? 'is-invalid': NULL  }} form-control-sm" name="password" placeholder="Password">
+                                <input type="password" class="form-control {{ $errors->first('password') ? 'is-invalid': NULL  }} form-control-sm" name="password" placeholder="Password" id="password-field">
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 @if($errors->first('password'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('password')}}</small>
                                 @endif
@@ -36,7 +37,7 @@
                             <div class="form-group">
                                 <label class="text-form pb-2">Confirm Password</label>
                                 <input type="password" class="form-control form-control-sm" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
-                                
+                                <span toggle="#password_confirmation" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
                         </div>
                     </div>
@@ -379,6 +380,15 @@
         });
 
     })
+    $(".toggle-password").click(function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+        input.attr("type", "text");
+        } else {
+        input.attr("type", "password");
+        }
+    });
 </script>
 
 @endsection
