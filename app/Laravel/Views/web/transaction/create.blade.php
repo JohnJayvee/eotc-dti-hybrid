@@ -257,9 +257,11 @@
     })
 
     $('#input_application_id').change(function() {
+        var amount;
         var _text = $("#input_application_id option:selected").text();
         $.getJSON('/amount?type_id='+this.value, function(result){
-            $('#input_processing_fee').val(result.data);
+            amount = parseFloat(result.data)
+            $('#input_processing_fee').val(amount);
         });
         var application_id = $(this).val()
         $(this).get_requirements(application_id,"#input_application_id","")

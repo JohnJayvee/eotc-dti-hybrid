@@ -4,8 +4,8 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('system.dashboard')}}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{route('system.department.index')}}">Peza Unit Management</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Add New Peza Unit</li>
+    <li class="breadcrumb-item"><a href="{{route('system.department.index')}}">Department Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Add New Department</li>
   </ol>
 </nav>
 @stop

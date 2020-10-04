@@ -19,14 +19,9 @@ class ProcessorTransactionRequest extends RequestManager{
 			'regional_id' => "required",
 			'email' => "required",
 			'contact_number' => "required|max:10|phone:PH",
-    		'file.*' => 'required|mimes:pdf,docx,doc|max:204800',
+			'requirements_id' => "required",
+    		
 		];
-		if ($this->get('is_check') != 1 ) {
-			$rules['file'] = "required";
-		}
-		if ($this->get('file_count') != 0) {
-			$rules['file_count'] = "required|with_count:file_count,application_id";
-		}
 		return $rules;
 		
 	}
@@ -35,9 +30,7 @@ class ProcessorTransactionRequest extends RequestManager{
 		return [
 			'required'	=> "Field is required.",
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
-			'file.required'	=> "No File Uploaded.",
-			'file.*' => 'Only PDF File are allowed.',
-			'file_count.with_count' => 'Please Submit minimum requirements.'
+			
 
 		];
 	}

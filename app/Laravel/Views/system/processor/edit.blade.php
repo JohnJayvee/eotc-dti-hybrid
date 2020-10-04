@@ -107,7 +107,7 @@
         </div>
         
         <div class="form-group">
-          <label for="input_title">Peza Unit</label>
+          <label for="input_title">Department</label>
            {!!Form::select("peza_unit", $department, old('peza_unit',$processor->peza_unit), ['id' => "input_peza_unit", 'class' => "custom-select".($errors->first('peza_unit') ? ' is-invalid' : NULL)])!!}
           @if($errors->first('peza_unit'))
           <p class="mt-1 text-danger">{!!$errors->first('peza_unit')!!}</p>

@@ -30,7 +30,7 @@
                         </div>
                     </form>
 
-                     <form method="GET" action={{ route('web.transaction.pay') }}>
+                     <form method="GET" action={{ route('web.pay') }}>
                         <div class="col-lg-12 pt-2">
                            <input type="text" name="code" class="form-control input-transparent" placeholder="Enter Transaction Code">
                         </div>

@@ -30,7 +30,7 @@
         </div>
        
         <div class="form-group">
-          <label for="input_suffix">Peza Unit</label>
+          <label for="input_suffix">Department</label>
           {!!Form::select("department_id", $department, old('department_id',$application->department_id), ['id' => "input_department_id", 'class' => "form-control mb-2 mr-sm-2 ".($errors->first('department_id') ? 'is-invalid' : NULL)])!!}
           @if($errors->first('department_id'))
           <p class="mt-1 text-danger">{!!$errors->first('department_id')!!}</p>

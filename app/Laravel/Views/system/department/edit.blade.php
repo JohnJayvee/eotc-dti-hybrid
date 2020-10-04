@@ -4,8 +4,8 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('system.dashboard')}}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{route('system.department.index')}}">Peza Unit Management</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Edit Peza Unit</li>
+    <li class="breadcrumb-item"><a href="{{route('system.department.index')}}">Deparment Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit Deparment</li>
   </ol>
 </nav>
 @stop
@@ -14,7 +14,7 @@
 <div class="col-md-8 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Peza Unit Edit Form</h4>
+      <h4 class="card-title">Deparment Edit Form</h4>
       <p class="card-description">
         Fill up the <strong class="text-danger">* required</strong> fields.
       </p>

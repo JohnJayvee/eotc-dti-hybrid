@@ -121,41 +121,20 @@
             </div>
           </div>
         </div>
-        <div class="row mb-2">
-          <div class="col-md-6">
-            <div id="requirements_container">
-              <label class="text-form pb-1">Required Documents:</label>
-              <table id="requirements">
-                <tbody>
-                     
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
         <hr>
         <div class="row">
-          <div class="col-md-12 col-lg-12">
-              <label class="text-form pb-2">Application Requirements</label>
-              <div class="form-group">
-                  <div class="upload-btn-wrapper">
-                    <input type="file" name="file[]" class="form-control" id="file" accept="application/pdf" multiple>
-                  </div>
-                  @forelse($errors->all() as $error)
-                    @if($error == "Only PDF File are allowed.")
-                        <label id="lblName" style="vertical-align: top;padding-top: 20px;color: red;" class="fw-500 pl-3">{{$error}}</label>
-                    @elseif($error == "No File Uploaded.")
-                        <label id="lblName" style="vertical-align: top;padding-top: 20px;color: red;" class="fw-500 pl-3">{{$error}}</label>
-                    @elseif($error == "Please Submit minimum requirements.")
-                        <label id="lblName" style="vertical-align: top;padding-top: 20px;color: red;" class="fw-500 pl-3">{{$error}}</label>
-                    @endif
-                  @empty
-                    <label id="lblName" style="vertical-align: top;padding-top: 20px;" class="fw-500 pl-3"></label>
-                  @endforelse
-              </div>
+          <div class="col-md-12 col-lg-12 mb-4">
+            <label class="text-form pb-2">Submitted Requirements</label>
+            {!!Form::select("requirements_id[]", $requirements, old('requirements_id'), ['id' => "input_requirements_id", 'multiple' => 'multiple','class' => "custom-select select2 ".($errors->first('requirements_id') ? 'border-red' : NULL)])!!}
+            @if($errors->first('requirements_id'))
+              <p class="mt-1 text-danger">{!!$errors->first('requirements_id')!!}</p>
+            @endif
           </div>
-        </div>
-
+          <div class="col-lg-12 col-lg-12 mb-4">
+            <input type="checkbox" name="hereby_check" value="yes">
+              "I hereby agree that I have read and reviewed the requirements listed above, and the physical copies of it are under my possession."
+            
+          </div> 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
         <a href="{{route('system.department.index')}}" class="btn btn-light">Return to Department list</a>
       </form>
@@ -164,7 +143,22 @@
 </div>
 @stop
 
+@section('page-styles')
+<link rel="stylesheet" type="text/css" href="{{asset('system/vendors/select2/select2.min.css')}}"/>
+<style type="text/css">
+  .is-invalid{
+    border: solid 2px;
+  }
+  .select2-container--default .select2-selection--multiple .select2-selection__choice{
+    font-size: 18px;
+  }
+  span.select2.select2-container{
+    width: 100% !important;
+  }
+</style>
+@endsection
 @section('page-scripts')
+<script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
   $('#file').change(function(e){
     $('#lblName').empty();
@@ -206,16 +200,16 @@
     });
         // return result;
   };
-  $.fn.get_requirements = function(application_id){
-    $("#requirements tr").remove(); 
-    $.getJSON( "{{route('web.get_requirements')}}?type_id="+application_id, function( response ) {
-        $.each(response.data,function(index,value){
-            $("#requirements").find('tbody').append("<tr><td>" + value + "</td></tr>");
-        })
-        $("#requirements_container").show();
-    });
-        // return result;
-  };
+  // $.fn.get_requirements = function(application_id){
+  //   $("#requirements tr").remove(); 
+  //   $.getJSON( "{{route('web.get_requirements')}}?type_id="+application_id, function( response ) {
+  //       $.each(response.data,function(index,value){
+  //           $("#requirements").find('tbody').append("<tr><td>" + value + "</td></tr>");
+  //       })
+  //       $("#requirements_container").show();
+  //   });
+  //       // return result;
+  // };
 
   $("#requirements_container").hide();
   $("#input_regional_id").on("change",function(){
@@ -235,16 +229,13 @@
         $('#input_processing_fee').val(result.data);
     });
     var application_id = $(this).val()
-    $(this).get_requirements(application_id,"#input_application_id","")
-    
     $('#input_application_name').val(_text);
   });
 
   @if(old('application_id'))
-    $(this).get_requirements("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
     $(this).get_application_type("{{old('department_id')}}","#input_application_id","{{old('application_id')}}")
   @endif
-
+  $('#input_requirements_id').select2({placeholder: "Select Requirements"});
 </script>
 
 

@@ -10,12 +10,14 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{Transaction,TransactionRequirements,Department,RegionalOffice};
+use App\Laravel\Models\{Transaction,TransactionRequirements,Department,RegionalOffice,ApplicationRequirements};
 
 use App\Laravel\Requests\System\ProcessorTransactionRequest;
 
 use App\Laravel\Events\SendApprovedReference;
 use App\Laravel\Events\SendDeclinedReference;
+use App\Laravel\Events\SendProcessorTransaction;
+
 /* App Classes
  */
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader;
@@ -30,6 +32,7 @@ class TransactionController extends Controller{
 		array_merge($this->data, parent::get_data());
 		$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
+		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
@@ -77,9 +80,7 @@ class TransactionController extends Controller{
 	public function store(ProcessorTransactionRequest $request){
 		$temp_id = time();
 		$full_name = $request->get('firstname') ." ". $request->get("middlename") ." ". $request->get('lastname');
-
-		DB::beginTransaction();
-		try{
+			
 			$new_transaction = new Transaction;
 			$new_transaction->company_name = $request->get('company_name');
 			$new_transaction->customer_name = $full_name;
@@ -95,6 +96,11 @@ class TransactionController extends Controller{
 			$new_transaction->payment_status = $request->get('processing_fee') > 0 ? "UNPAID" : "PAID";
 			$new_transaction->transaction_status = $request->get('processing_fee') > 0 ? "PENDING" : "COMPLETED";
 			$new_transaction->processor_user_id = Auth::user()->id;
+			$new_transaction->requirements_id = implode(",", $request->get('requirements_id'));
+			$new_transaction->hereby_check = "processor";
+			$new_transaction->hereby_check = "APPROVED";
+			$new_transaction->hereby_check = $request->get('hereby_check');
+
 			$new_transaction->save();
 
 			$new_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
@@ -107,24 +113,21 @@ class TransactionController extends Controller{
 
 			$new_transaction->save();
 
-			if($request->hasFile('file')) { 
-				foreach ($request->file as $key => $image) {
-					$ext = $image->getClientOriginalExtension();
-					if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){ 
-						$type = 'file';
-						$original_filename = $image->getClientOriginalName();
-						$upload_image = FileUploader::upload($image, "uploads/documents/transaction/{$new_transaction->transaction_code}");
-					} 
-					$new_file = new TransactionRequirements;
-					$new_file->path = $upload_image['path'];
-					$new_file->directory = $upload_image['directory'];
-					$new_file->filename = $upload_image['filename'];
-					$new_file->type =$type;
-					$new_file->original_name =$original_filename;
-					$new_file->transaction_id = $new_transaction->id;
-					$new_file->save();
-				}
-			}
+
+			$insert[] = [
+            	'contact_number' => $new_transaction->contact_number,
+                'ref_num' => $new_transaction->transaction_code,
+                'amount' => $new_transaction->amount,
+                'transaction_code' => $new_transaction->transaction_code,
+                'processing_fee' => $new_transaction->processing_fee,
+                'full_name' => $new_transaction->customer_name,
+                'application_name' => $new_transaction->application_name,
+                'department_name' => $new_transaction->department_name,
+                'modified_at' => Helper::date_only($new_transaction->modified_at)
+        	];	
+
+			$notification_data = new SendProcessorTransaction($insert);
+		    Event::dispatch('send-transaction-processor', $notification_data);
 			
 			DB::commit();
 
@@ -132,13 +135,7 @@ class TransactionController extends Controller{
 			session()->flash('notification-msg','Application was successfully submitted. Please wait for the processor validate your application. You will received an email once its approved containing your reference code for payment.');
 			return redirect()->route('system.transaction.pending');
 			
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
-
-		}
+		
 
 	}
 	public function process($id = NULL,PageRequest $request){
@@ -154,6 +151,7 @@ class TransactionController extends Controller{
 			$transaction->save();
 
 			if ($type == "APPROVED") {
+				$requirements = ApplicationRequirements::where('transaction_id',$transaction->id)->update(['status' => "APPROVED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->transaction_code,
@@ -168,6 +166,7 @@ class TransactionController extends Controller{
 			    Event::dispatch('send-sms-approved', $notification_data);
 			}
 			if ($type == "DECLINED") {
+				$requirements = ApplicationRequirements::where('transaction_id',$transaction->id)->update(['status' => "DECLINED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->document_reference_code,

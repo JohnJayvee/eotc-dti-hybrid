@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Peza Units</p>
+        <p class="text-dim  float-right">EOR-PHP Processor Portal / Departments</p>
       </div>
     </div>
   

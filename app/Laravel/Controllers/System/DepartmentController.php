@@ -28,7 +28,7 @@ class DepartmentController extends Controller
 	}
 
 	public function  index(PageRequest $request){
-		$this->data['page_title'] = "Peza Unit";
+		$this->data['page_title'] = "Department";
 		$this->data['departments'] = Department::orderBy('created_at',"DESC")->get(); 
 		return view('system.department.index',$this->data);
 	}
