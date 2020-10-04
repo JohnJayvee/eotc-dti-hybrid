@@ -72,8 +72,8 @@
                   <td >
                     <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                      <a class="dropdown-item action-process" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=approved" data-toggle="modal" data-target="#confirm-process">Approve</a>
-                      <a class="dropdown-item action-process" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=declined"  data-toggle="modal" data-target="#confirm-process">Decline</a>
+                      <a class="dropdown-item btn-approved-requirements" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=approved">Approve</a>
+                      <a class="dropdown-item btn-approved-requirements" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=declined">Decline</a>
                     </div>
                   </td>
                   @endif
@@ -167,6 +167,23 @@
         }
         if (result.value) {
           window.location.href = url + "&amount="+result.value;
+        }
+      });
+    });
+
+    $(".btn-approved-requirements").on('click', function(){
+      var url = $(this).data('url');
+      var self = $(this)
+      Swal.fire({
+        title: 'Are you sure you want to modify this requirements?',
+        text: "You will not be able to undo this action, proceed?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: `Proceed`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          window.location.href = url
         }
       });
     });
