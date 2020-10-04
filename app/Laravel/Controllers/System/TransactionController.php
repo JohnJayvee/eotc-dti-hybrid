@@ -157,7 +157,7 @@ class TransactionController extends Controller{
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->transaction_code,
-	                'amount' => $transation->amount,
+	                'amount' => $transaction->amount,
 	                'full_name' => $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name,
 	                'application_name' => $transaction->application_name,
 	                'department_name' => $transaction->department_name,
