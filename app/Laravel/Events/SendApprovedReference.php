@@ -35,7 +35,7 @@ class SendApprovedReference extends Event {
 			$nexmo = Nexmo::message()->send([
 				'to' => '+63'.(int)$phone,
 				'from' => 'EOTCPH' ,
-				'text' => "Hello " . $full_name . ",\r\n\n Good day. We are pleased to inform you that your application has been approved by our processor and is now for payment. \r\n\n Below are your transaction details: \r\nApplication: ".$application_name."\r\n Department: ".$department_name."\r\n Date: ".$modified_at."\r\n Amount: ".$amount."\r\n Payment reference number: " .$ref_num."\r\n\n Please visit the http://54.251.82.120/ and input the payment reference number to the E-Payment section to pay. This payment reference number will expire at 11:59 PM. You can pay via online(Debit/Credit card, e-wallet, etc.) or over-the-counter (7Eleven, Bayad Center, Cebuana Lhuillier, and to other affiliated partners)",
+				'text' => "Hello " . $full_name . ",\r\n\nGood day. We are pleased to inform you that your application has been approved by our processor and is now for payment. \r\n\nBelow are your transaction details: \r\nApplication: ".$application_name."\r\nDepartment: ".$department_name."\r\nDate: ".$modified_at."\r\nAmount: ".$amount."\r\nPayment reference number: " .$ref_num."\r\n\nPlease visit the http://54.251.82.120/ and input the payment reference number to the E-Payment section to pay. This payment reference number will expire at 11:59 PM. You can pay via online(Debit/Credit card, e-wallet, etc.) or over-the-counter (7Eleven, Bayad Center, Cebuana Lhuillier, and to other affiliated partners)",
 			]);
 			
 		}
