@@ -24,7 +24,7 @@
                                 {{ csrf_field() }}
                                 @include('system._components.notifications')
                               <div class="brand-logo text-center">
-                                <img src="{{asset('web/img/temp-logo.png')}}" alt="logo" class="img-fluid" />
+                                <img src="{{asset('web/img/dti-logo-web.png')}}" alt="logo" class="img-fluid" />
                              </div>
                             <h6 class="fw-600 text-black text-center mb-4">Processors Portal</h6>
                             <h6 class="fw-600 text-black text-center mb-4">Sign in to your account</h6>
