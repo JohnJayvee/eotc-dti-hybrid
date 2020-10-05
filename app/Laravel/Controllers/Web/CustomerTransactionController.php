@@ -125,7 +125,7 @@ class CustomerTransactionController extends Controller
 			}
 
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg','Application was successfully submitted. Please wait for the processor validate your application. You will received an email once its approved containing your reference code for payment.');
+			session()->flash('notification-msg',' Thank you, we have received your application. Our processor in charge will process your application and will inform you of the status');
 			return redirect()->route('web.transaction.history');
 			
 		}catch(\Exception $e){

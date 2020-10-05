@@ -141,7 +141,7 @@ class TransactionController extends Controller{
 			DB::commit();
 
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg','Application was successfully submitted. Please wait for the processor validate your application. You will received an email once its approved containing your reference code for payment.');
+			session()->flash('notification-msg','Application was successfully submitted.');
 			return redirect()->route('system.transaction.approved');
 		}catch(\Exception $e){
 			DB::rollback();
