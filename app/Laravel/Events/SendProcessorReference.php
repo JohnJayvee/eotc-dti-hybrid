@@ -33,7 +33,7 @@ class SendProcessorReference extends Event {
 			$nexmo = Nexmo::message()->send([
 				'to' => '+63'.(int)$phone,
 				'from' => 'EOTCPH' ,
-				'text' => "Congratulations, ".$full_name."! Your ". str::title($type) ." has successfully created your account. You may use this account credentials to log in to your Processor Portal.\r\n\n Processor Portal link: http://18.138.223.60/\r\nReference number: ".$ref_id."\r\n One-time-password (OTP):".$otp."\r\n\n If you didn't request this or believe that you received this in error, please ignore this SMS.",
+				'text' => "Congratulations, ".$full_name."! Your ". str::title($type) ." has successfully created your account. You may use this account credentials to log in to your Processor Portal.\r\n\n Processor Portal link: http://54.251.82.120/\r\nReference number: ".$ref_id."\r\n One-time-password (OTP):".$otp."\r\n\n If you didn't request this or believe that you received this in error, please ignore this SMS.",
 			]);
 			
 		}
