@@ -7,7 +7,7 @@
     border-bottom: 4px solid #254DA0;">
         <div class="container">
             <a class="brand-logo" href="{{route('web.main.index')}}">
-                <img src="{{asset('web/img/temp-logo.png')}}" alt="logo" class="img-fluid" width="30%" />
+                <img src="{{asset('web/img/dti-logo-web.png')}}" alt="logo" class="img-fluid" width="30%" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="ti-menu"></span>
@@ -19,7 +19,9 @@
             <div class="collapse navbar-collapse h-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto menu">
                     <li>
-                        <a href="#" class=""><img src="{{asset('placeholder/user.png')}}" alt="logo" class="img-fluid profile-image"/> Welcome , {{Str::title(Auth::guard('customer')->user()->fname)}}</a>
+                        <a href="#" class=""><img src="{{asset('placeholder/user.png')}}" alt="logo" class="img-fluid profile-image"/> Welcome , {{Str::title(Auth::guard('customer')->user()->fname)}} 
+                            <i class="fas fa-caret-down ml-2"></i>
+                        </a>
                         <ul class="sub-menu">
                             <li><a href="index.html">Edit Profile</a></li>
                             <li><a href="index.html">Change Password</a></li>
@@ -40,7 +42,7 @@
     border-bottom: 4px solid #254DA0;">
         <div class="container">
             <a class="brand-logo" href="{{route('web.main.index')}}">
-                <img src="{{asset('web/img/temp-logo.png')}}" alt="logo" class="img-fluid" width="30%" />
+                <img src="{{asset('web/img/dti-logo-web.png')}}" alt="logo" class="img-fluid" width="30%" />
             </a>
             <div class="date-time pl-4">
                 <i class="fa fa-calendar-alt" style="color: #C74A4F"> <span id="current_date" class=""></span></i> 

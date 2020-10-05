@@ -78,12 +78,17 @@ class TransactionController extends Controller{
 	}
 
 	public function store(ProcessorTransactionRequest $request){
-		$temp_id = time();
+
 		$full_name = $request->get('firstname') ." ". $request->get("middlename") ." ". $request->get('lastname');
-			
+		
+		DB::beginTransaction();
+		try{
+
 			$new_transaction = new Transaction;
 			$new_transaction->company_name = $request->get('company_name');
-			$new_transaction->customer_name = $full_name;
+			$new_transaction->fname = $request->get('firstname');
+			$new_transaction->mname = $request->get("middlename");
+			$new_transaction->lname = $request->get('lastname');
 			$new_transaction->email = $request->get('email');
 			$new_transaction->contact_number = $request->get('contact_number');
 			$new_transaction->regional_id = $request->get('regional_id');
@@ -97,9 +102,10 @@ class TransactionController extends Controller{
 			$new_transaction->transaction_status = $request->get('processing_fee') > 0 ? "PENDING" : "COMPLETED";
 			$new_transaction->processor_user_id = Auth::user()->id;
 			$new_transaction->requirements_id = implode(",", $request->get('requirements_id'));
-			$new_transaction->hereby_check = "processor";
-			$new_transaction->hereby_check = "APPROVED";
+			$new_transaction->process_by = "processor";
+			$new_transaction->status = "APPROVED";
 			$new_transaction->hereby_check = $request->get('hereby_check');
+			$new_transaction->amount = $request->get('amount');
 
 			$new_transaction->save();
 
@@ -133,8 +139,13 @@ class TransactionController extends Controller{
 
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg','Application was successfully submitted. Please wait for the processor validate your application. You will received an email once its approved containing your reference code for payment.');
-			return redirect()->route('system.transaction.pending');
-			
+			return redirect()->route('system.transaction.approved');
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
 		
 
 	}
@@ -151,7 +162,7 @@ class TransactionController extends Controller{
 			$transaction->save();
 
 			if ($type == "APPROVED") {
-				$requirements = ApplicationRequirements::where('transaction_id',$transaction->id)->update(['status' => "APPROVED"]);
+				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->update(['status' => "APPROVED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->transaction_code,
@@ -166,7 +177,7 @@ class TransactionController extends Controller{
 			    Event::dispatch('send-sms-approved', $notification_data);
 			}
 			if ($type == "DECLINED") {
-				$requirements = ApplicationRequirements::where('transaction_id',$transaction->id)->update(['status' => "DECLINED"]);
+				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->update(['status' => "DECLINED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->document_reference_code,

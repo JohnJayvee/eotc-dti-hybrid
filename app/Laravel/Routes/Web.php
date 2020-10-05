@@ -44,7 +44,7 @@ Route::group(['as' => "web.",
 	Route::get('confirmation/{code?}',['as' => "confirmation",'uses' => "MainController@confirmation"]);
 	Route::get('upload/{code?}',['as' => "upload",'uses' => "CustomerTransactionController@upload"]);
 	Route::post('upload/{code?}',['uses' => "CustomerTransactionController@store_documents"]);
-
+	Route::get('request-eor/{code?}',['as' => "request-eor", 'uses' => "CustomerTransactionController@request_eor"]);
 
 	Route::group(['prefix' => "digipep",'as' => "digipep."],function(){
 		Route::any('success/{code}',['as' => "success",'uses' => "DigipepController@success"]);

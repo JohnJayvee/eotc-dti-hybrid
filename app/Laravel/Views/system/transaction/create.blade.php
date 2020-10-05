@@ -71,15 +71,21 @@
               @endif
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
-              <label for="input_title">Contact Number</label>
-              <input type="text" class="form-control {{$errors->first('contact_number') ? 'is-invalid' : NULL}}" id="input_contact_number" name="contact_number" placeholder="Contact Number" value="{{old('contact_number')}}">
-              @if($errors->first('contact_number'))
-              <p class="mt-1 text-danger">{!!$errors->first('contact_number')!!}</p>
-              @endif
+                <label for="exampleInputEmail1" class="text-form">Contact Number</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
+                  </div>
+                  <input type="text" class="form-control br-left-white" placeholder="Contact Number" name="contact_number" value="{{old('contact_number')}}">
+                </div>
+                @if($errors->first('contact_number'))
+                    <small class="form-text pl-1" style="color:red;">{{$errors->first('contact_number')}}</small>
+                @endif
             </div>
           </div>
+
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -117,6 +123,15 @@
               <input type="text" class="form-control {{$errors->first('processing_fee') ? 'is-invalid' : NULL}}" id="input_processing_fee" name="processing_fee" placeholder="Processing Fee" value="{{old('processing_fee')}}" readonly>
               @if($errors->first('processing_fee'))
               <p class="mt-1 text-danger">{!!$errors->first('processing_fee')!!}</p>
+              @endif
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="input_title">Amount</label>
+              <input type="text" class="form-control {{$errors->first('amount') ? 'is-invalid' : NULL}}" id="input_amount" name="amount" placeholder="amount" value="{{old('amount')}}">
+              @if($errors->first('amount'))
+              <p class="mt-1 text-danger">{!!$errors->first('amount')!!}</p>
               @endif
             </div>
           </div>

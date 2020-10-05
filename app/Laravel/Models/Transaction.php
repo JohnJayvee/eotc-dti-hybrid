@@ -78,6 +78,9 @@ class Transaction extends Model{
      public function admin(){
         return $this->BelongsTo("App\Laravel\Models\User",'processor_user_id','id');
     }
+    public function getCustomerNameAttribute(){
+        return Str::title("{$this->fname} {$this->lname} ");
+    }
     
 
 }

@@ -1,7 +1,7 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center">
-    <a class="navbar-brand brand-logo" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/peza-logo.png')}}" alt="logo"/></a>
-    <a class="navbar-brand brand-logo-mini" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/peza-logo.png')}}" alt="logo"/></a>
+    <a class="navbar-brand brand-logo" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/dti-logo-web.png')}}" alt="logo"/></a>
+    <a class="navbar-brand brand-logo-mini" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/dti-logo-web.png')}}" alt="logo"/></a>
   </div>
 
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -12,7 +12,9 @@
         <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">
           <img src="{{strlen($auth->filename) > 0 ? "{$auth->directory}/resized/{$auth->filename}" : asset('placeholder/user.png')}}" alt="profile"/>
            <span class="profile-details">&nbsp; Welcome, {{Auth::user()->fullname}}</span>
+          <i class="fas fa-caret-down ml-2"></i>
         </a>
+
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item disabled">Welcome {{$auth->name}}!</a>
           {{-- <a href="{{route('system.profile.index')}}" class="dropdown-item">

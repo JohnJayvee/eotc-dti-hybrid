@@ -40,6 +40,9 @@ class EventServiceProvider extends ServiceProvider
         'send-application' => [
             'App\Laravel\Listeners\SendApplicationListener'
         ],
+        'send-eorurl' => [
+            'App\Laravel\Listeners\SendEorUrlListener'
+        ],
     ];
 
     /**

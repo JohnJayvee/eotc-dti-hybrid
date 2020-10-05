@@ -11877,7 +11877,7 @@ input[type="button"].btn-block {
 
 }
 
-@media (max-width: 450px){
+@media (max-width: 500px){
    .header-datetime{
     display: none !important;
   }
@@ -29691,7 +29691,7 @@ div.tagsinput span.tag a {
 
 @media (max-width: 991px) {
   .navbar .navbar-menu-wrapper {
-    width: calc(100% - 55px);
+    width: calc(100% - 143px);
     padding-left: 15px;
     padding-right: 15px;
   }
@@ -30366,7 +30366,7 @@ div.tagsinput span.tag a {
     flex-direction: row;
   }
   .navbar .navbar-brand-wrapper {
-    width: 55px;
+    width: 143px;
   }
   .navbar .navbar-brand-wrapper .navbar-brand.brand-logo {
     display: none;
@@ -30382,7 +30382,7 @@ div.tagsinput span.tag a {
 
 @media (max-width: 480px) {
   .navbar .navbar-brand-wrapper {
-    width: 55px;
+    width: 143px;
   }
   .navbar .navbar-brand-wrapper .brand-logo-mini {
     padding-top: 0px;

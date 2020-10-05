@@ -30,7 +30,7 @@
                                 {{ csrf_field() }}
                                 @include('system._components.notifications')
                               <div class="brand-logo text-center">
-                                <img src="{{asset('web/img/temp-logo.png')}}" alt="logo" class="img-fluid" />
+                                <img src="{{asset('web/img/dti-logo-web.png')}}" alt="logo" class="img-fluid" />
                              </div>
                               <h4 class="fw-600 text-black text-center mb-4">Activate your Account</h4>
                               <p class="text-style">Take Note: Please use the given reference number and the password by your Admin to activate your account</p>

@@ -19,6 +19,7 @@ use App\Laravel\Models\{Transaction,Department,RegionalOffice,ApplicationRequire
  */
 use App\Laravel\Events\SendReference;
 use App\Laravel\Events\SendApplication;
+use App\Laravel\Events\SendEorUrl;
 
 use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,Log;
 
@@ -66,6 +67,7 @@ class CustomerTransactionController extends Controller
 			$new_transaction->department_name = $request->get('department_name');
 			$new_transaction->payment_status = $request->get('processing_fee') > 0 ? "UNPAID" : "PAID";
 			$new_transaction->transaction_status = $request->get('processing_fee') > 0 ? "PENDING" : "COMPLETED";
+			$new_transaction->process_by = "customer";
 			$new_transaction->save();
 
 			$new_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
@@ -123,7 +125,7 @@ class CustomerTransactionController extends Controller
 			}
 
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg','pplication was successfully submitted. Please wait for the processor validate your application. You will received an email once its approved containing your reference code for payment.');
+			session()->flash('notification-msg','Application was successfully submitted. Please wait for the processor validate your application. You will received an email once its approved containing your reference code for payment.');
 			return redirect()->route('web.transaction.history');
 			
 		}catch(\Exception $e){
@@ -230,7 +232,7 @@ class CustomerTransactionController extends Controller
         ];	
 		$application_data = new SendApplication($insert_data);
 	    Event::dispatch('send-application', $application_data);*/
-		$user = Auth::guard('customer')->user();
+
 		$code = $request->has('code') ? $request->get('code') : $code;
 		$prefix = explode('-', $code)[0];
 
@@ -298,11 +300,11 @@ class CustomerTransactionController extends Controller
 				'cancel_url' => route('web.digipep.cancel',[$code]),
 				'return_url' => route('web.confirmation',[$code]),
 				'failed_url' => route('web.digipep.failed',[$code]),
-				'first_name' => $user ? $user->fname : $customer->fname,
-				'middle_name' => $user ? $user->mname : $customer->mname,
-				'last_name' => $user ? $user->lname : $customer->lname,
-				'contact_number' => $user ? $user->contact_number : $customer->contact_number,
-				'email' => $user ? $user->email : $customer->email
+				'first_name' => $customer ? $customer->fname : $transaction->fname,
+				'middle_name' => $customer ? $customer->mname : $transaction->mname,
+				'last_name' => $customer ? $customer->lname : $transaction->lname,
+				'contact_number' => $customer ? $customer->contact_number : $transaction->contact_number,
+				'email' => $customer ? $customer->email : $transaction->email
 			]);  
 
 			$response = Curl::to(env('DIGIPEP_CHECKOUT_URL'))
@@ -407,6 +409,51 @@ class CustomerTransactionController extends Controller
 		}catch(\Exception $e){
 			DB::rollBack();
 
+			session()->flash('notification-status',"failed");
+			session()->flash('notification-msg',"Server Error. Please try again.".$e->getMessage());
+			return redirect()->back();
+		}
+	}
+
+	public function request_eor(PageRequest $request){
+		$code = $request->has('code') ? $request->get('code') : $code;
+		$prefix = explode('-', $code)[0];
+		$email = $request->get('email');
+		$code = strtolower($code);
+		$status = NULL;
+		switch (strtoupper($prefix)) {
+			case 'APP':
+				$transaction = Transaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
+				break;
+			
+			default:
+				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  =  '{$code}'")->first();
+				break;
+		}
+
+		if(!$transaction){
+			session()->flash('notification-status',"failed");
+			session()->flash('notification-msg',"Record not found");
+			return redirect()->back();
+		}
+		try{
+			$full_name = $transaction->fname ." ". $transaction->mname ." " . $transaction->lname;
+			$insert[] = [
+	        	'email' => $email ? $email : $transaction->email,
+	            'ref_num' => $code,
+	            'full_name' => $transaction->customer ? $transaction->customer->full_name : $full_name,
+	            'eor_url' => "sample url"
+	    	];	
+
+			$notification_data = new SendEorUrl($insert);
+		    Event::dispatch('send-eorurl', $notification_data);
+
+		    session()->flash('notification-status', "success");
+			session()->flash('notification-msg','Eor URL was successfully sent to your email.');
+			return redirect()->route('web.main.index');
+	    }catch(\Exception $e){
+			DB::rollBack();
+			
 			session()->flash('notification-status',"failed");
 			session()->flash('notification-msg',"Server Error. Please try again.".$e->getMessage());
 			return redirect()->back();

@@ -1,5 +1,5 @@
 <nav class="sidebar sidebar-offcanvas p-0" id="sidebar" style="background-color: #31353D;color: #ffff;">
-  <h6 class="pl-3 pt-4">Navigation Bar</h6>
+  <h6 class="pl-3 pt-4">Menu</h6>
   <ul class="nav">
     
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.dashboard')) ? 'active' : ''}}">
@@ -9,12 +9,14 @@
       </a>
     </li>
     @if(in_array($auth->type,['super_user','admin','processor']))
-    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.processor.list','system.processor.show' )) ? 'active' : ''}}">
-      <a class="nav-link" href="{{route('system.processor.list')}}">
-        <i class="fa fa-user-circle menu-icon"></i>
-        <span class="menu-title">Processors</span>
-      </a>
-    </li>
+      @if(in_array($auth->type,['super_user','admin']))
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.processor.list','system.processor.show' )) ? 'active' : ''}}">
+          <a class="nav-link" href="{{route('system.processor.list')}}">
+            <i class="fa fa-user-circle menu-icon"></i>
+            <span class="menu-title">Processors</span>
+          </a>
+        </li>
+      @endif
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.transaction.index','system.transaction.show')) ? 'active' : ''}}">
       <a class="nav-link" data-toggle="collapse" href="#my_report" aria-expanded="false" aria-controls="my_report">
         <i class="fa fa-file menu-icon"></i>
@@ -55,7 +57,7 @@
         </ul>
       </div>
     </li>
-    
+    @if(in_array($auth->type,['super_user','admin']))
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application.index','system.application.create','system.application.edit')) ? 'active' : ''}}">
       <a class="nav-link" href="{{route('system.application.index')}}">
         <i class="fa fa-bookmark menu-icon"></i>
@@ -68,7 +70,7 @@
         <span class="menu-title">Departments</span>
       </a>
     </li>
-    @if(in_array($auth->type,['super_user','admin']))
+   
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application_requirements.index','system.application_requirements.create','system.application_requirements.edit')) ? 'active' : ''}}">
       <a class="nav-link" href="{{route('system.application_requirements.index')}}">
         <i class="fa fa-check-circle menu-icon"></i>

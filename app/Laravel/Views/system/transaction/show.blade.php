@@ -30,16 +30,32 @@
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <div class="row">
           <div class="col-md-6">
-            <p class="text-title fw-500">Applying For: <span class="text-black">{{$transaction->type ? Str::title($transaction->type->name) : "N/A"}} [{{$transaction->code}}]</span></p>
+            <p class="text-title fw-500">Name: <span class="text-black">{{str::title($transaction->customer ? $transaction->customer->full_name : $transaction->customer_name)}}</span></p>
+            <p class="text-title fw-500">Application: <span class="text-black">{{$transaction->type ? Str::title($transaction->type->name) : "N/A"}} [{{$transaction->code}}] </span></p>
             <p class="text-title fw-500">Email Address: <span class="text-black">{{$transaction->email}}</span></p>
-            <p class="text-title fw-500">Application Status: <span class="text-black">{{Strtoupper($transaction->status)}}</span></p>
-            <p class="fw-500" style="color: #DC3C3B;">Amount: Php {{Helper::money_format($transaction->processing_fee)}}  [{{$transaction->processing_fee_code}}]</p>
+            <p class="text-title fw-500">Processor Status: <span class="badge badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::title($transaction->status)}}</span></p>
           </div>
           <div class="col-md-6">
-            <p class="text-title fw-500">Deparatment / Agency: <span class="text-black">{{$transaction->department ? Str::title($transaction->department->name) : "N/A"}}</span></p>
+            <p class="text-title fw-500">Deparatment/Agency: <span class="text-black">{{$transaction->department ? Str::title($transaction->department->name) : "N/A"}}</span></p>
             <p class="text-title fw-500">Contact Number: <span class="text-black">+63{{$transaction->contact_number}}</span></p>
-            <p class="text-title fw-500">Transaction Status: <span class="text-black">{{Strtoupper($transaction->transaction_status)}}</span></p>
+          
+            @if($transaction->status == "DECLINED")
+              <p class="text-title fw-500">Remarks: <span class="text-black">{{$transaction->remarks}}</span></p>
+            @endif
           </div>
+          <div class="col-md-6 mt-4">
+            <p class="text-title fw-500">Transaction Details:</span></p>
+            <p class="text-title fw-500">Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
+            <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->processing_fee)}} [{{$transaction->processing_fee_code}}]</p>
+            <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p>
+          </div>
+          <div class="col-md-6 mt-4">
+            <p class="text-title fw-500">Application Details:</span></p>
+            <p class="text-title fw-500">Status: <span class="badge  badge-{{Helper::status_badge($transaction->application_transaction_status)}} p-2">{{Str::title($transaction->application_transaction_status)}}</span></p>
+            <p class="fw-500" style="color: #DC3C3B;">Amount: Php {{Helper::money_format($transaction->amount ? $transaction->amount : "0.00")}} [{{ $transaction->transaction_code }}]</p>
+            <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->application_payment_status)}} p-2">{{Str::title($transaction->application_payment_status)}}</span></p>
+          </div>
+          
         </div> 
       </div>
       <div class="card-body d-flex">
@@ -130,8 +146,8 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "Are you sure you want to decline this application?",
-        text: "You will not be able to undo this action, proceed?",
+        title: "All the submitted requirements will be marked as declined. Are you sure you want to declined this application?",
+        
         icon: 'warning',
         input: 'text',
         inputPlaceholder: "Put remarks",
@@ -152,8 +168,8 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "Are you sure you want to approved this application?",
-        text: "You will not be able to undo this action, proceed?",
+        title: "All the submitted requirements will be marked as approved. Are you sure you want to approve this application?",
+        
         icon: 'info',
         input: 'number',
         inputPlaceholder: "Put Amount",
