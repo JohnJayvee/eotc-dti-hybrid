@@ -300,9 +300,8 @@ class CustomerTransactionController extends Controller
 				'cancel_url' => route('web.digipep.cancel',[$code]),
 				'return_url' => route('web.confirmation',[$code]),
 				'failed_url' => route('web.digipep.failed',[$code]),
-				'first_name' => $customer ? $customer->fname : $transaction->fname,
-				'middle_name' => $customer ? $customer->mname : $transaction->mname,
-				'last_name' => $customer ? $customer->lname : $transaction->lname,
+				'first_name' => $transaction->company_name,
+				
 				'contact_number' => $customer ? $customer->contact_number : $transaction->contact_number,
 				'email' => $customer ? $customer->email : $transaction->email
 			]);  
@@ -316,7 +315,7 @@ class CustomerTransactionController extends Controller
 			         ->asJson( true )
 			         ->returnResponseObject()
 			         ->post();	
-
+			 
 			if($response->status == "200"){
 				$content = $response->content;
 
