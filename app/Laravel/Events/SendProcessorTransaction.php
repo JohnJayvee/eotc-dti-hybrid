@@ -31,7 +31,7 @@ class SendProcessorTransaction extends Event {
 			$full_name = $value['full_name'];
 			$department_name = $value['department_name'];
 			$application_name = $value['application_name'];
-			$modified_at = $value['modified_at'];
+			$created_at = $value['created_at'];
 			$amount = $value['amount'];
 
 			$nexmo = Nexmo::message()->send([

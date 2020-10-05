@@ -125,14 +125,14 @@ class TransactionController extends Controller{
 
 			$insert[] = [
             	'contact_number' => $new_transaction->contact_number,
-                'ref_num' => $new_transaction->transaction_code,
+                'ref_num' => $new_transaction->processing_fee_code,
                 'amount' => $new_transaction->amount,
                 'transaction_code' => $new_transaction->transaction_code,
                 'processing_fee' => $new_transaction->processing_fee,
                 'full_name' => $new_transaction->customer_name,
                 'application_name' => $new_transaction->application_name,
                 'department_name' => $new_transaction->department_name,
-                'modified_at' => Helper::date_only($new_transaction->modified_at)
+                'created_at' => Helper::date_only($new_transaction->created_at)
         	];	
 
 			$notification_data = new SendProcessorTransaction($insert);
