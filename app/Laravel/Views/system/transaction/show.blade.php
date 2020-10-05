@@ -73,52 +73,55 @@
           @endif
         </div> 
       </div>
+      @if($transaction->process_by == "customer")
       <div class="card-body d-flex">
         <button class="btn btn-transparent p-3" data-toggle="collapse" data-target="#collapseExample"><i class="fa fa-download" style="font-size: 1.5rem;"></i></button>
         <p class="text-title pt-4 pl-3 fw-500">Review Attached Requirements: {{$count_file}} Item / s</p>
       </div>
+      @endif
     </div>
-    <div class="collapse pt-2" id="collapseExample">
-      <div class="card card-body card-rounded">
-        <div class="row justify-content-center">
-          <table class="table table-striped">
-            <thead>
-              <th>FileName</th>
-              <th>File Type</th>
-              <th>Status</th>
-              @if(Auth::user()->type == "processor")
-                @if($transaction->status == "PENDING" || $transaction->status == "ONGOING")
-                  <th>Action</th>
-                @endif
-              @endif
-            </thead>
-            <tbody>
-            @forelse($attachments as $index => $attachment)
-              <tr>
-                <td><a href="{{$attachment->directory}}/{{$attachment->filename}}" target="_blank">{{$attachment->original_name}}</a></td>
-                <td>{{$attachment->type}}</td>
-                <td>{{Str::title($attachment->status)}}</td>
-                @if(Auth::user()->type == "processor" )
-                  @if(in_array($transaction->status, ['PENDING', 'ONGOING']) AND $transaction->transaction_status == "COMPLETED")
-                  <td >
-                    <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                      <a class="dropdown-item btn-approved-requirements" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=approved">Approve</a>
-                      <a class="dropdown-item btn-approved-requirements" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=declined">Decline</a>
-                    </div>
-                  </td>
+    @if($transaction->process_by == "customer")
+      <div class="collapse pt-2" id="collapseExample">
+        <div class="card card-body card-rounded">
+          <div class="row justify-content-center">
+            <table class="table table-striped">
+              <thead>
+                <th>FileName</th>
+                <th>File Type</th>
+                <th>Status</th>
+                @if(Auth::user()->type == "processor")
+                  @if($transaction->status == "PENDING" || $transaction->status == "ONGOING")
+                    <th>Action</th>
                   @endif
                 @endif
-              </tr>
-            @empty
-            <h5>No Items available.</h5>
-            @endforelse
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+              @forelse($attachments as $index => $attachment)
+                <tr>
+                  <td><a href="{{$attachment->directory}}/{{$attachment->filename}}" target="_blank">{{$attachment->original_name}}</a></td>
+                  <td>{{$attachment->type}}</td>
+                  <td>{{Str::title($attachment->status)}}</td>
+                  @if(Auth::user()->type == "processor" )
+                    @if(in_array($transaction->status, ['PENDING', 'ONGOING']) AND $transaction->transaction_status == "COMPLETED")
+                    <td >
+                      <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
+                        <a class="dropdown-item btn-approved-requirements" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=approved">Approve</a>
+                        <a class="dropdown-item btn-approved-requirements" href="#" data-url="{{route('system.transaction.requirements',[$attachment->id])}}?status=declined">Decline</a>
+                      </div>
+                    </td>
+                    @endif
+                  @endif
+                </tr>
+              @empty
+              <h5>No Items available.</h5>
+              @endforelse
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    </div>  
-
+      </div>  
+    @endif
     @if(Auth::user()->type == "processor")
       @if(in_array($transaction->status, ['PENDING', 'ONGOING']) AND $transaction->transaction_status == "COMPLETED")
         <a data-url="{{route('system.transaction.process',[$transaction->id])}}?status_type=approved"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
