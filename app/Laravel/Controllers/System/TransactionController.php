@@ -66,7 +66,10 @@ class TransactionController extends Controller{
 		$this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
 		$this->data['transaction'] = $request->get('transaction_data');
+		$id = $this->data['transaction']->requirements_id;
 
+		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $id))->get();
+		
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.transaction.show',$this->data);
 	}

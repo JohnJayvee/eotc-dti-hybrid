@@ -55,7 +55,22 @@
             <p class="fw-500" style="color: #DC3C3B;">Amount: Php {{Helper::money_format($transaction->amount ? $transaction->amount : "0.00")}} [{{ $transaction->transaction_code }}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->application_payment_status)}} p-2">{{Str::title($transaction->application_payment_status)}}</span></p>
           </div>
-          
+          @if($transaction->process_by == "processor")
+          <div class="col-md-6">
+            <table>
+              <thead>
+                <tr><td class="text-title fw-500">Submitted Physical Requirements: [{{$transaction->document_reference_code}}]</td></tr>
+              </thead>
+              <tbody>
+                @foreach($physical_requirements as $index)
+                  <tr>
+                    <td>{{$index->name}}</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          @endif
         </div> 
       </div>
       <div class="card-body d-flex">
