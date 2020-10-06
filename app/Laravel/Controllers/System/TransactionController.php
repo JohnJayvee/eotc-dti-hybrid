@@ -16,7 +16,9 @@ use App\Laravel\Requests\System\ProcessorTransactionRequest;
 
 use App\Laravel\Events\SendApprovedReference;
 use App\Laravel\Events\SendDeclinedReference;
+
 use App\Laravel\Events\SendProcessorTransaction;
+use App\Laravel\Events\SendEmailProcessorTransaction;
 
 use App\Laravel\Events\SendDeclinedEmailReference;
 use App\Laravel\Events\SendApprovedEmailReference;
@@ -86,8 +88,7 @@ class TransactionController extends Controller{
 
 		$full_name = $request->get('firstname') ." ". $request->get("middlename") ." ". $request->get('lastname');
 		
-		DB::beginTransaction();
-		try{
+		
 
 			$new_transaction = new Transaction;
 			$new_transaction->company_name = $request->get('company_name');
@@ -126,6 +127,7 @@ class TransactionController extends Controller{
 
 
 			$insert[] = [
+				'email' => $new_transaction->email,
             	'contact_number' => $new_transaction->contact_number,
                 'ref_num' => $new_transaction->processing_fee_code,
                 'amount' => $new_transaction->amount,
@@ -139,18 +141,16 @@ class TransactionController extends Controller{
 
 			$notification_data = new SendProcessorTransaction($insert);
 		    Event::dispatch('send-transaction-processor', $notification_data);
+
+		    $notification_email_data = new SendEmailProcessorTransaction($insert);
+		    Event::dispatch('send-transaction-processor-email', $notification_email_data);
 			
 			DB::commit();
 
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg','Application was successfully submitted.');
 			return redirect()->route('system.transaction.approved');
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
-		}
+		
 		
 
 	}
