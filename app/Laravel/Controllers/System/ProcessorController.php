@@ -63,7 +63,6 @@ class ProcessorController extends Controller
 			$new_processor->reference_id = $request->get('reference_number');
 			$new_processor->username = $request->get('username');
 			$new_processor->contact_number = $request->get('contact_number');
-			$new_processor->peza_unit = $request->get('peza_unit');
 			$new_processor->otp = substr($unique, 0, 10);
 			if($request->hasFile('file')) { 
 				$ext = $request->file->getClientOriginalExtension();

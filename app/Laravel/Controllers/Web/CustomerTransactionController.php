@@ -60,7 +60,7 @@ class CustomerTransactionController extends Controller
 			$new_transaction->regional_id = $request->get('regional_id');
 			$new_transaction->regional_name = $request->get('regional_name');
 			$new_transaction->customer_id = $auth_id;
-			$new_transaction->processing_fee = $request->get('processing_fee');
+			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');
 			$new_transaction->department_id = $request->get('department_id');
@@ -281,7 +281,7 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 
-		$amount = $prefix == 'APP' ? $transaction->amount : $transaction->processing_fee;
+		$amount = $prefix == 'APP' ? $transaction->amount : Helper::db_amount($transaction->processing_fee);
 
 		$customer = $transaction->customer;
 
@@ -420,6 +420,8 @@ class CustomerTransactionController extends Controller
 		$email = $request->get('email');
 		$code = strtolower($code);
 		$status = NULL;
+
+		
 		switch (strtoupper($prefix)) {
 			case 'APP':
 				$transaction = Transaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
@@ -434,6 +436,10 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-status',"failed");
 			session()->flash('notification-msg',"Record not found");
 			return redirect()->back();
+		}else if ($email == NULL) {
+			session()->flash('notification-status',"failed");
+			session()->flash('notification-msg',"Please Enter your Email Address");
+			return redirect()->back();
 		}
 		try{
 			$full_name = $transaction->fname ." ". $transaction->mname ." " . $transaction->lname;
@@ -441,14 +447,14 @@ class CustomerTransactionController extends Controller
 	        	'email' => $email ? $email : $transaction->email,
 	            'ref_num' => $code,
 	            'full_name' => $transaction->customer ? $transaction->customer->full_name : $full_name,
-	            'eor_url' => "sample url"
+	            'eor_url' => $prefix == "pf" ? $transaction->eor_url : $transaction->application_eor_url,
 	    	];	
 
 			$notification_data = new SendEorUrl($insert);
 		    Event::dispatch('send-eorurl', $notification_data);
 
 		    session()->flash('notification-status', "success");
-			session()->flash('notification-msg','Eor URL was successfully sent to your email.');
+			session()->flash('notification-msg','Your request to get a new copy of EOR was successfully sent to your email. Thank you!.');
 			return redirect()->route('web.main.index');
 	    }catch(\Exception $e){
 			DB::rollBack();
@@ -459,4 +465,13 @@ class CustomerTransactionController extends Controller
 		}
 	}
 
+	public function show_pdf(PageRequest $request , $id){
+
+		$this->data['transaction'] = Transaction::find($id);
+		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->where('status',"declined")->get();
+
+		$pdf = PDF::loadView('pdf.declined',$this->data);
+		return $pdf->stream("declined.pdf");	
+
+	}
 }

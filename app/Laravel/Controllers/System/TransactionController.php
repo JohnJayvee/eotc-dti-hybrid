@@ -18,6 +18,8 @@ use App\Laravel\Events\SendApprovedReference;
 use App\Laravel\Events\SendDeclinedReference;
 use App\Laravel\Events\SendProcessorTransaction;
 
+use App\Laravel\Events\SendDeclinedEmailReference;
+use App\Laravel\Events\SendApprovedEmailReference;
 /* App Classes
  */
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader;
@@ -96,7 +98,7 @@ class TransactionController extends Controller{
 			$new_transaction->contact_number = $request->get('contact_number');
 			$new_transaction->regional_id = $request->get('regional_id');
 			$new_transaction->regional_name = $request->get('regional_name');
-			$new_transaction->processing_fee = $request->get('processing_fee');
+			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');
 			$new_transaction->department_id = $request->get('department_id');
@@ -168,6 +170,7 @@ class TransactionController extends Controller{
 				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->update(['status' => "APPROVED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
+	            	'email' => $transaction->email,
 	                'ref_num' => $transaction->transaction_code,
 	                'amount' => $transaction->amount,
 	                'full_name' => $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name,
@@ -176,23 +179,31 @@ class TransactionController extends Controller{
 	                'modified_at' => Helper::date_only($transaction->modified_at)
             	];	
 
-				$notification_data = new SendApprovedReference($insert);
-			    Event::dispatch('send-sms-approved', $notification_data);
+				// $notification_data = new SendApprovedReference($insert);
+			 //    Event::dispatch('send-sms-approved', $notification_data);
+
+			    $notification_data_email = new SendApprovedEmailReference($insert);
+			    Event::dispatch('send-email-approved', $notification_data_email);
 			}
 			if ($type == "DECLINED") {
 				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->update(['status' => "DECLINED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->document_reference_code,
+	                'email' => $transaction->email,
 	                'remarks' => $transaction->remarks,
 	                'full_name' => $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name,
 	                'application_name' => $transaction->application_name,
 	                'department_name' => $transaction->department_name,
-	                'modified_at' => Helper::date_only($transaction->modified_at)
+	                'modified_at' => Helper::date_only($transaction->modified_at),
+	                'link' => "http://54.251.82.120/show-dpf/".$transaction->id,
             	];	
 
-				$notification_data = new SendDeclinedReference($insert);
+				/*$notification_data = new SendDeclinedReference($insert);
 			    Event::dispatch('send-sms-declined', $notification_data);
+*/
+			    $notification_data_email = new SendDeclinedEmailReference($insert);
+			    Event::dispatch('send-email-declined', $notification_data_email);
 			}
 			
 

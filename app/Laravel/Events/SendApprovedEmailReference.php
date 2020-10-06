@@ -4,7 +4,7 @@ namespace App\Laravel\Events;
 use Illuminate\Queue\SerializesModels;
 use Mail,Str,Helper,Carbon;
 
-class SendApplication extends Event {
+class SendApprovedEmailReference extends Event {
 
 
 	use SerializesModels;
@@ -30,12 +30,13 @@ class SendApplication extends Event {
 			$mailname = "Application Details";
 			$user_email = $value['email'];
 			$this->data['full_name'] = $value['full_name'];
-			$this->data['department_name'] = $value['department_name'];
 			$this->data['application_name'] = $value['application_name'];
+			$this->data['department_name'] = $value['department_name'];
 			$this->data['ref_num'] = $value['ref_num'];
-			$this->data['remarks'] = $value['remarks'];
+			$this->data['modified_at'] = $value['modified_at'];
+			$this->data['amount'] = $value['amount'];
 
-			Mail::send('emails.application-declined', $this->data, function($message) use ($mailname,$user_email){
+			Mail::send('emails.application-approved', $this->data, function($message) use ($mailname,$user_email){
 				$message->from('eotcph-noreply@ziaplex.biz');
 				$message->to($user_email);
 				$message->subject("Application Details");

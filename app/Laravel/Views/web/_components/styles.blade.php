@@ -25,7 +25,10 @@
     .border-red{
         border-color: #dc3545;
     }
-
+    .table-wrap td{
+        word-wrap:break-word !important;
+        white-space: normal !important;
+    }
     .video-section-wrap .background-video-overly {
         display: flex;
         flex-direction: column;

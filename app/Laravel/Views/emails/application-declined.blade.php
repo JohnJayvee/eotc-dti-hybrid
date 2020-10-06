@@ -62,29 +62,34 @@
 			<tr>
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
+			<tr>
+				<th colspan="2"><p style="float: left;text-align: justify;">Hello {{Str::title($full_name)}}, <p>
+					<p style="float: left;text-align: justify;">Good day. We have processed your application, and we regret to inform you that your application has been declined by our processor.</p>
+				</th>
+			</tr>
+			
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Applicant:</th>
-				<th style="text-align: right;">{{strtoupper($full_name)}}</th>
+				<th style="text-align: left;padding: 10px;">Application Name:</th>
+				<th style="text-align: right;">{{Str::title($application_name)}}</th>
 			</tr>
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Reference Number</th>
-				<th style="text-align: right;">{{strtoupper($ref_num)}}</th>
+				<th style="text-align: left;padding: 10px;">Department:</th>
+				<th style="text-align: right;">{{Str::title($department_name)}}</th>
 			</tr>
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Eor Url:</th>
-				<th style="text-align: right;">{{$eor_url}}</th>
+				<th style="text-align: left;padding: 10px;">Date:</th>
+				<th style="text-align: right;">{{Str::title($modified_at)}}</th>
+			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Remarks:</th>
+				<th style="text-align: right;">{{Str::title($remarks)}}</th>
 			</tr>
 			
 			<tr>
-				<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
-			</tr>
-			<tr>
 				<th colspan="2">
-					<img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(200)->generate('Make me into an QrCode!')) }} ">
+					<p style="float: left;text-align: justify;">Don't worry, you can still resubmit your application. Please click this link to download your reference number <a href="{{$link}}">{{$link}}</a> and attached it to your physical documents and send it to our office.</p><br>
+					<p>Thank you for choosing EOTC-PHP!</p>
 				</th>
-			</tr>
-			<tr>
-				<th colspan="2"><span style="color: #DE9924;font-size: 17px;letter-spacing: 1px;">#{{strtoupper($ref_num)}}</span> <br><p class="text-gray"style="margin-top: 0px;">Reference Code</p></th>
 			</tr>
 		
 	</table>

@@ -11,7 +11,6 @@ class ProcessorRequest extends RequestManager{
 		$rules = [
 			'fname' => "required",
 			'lname' => "required",
-			'peza_unit' => "required",
 			'contact_number' => "required|max:10|phone:PH",
 			'email'	=> "required|unique:user,email,{$id}",
 			'username'	=> "required|unique:user,username,{$id}",

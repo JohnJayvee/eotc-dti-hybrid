@@ -15,9 +15,6 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Application Requirement Update Form</h4>
-      <p class="card-description">
-        Fill up the <strong class="text-danger">* required</strong> fields.
-      </p>
       <form class="create-form" method="POST" enctype="multipart/form-data">
         @include('system._components.notifications')
         {!!csrf_field()!!}

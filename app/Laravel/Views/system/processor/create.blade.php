@@ -15,9 +15,6 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Department Create Form</h4>
-      <p class="card-description">
-        Fill up the <strong class="text-danger">* required</strong> fields.
-      </p>
       <form class="create-form" method="POST" enctype="multipart/form-data">
         @include('system._components.notifications')
         {!!csrf_field()!!}
@@ -92,13 +89,13 @@
           @endif
         </div>
       
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="input_title">Department</label>
           {!!Form::select("peza_unit", $department, old('peza_unit'), ['id' => "input_peza_unit", 'class' => "custom-select".($errors->first('peza_unit') ? ' is-invalid' : NULL)])!!}
           @if($errors->first('peza_unit'))
           <p class="mt-1 text-danger">{!!$errors->first('peza_unit')!!}</p>
           @endif
-        </div>
+        </div> -->
 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
         <a href="{{route('system.department.index')}}" class="btn btn-light">Return to Processors list</a>

@@ -80,7 +80,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text text-title fw-600">PHP <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                   </div>
-                                  <input type="number" class="form-control br-left-white br-right-white {{ $errors->first('processing_fee') ? 'is-invalid': NULL  }}" placeholder="Payment Amount" name="processing_fee" id="input_processing_fee" value="{{old('processing_fee')}}" readonly>
+                                  <input type="text" class="form-control br-left-white br-right-white {{ $errors->first('processing_fee') ? 'is-invalid': NULL  }}" placeholder="Payment Amount" name="processing_fee" id="input_processing_fee" value="{{old('processing_fee')}}" readonly>
                                   <div class="input-group-append">
                                     <span class="input-group-text text-title fw-600">| <span class="text-gray pl-2 pr-2 pt-1"> .00</span></span>
                                   </div>
@@ -261,14 +261,16 @@
         var _text = $("#input_application_id option:selected").text();
         $.getJSON('/amount?type_id='+this.value, function(result){
             amount = parseFloat(result.data)
-            $('#input_processing_fee').val(amount);
+            $('#input_processing_fee').val(formatNumber(amount));
         });
         var application_id = $(this).val()
         $(this).get_requirements(application_id,"#input_application_id","")
         
         $('#input_application_name').val(_text);
     });
-
+    function formatNumber (num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
     @if(old('application_id'))
         $(this).get_requirements("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
         $(this).get_application_type("{{old('department_id')}}","#input_application_id","{{old('application_id')}}")

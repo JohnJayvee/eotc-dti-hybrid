@@ -15,9 +15,6 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Transaction Create Form</h4>
-      <p class="card-description">
-        Fill up the <strong class="text-danger">* required</strong> fields.
-      </p>
       <form class="create-form" method="POST" enctype="multipart/form-data">
         @include('system._components.notifications')
         {!!csrf_field()!!}
@@ -119,17 +116,22 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="input_title">Processing Fee</label>
-              <input type="text" class="form-control {{$errors->first('processing_fee') ? 'is-invalid' : NULL}}" id="input_processing_fee" name="processing_fee" placeholder="Processing Fee" value="{{old('processing_fee')}}" readonly>
+              <label for="exampleInputEmail1" class="text-form">Processing Fee</label>
+              <div class="input-group">
+                <input type="text" class="form-control br-left-white br-right-white {{ $errors->first('processing_fee') ? 'is-invalid': NULL  }}" placeholder="Payment Amount" name="processing_fee" id="input_processing_fee" value="{{old('processing_fee')}}" readonly>
+                <div class="input-group-append">
+                  <span class="input-group-text text-title fw-600">| <span class="text-gray pl-2 pr-2 pt-1"> .00</span></span>
+                </div>
+              </div>
               @if($errors->first('processing_fee'))
-              <p class="mt-1 text-danger">{!!$errors->first('processing_fee')!!}</p>
+                  <small class="form-text pl-1" style="color:red;">{{$errors->first('processing_fee')}}</small>
               @endif
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="input_title">Amount</label>
-              <input type="text" class="form-control {{$errors->first('amount') ? 'is-invalid' : NULL}}" id="input_amount" name="amount" placeholder="amount" value="{{old('amount')}}">
+              <input type="text" class="form-control {{$errors->first('amount') ? 'is-invalid' : NULL}}" id="input_amount" name="amount" placeholder="Amount" value="{{old('amount')}}">
               @if($errors->first('amount'))
               <p class="mt-1 text-danger">{!!$errors->first('amount')!!}</p>
               @endif
@@ -169,6 +171,10 @@
   }
   span.select2.select2-container{
     width: 100% !important;
+  }
+  span.input-group-text{
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
   }
 </style>
 @endsection
@@ -241,11 +247,16 @@
   $('#input_application_id').change(function() {
     var _text = $("#input_application_id option:selected").text();
     $.getJSON('/amount?type_id='+this.value, function(result){
-        $('#input_processing_fee').val(result.data);
+        amount = parseFloat(result.data)
+        $('#input_processing_fee').val(formatNumber(amount));
     });
     var application_id = $(this).val()
     $('#input_application_name').val(_text);
   });
+
+  function formatNumber (num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+  }
 
   @if(old('application_id'))
     $(this).get_application_type("{{old('department_id')}}","#input_application_id","{{old('application_id')}}")

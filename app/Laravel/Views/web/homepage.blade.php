@@ -56,7 +56,7 @@
                                <input type="text" name="code" class="form-control input-transparent" placeholder="Enter Transaction Code">
                             </div>
                             <div class="col-lg-12 pt-2">
-                               <input type="text" name="email" class="form-control input-transparent" placeholder="Enter Email Address">
+                               <input type="email" name="email" class="form-control input-transparent" placeholder="Enter Email Address">
                             </div>
                             <div class="col-lg-12 pt-4">
                                 <button class="btn btn-white" type="submit"><i class="fa fa-file"></i> Request </button> 

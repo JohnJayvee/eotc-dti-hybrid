@@ -43,6 +43,13 @@ class EventServiceProvider extends ServiceProvider
         'send-eorurl' => [
             'App\Laravel\Listeners\SendEorUrlListener'
         ],
+        'send-email-declined' => [
+            'App\Laravel\Listeners\SendDeclinedEmailListener'
+        ],
+        'send-email-approved' => [
+            'App\Laravel\Listeners\SendApprovedEmailListener'
+        ],
+
     ];
 
     /**
