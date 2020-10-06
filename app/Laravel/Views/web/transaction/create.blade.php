@@ -43,6 +43,31 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Your Email Address</label>
+                                <input type="text" class="form-control form-control-sm" name="email" placeholder="Email Address" value="{{old('email',Auth::guard('customer')->user()->email)}}">
+                                @if($errors->first('email'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Contact Number</label>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
+                                  </div>
+                                  <input type="text" class="form-control br-left-white" placeholder="Contact Number" name="contact_number" value="{{old('contact_number',Auth::guard('customer')->user()->contact_number)}}">
+                                </div>
+                                @if($errors->first('contact_number'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('contact_number')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                             <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Regional Offices</label>
@@ -91,31 +116,25 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6">
+                   <div class="row">
+                       <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Your Email Address</label>
-                                <input type="text" class="form-control form-control-sm" name="email" placeholder="Email Address" value="{{old('email',Auth::guard('customer')->user()->email)}}">
-                                @if($errors->first('email'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Contact Number</label>
+                                <label for="exampleInputEmail1" class="text-form pb-2">Partial Payment</label>
                                 <div class="input-group mb-3">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
+                                    <span class="input-group-text text-title fw-600">PHP <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                   </div>
-                                  <input type="text" class="form-control br-left-white" placeholder="Contact Number" name="contact_number" value="{{old('contact_number',Auth::guard('customer')->user()->contact_number)}}">
+                                  <input type="number" class="form-control br-left-white br-right-white {{ $errors->first('processing_fee') ? 'is-invalid': NULL  }}" placeholder="Partial Payment Amount" name="processing_fee" id="input_processing_fee" value="{{old('processing_fee')}}" >
+                                  <div class="input-group-append">
+                                    <span class="input-group-text text-title fw-600">| <span class="text-gray pl-2 pr-2 pt-1"> .00</span></span>
+                                  </div>
                                 </div>
-                                @if($errors->first('contact_number'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('contact_number')}}</small>
+                                @if($errors->first('processing_fee'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('processing_fee')}}</small>
                                 @endif
                             </div>
                         </div>
-                    </div>
+                   </div>
                     <div id="requirements_container">
                         <label class="text-form pb-2">Required Documents</label>
                         <table id="requirements">
