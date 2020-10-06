@@ -179,8 +179,8 @@ class TransactionController extends Controller{
 	                'modified_at' => Helper::date_only($transaction->modified_at)
             	];	
 
-				// $notification_data = new SendApprovedReference($insert);
-			 //    Event::dispatch('send-sms-approved', $notification_data);
+				$notification_data = new SendApprovedReference($insert);
+			    Event::dispatch('send-sms-approved', $notification_data);
 
 			    $notification_data_email = new SendApprovedEmailReference($insert);
 			    Event::dispatch('send-email-approved', $notification_data_email);
@@ -199,9 +199,9 @@ class TransactionController extends Controller{
 	                'link' => "http://54.251.82.120/show-dpf/".$transaction->id,
             	];	
 
-				/*$notification_data = new SendDeclinedReference($insert);
+				$notification_data = new SendDeclinedReference($insert);
 			    Event::dispatch('send-sms-declined', $notification_data);
-*/
+
 			    $notification_data_email = new SendDeclinedEmailReference($insert);
 			    Event::dispatch('send-email-declined', $notification_data_email);
 			}
