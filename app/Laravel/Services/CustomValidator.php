@@ -18,7 +18,7 @@ class CustomValidator extends Validator {
         if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[1]); }
 
         $application = Application::find($application_id);
-        $requirements_count = ApplicationRequirements::whereIn('id', explode(",",$application->requirements_id))->count();
+        $requirements_count = ApplicationRequirements::whereIn('id', explode(",",$application->requirements_id))->where('is_required',"yes")->count();
         
         if ($file < $requirements_count) {
             return FALSE;
