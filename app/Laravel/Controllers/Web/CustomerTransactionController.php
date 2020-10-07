@@ -116,7 +116,7 @@ class CustomerTransactionController extends Controller
 		                'application_name' => $new_transaction->application_name,
 		                'ref_num' => $new_transaction->code,
 		                'created_at' => $new_transaction->created_at,
-		                'link' => "http://eotc-dti.localhost.com/physical-copy/".$new_transaction->id,
+		                'link' => "http://54.251.82.120/physical-copy/".$new_transaction->id,
 
 		            ];	
 					$application_data = new SendApplication($insert_data);
