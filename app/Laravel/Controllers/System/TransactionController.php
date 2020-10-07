@@ -168,7 +168,7 @@ class TransactionController extends Controller{
 			$transaction->save();
 
 			if ($type == "APPROVED") {
-				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->update(['status' => "APPROVED"]);
+				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->where('status',"pending")->update(['status' => "APPROVED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	            	'email' => $transaction->email,
@@ -187,7 +187,7 @@ class TransactionController extends Controller{
 			    Event::dispatch('send-email-approved', $notification_data_email);
 			}
 			if ($type == "DECLINED") {
-				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->update(['status' => "DECLINED"]);
+				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->where('status',"pending")->update(['status' => "DECLINED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->document_reference_code,
