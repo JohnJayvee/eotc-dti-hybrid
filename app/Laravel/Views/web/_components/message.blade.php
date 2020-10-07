@@ -54,21 +54,21 @@
                                         <i class="fas fa-check-circle status-success"></i>
                                     </span> 
                                     <h2 class="status-success">Success!</h2>
-                                    <p class="text-status">Transacion Success</p>
+                                    <p class="text-status">Transaction Success</p>
                                     <p class="text-label"> Your payment has been processed. This is to confirm your Online Application was successful.</p>
                                 @elseif(($prefix == "APP" AND $transaction->application_transaction_status == "PENDING") || ($prefix == "PF" AND $transaction->transaction_status == "PENDING"))
                                     <span class="text-6xl">
                                     <i class="fas fa-check-circle status-pending"></i>
                                     </span> 
                                     <h2 class="status-pending">Pending!</h2>
-                                    <p class="text-status">Transacion Pending</p>
+                                    <p class="text-status">Transaction Pending</p>
                                     <p class="text-label"> Sorry your payment was not processed. </p>
                                 @else
                                     <span class="text-6xl">
                                     <i class="fas fa-times-circle status-failed"></i>
                                     </span> 
                                     <h2 class="status-failed">Failed!</h2>
-                                    <p class="text-status">Transacion Pending</p>
+                                    <p class="text-status">Transaction Pending</p>
                                     <p class="text-label"> Sorry your card transaction cannot be processed. Please try again, or you may contact your Bank. Thank you. </p>
                                 @endif
                                 <a href="{{route('web.main.index')}}" class="btn btn-badge-primary text-white">Go back to home</a href=""></a>

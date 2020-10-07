@@ -64,7 +64,7 @@
 			</tr>
 			<tr>
 				<th colspan="2"><p style="float: left;text-align: justify;">Dear {{Str::title($full_name)}}, <p>
-					<p style="float: left;text-align: justify;">You have successfully completed your application for the {{$transaction->application_name}} with the following details.</p>
+					<p style="float: left;text-align: justify;">You have successfully completed your application for the {{$application_name}} with the following details.</p>
 				</th>
 			</tr>
 			<tr class="text-blue">
