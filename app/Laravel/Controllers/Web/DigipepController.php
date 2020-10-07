@@ -76,7 +76,7 @@ class DigipepController extends Controller
 			        ];	
 
 					$application_data = new SendCertificate($insert_data);
-				    Event::dispatch('send-email-certificate', $application_data);*/
+				    Event::dispatch('send-email-certificate', $application_data);
 
 				}catch(\Exception $e){
 					DB::rollBack();
