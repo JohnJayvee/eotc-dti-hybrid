@@ -81,7 +81,7 @@
 			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Date:</th>
-				<th style="text-align: right;">{{Helper::date_only($created_at)}}</th>
+				<th style="text-align: right;">{{$created_at}}</th>
 			</tr>
 			
 			<tr>

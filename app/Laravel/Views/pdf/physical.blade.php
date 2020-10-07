@@ -24,7 +24,7 @@
 			<p class="text-bold" style="font-size: 25px;">Reference #: {{$transaction->code}}</p><br><br><br>
 			<p style="font-size: 25px;"><b>Application Name:</b> {{Str::title($transaction->application_name)}}</p>
 			<p style="font-size: 25px;"><b>Department Name:</b> {{Str::title($transaction->department_name)}}</p>
-			<p style="font-size: 25px;"><b>Date Generated:</b> {{Helper::date_only($transaction->modified_at)}}</p>
+			<p style="font-size: 25px;"><b>Date Generated:</b> {{Helper::date_only($transaction->created_at)}}</p>
 		
 		</td>
 	</tr>

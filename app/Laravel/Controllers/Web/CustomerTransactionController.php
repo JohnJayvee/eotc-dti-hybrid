@@ -107,7 +107,6 @@ class CustomerTransactionController extends Controller
 			if($request->get('is_check')) {
 
 				if($new_transaction->customer) {
-				
 					$insert_data[] = [
 		                'email' => $new_transaction->email,
 		                'full_name' => $new_transaction->customer->full_name,
@@ -115,7 +114,7 @@ class CustomerTransactionController extends Controller
 		                'department_name' => $new_transaction->department_name,
 		                'application_name' => $new_transaction->application_name,
 		                'ref_num' => $new_transaction->code,
-		                'created_at' => $new_transaction->created_at,
+		                'created_at' => Helper::date_only($new_transaction->created_at),
 		                'link' => "http://54.251.82.120/physical-copy/".$new_transaction->id,
 
 		            ];	
