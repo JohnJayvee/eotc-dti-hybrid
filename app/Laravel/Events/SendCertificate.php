@@ -4,7 +4,7 @@ namespace App\Laravel\Events;
 use Illuminate\Queue\SerializesModels;
 use Mail,Str,Helper,Carbon;
 
-class SendApplication extends Event {
+class SendCertificate extends Event {
 
 
 	use SerializesModels;
