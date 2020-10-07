@@ -52,7 +52,9 @@ class EventServiceProvider extends ServiceProvider
         'send-email-approved' => [
             'App\Laravel\Listeners\SendApprovedEmailListener'
         ],
-        
+         'send-email-certificate' => [
+            'App\Laravel\Listeners\SendCertificateListener'
+        ],
 
     ];
 

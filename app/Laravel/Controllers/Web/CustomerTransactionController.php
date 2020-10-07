@@ -474,4 +474,12 @@ class CustomerTransactionController extends Controller
 		return $pdf->stream("declined.pdf");	
 
 	}
+
+	public function certificate(PageRequest $request , $id){
+
+		$this->data['transaction'] = Transaction::find($id);
+		$pdf = PDF::loadView('pdf.certificate',$this->data);
+		return $pdf->stream("certificate.pdf");	
+
+	}
 }
