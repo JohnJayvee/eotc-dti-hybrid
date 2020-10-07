@@ -108,16 +108,19 @@ class CustomerTransactionController extends Controller
 
 				if($new_transaction->customer) {
 				
-					// $insert_data[] = [
-		   //              'email' => $new_transaction->customer->email,
-		   //              'name' => $new_transaction->customer->full_name,
-		   //              'company_name' => $new_transaction->customer->company_name,
-		   //              'department' => $new_transaction->department->name,
-		   //              'purpose' => $new_transaction->type->name,
-		   //              'ref_num' => $new_transaction->document_reference_code
-		   //          ];	
-					// $application_data = new SendApplication($insert_data);
-				 //    Event::dispatch('send-application', $application_data);
+					$insert_data[] = [
+		                'email' => $new_transaction->email,
+		                'full_name' => $new_transaction->customer->full_name,
+		                'company_name' => $new_transaction->company_name,
+		                'department_name' => $new_transaction->department_name,
+		                'application_name' => $new_transaction->application_name,
+		                'ref_num' => $new_transaction->code,
+		                'created_at' => $new_transaction->created_at,
+		                'link' => "http://eotc-dti.localhost.com/physical-copy/".$new_transaction->id,
+
+		            ];	
+					$application_data = new SendApplication($insert_data);
+				    Event::dispatch('send-application', $application_data);
 				}
 			}
 			if($new_transaction->processing_fee > 0){
@@ -280,11 +283,11 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-msg', "The processor has not yet validated your application.");
 			return redirect()->back();
 		}
-		
+
 		$amount = $prefix == 'APP' ? $transaction->amount : Helper::db_amount($transaction->processing_fee);
 
 		$customer = $transaction->customer;
-		
+
 		try{
 			session()->put('transaction.code', $code);
 
@@ -472,6 +475,16 @@ class CustomerTransactionController extends Controller
 
 		$pdf = PDF::loadView('pdf.declined',$this->data);
 		return $pdf->stream("declined.pdf");	
+
+	}
+
+	public function physical_pdf(PageRequest $request , $id){
+
+		$this->data['transaction'] = Transaction::find($id);
+		
+
+		$pdf = PDF::loadView('pdf.physical',$this->data);
+		return $pdf->stream("physical.pdf");	
 
 	}
 

@@ -84,7 +84,8 @@
 				<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
 			</tr>
 			<tr>
-				<th colspan="2" style="text-align: left;padding: 10px;"><p>First Payment<p></th>
+				<th  style="text-align: left;padding: 10px;"><p>First Payment<p></th>
+				<th style="text-align: right;">Processing Fee</th>	
 			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Payment Reference Number:</th>
@@ -98,7 +99,8 @@
 				<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
 			</tr>
 			<tr>
-				<th colspan="2" style="text-align: left;padding: 10px;"><p>Second Payment<p></th>
+				<th style="text-align: left;padding: 10px;"><p>Second Payment<p></th>
+				<th style="text-align: right;">Application Fee</th>	
 			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Payment Reference Number:</th>

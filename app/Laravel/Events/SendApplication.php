@@ -33,9 +33,9 @@ class SendApplication extends Event {
 			$this->data['department_name'] = $value['department_name'];
 			$this->data['application_name'] = $value['application_name'];
 			$this->data['ref_num'] = $value['ref_num'];
-			$this->data['remarks'] = $value['remarks'];
-
-			Mail::send('emails.application-declined', $this->data, function($message) use ($mailname,$user_email){
+			$this->data['created_at'] = $value['created_at'];
+			$this->data['link'] = $value['link'];
+			Mail::send('emails.application', $this->data, function($message) use ($mailname,$user_email){
 				$message->from('eotcph-noreply@ziaplex.biz');
 				$message->to($user_email);
 				$message->subject("Application Details");

@@ -46,6 +46,7 @@ Route::group(['as' => "web.",
 	Route::post('upload/{code?}',['uses' => "CustomerTransactionController@store_documents"]);
 	Route::get('request-eor/{code?}',['as' => "request-eor", 'uses' => "CustomerTransactionController@request_eor"]);
 	Route::get('show-pdf/{id?}',['as' => "show-pdf", 'uses' => "CustomerTransactionController@show_pdf"]);
+	Route::get('physical-copy/{id?}',['as' => "physical-copy", 'uses' => "CustomerTransactionController@physical_pdf"]);
 	Route::get('certificate/{id?}',['as' => "certificate", 'uses' => "CustomerTransactionController@certificate"]);
 
 	Route::group(['prefix' => "digipep",'as' => "digipep."],function(){

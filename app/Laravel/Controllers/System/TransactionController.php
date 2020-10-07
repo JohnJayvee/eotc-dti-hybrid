@@ -110,6 +110,7 @@ class TransactionController extends Controller{
 			$new_transaction->requirements_id = implode(",", $request->get('requirements_id'));
 			$new_transaction->process_by = "processor";
 			$new_transaction->status = "APPROVED";
+			$new_transaction->modified_at = Carbon::now();
 			$new_transaction->hereby_check = $request->get('hereby_check');
 			$new_transaction->amount = $request->get('amount');
 

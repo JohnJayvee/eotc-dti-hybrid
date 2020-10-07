@@ -6,7 +6,7 @@
 
 	<style>
 		th.primary{
-			background: url('{{asset('web/img/plain_bg.jpg')}}') no-repeat center ; 
+			background-color: #D4EDDA; 
 		}
 		table, th, td {
 		  border-collapse: collapse;
@@ -53,8 +53,8 @@
 			<tr>
 				<th colspan="2" class="primary" style="padding: 25px;">
 					<div id="pageElement">
-						<div style="float: left;color: #fff;padding-left: 30px;">Thank You for using &nbsp;</div>
-					  	<div style="padding-right: 30px;"> <img src="{{asset('web/img/logo-color.png')}}" alt="" style="width: 130px;"> </div>
+						<div style="float: left;color: #000;padding-left: 30px;">Thank You for using &nbsp;</div>
+					  	<div style="padding-right: 30px;"> <img src="{{asset('web/img/dti-logo-web.png')}}" alt="" style="width: 130px;"> </div>
 					</div>
 				</th>
 			</tr>
@@ -62,32 +62,33 @@
 			<tr>
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Applicant:</th>
-				<th style="text-align: right;">{{Str::title($name)}}</th>
-			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Company Name:</th>
-				<th style="text-align: right;">{{Str::title($company_name)}}</th>
-			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Department:</th>
-				<th style="text-align: right;">{{Str::title($department)}}</th>
-			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Applying For:</th>
-				<th style="text-align: right;">{{Str::title($purpose)}}</th>
-			</tr>
 			<tr>
-				<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
-			</tr>
-			<tr>
-				<th colspan="2">
-					<img src="data:image/png;base64, {{ base64_encode(QrCode::format('png')->size(200)->generate('Make me into an QrCode!')) }} ">
+				<th colspan="2"><p style="float: left;text-align: justify;">Dear {{Str::title($full_name)}}, <p>
+					<p style="float: left;text-align: justify;">Good day. You received this message because you have checked the 'Physical Submission' checkbox. Please download and print the attached file and paste it to your physical documents and send it to our office to continue your application.</p>
 				</th>
 			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Reference Number:</th>
+				<th style="text-align: right;">{{$ref_num}}</th>
+			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Application Name:</th>
+				<th style="text-align: right;">{{Str::title($application_name)}}</th>
+			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Department Name:</th>
+				<th style="text-align: right;">{{Str::title($department_name)}}</th>
+			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Date:</th>
+				<th style="text-align: right;">{{Helper::date_only($created_at)}}</th>
+			</tr>
+			
 			<tr>
-				<th colspan="2"><span style="color: #DE9924;font-size: 17px;letter-spacing: 1px;">#{{$ref_num}}</span> <br><p class="text-gray"style="margin-top: 0px;">Reference Code</p></th>
+				<th colspan="2">
+					<p><a href="{{$link}}">Please click this link to download your reference number</a></p>
+					<p>Thank you for choosing EOTC-PHP!</p>
+				</th>
 			</tr>
 		
 	</table>
