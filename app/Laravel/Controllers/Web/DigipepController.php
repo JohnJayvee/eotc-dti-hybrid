@@ -7,7 +7,7 @@ use App\Laravel\Requests\PageRequest;
 
 
 use App\Laravel\Models\Transaction;
-
+use App\Laravel\Events\SendCertificate;
 
 use Helper, Carbon, Session, Str, DB,Input,Event,Signature,Curl,Log,PDF,Mail;
 class DigipepController extends Controller
@@ -72,10 +72,10 @@ class DigipepController extends Controller
 			            'department_name' => $transaction->department_name,
 			            'modified_at' => $transaction->modified_at,
 			            'ref_num' => $transaction->transaction_code,
-			            'link' => route("web.certificate",[$transaction->id])
+			            'link' => "http://54.251.82.120/certificate/".$transaction->id,
 			        ];	
 
-					$application_data = new SendApplication($insert_data);
+					$application_data = new SendCertificate($insert_data);
 				    Event::dispatch('send-email-certificate', $application_data);*/
 
 				}catch(\Exception $e){
