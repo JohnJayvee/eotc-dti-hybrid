@@ -19,7 +19,7 @@
             {!!csrf_field()!!}
                 <input type="hidden" name="department_name" id="input_department_name" value="{{old('department_name')}}">
                 <input type="hidden" name="application_name" id="input_application_name" value="{{old('application_name')}}">
-                <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}">
+                <!-- <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}"> -->
                 <div class="card-body px-5 py-0">
                     <h5 class="text-title text-uppercase pt-5">Application information</h5>
                     <div class="row">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="row">
-                            <div class="col-sm-12 col-md-6 col-lg-6">
+                            <!-- <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Regional Offices</label>
                                 {!!Form::select("regional_id", $regional_offices, old('regional_id'), ['id' => "input_regional_id", 'class' => "form-control form-control-sm classic ".($errors->first('regional_id') ? 'border-red' : NULL)])!!}
@@ -76,18 +76,16 @@
                             @if($errors->first('regional_id'))
                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('regional_id')}}</small>
                             @endif
+                            </div> -->
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Bureau/Office</label>
+                                {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "form-control form-control-sm classic ".($errors->first('department_id') ? 'border-red' : NULL)])!!}
                             </div>
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1" class="text-form pb-2">Bureau/Office</label>
-                                    {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "form-control form-control-sm classic ".($errors->first('department_id') ? 'border-red' : NULL)])!!}
-                                </div>
-                                @if($errors->first('department_id'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('department_id')}}</small>
-                                @endif
-                            </div>
-                    </div>
-                    <div class="row">
+                            @if($errors->first('department_id'))
+                                <small class="form-text pl-1" style="color:red;">{{$errors->first('department_id')}}</small>
+                            @endif
+                        </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Type of Application</label>
@@ -98,6 +96,8 @@
                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('application_id')}}</small>
                             @endif
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Processing Fee</label>
@@ -115,9 +115,7 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
-                   <div class="row">
-                       <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Partial Payment</label>
                                 <div class="input-group mb-3">
@@ -134,7 +132,8 @@
                                 @endif
                             </div>
                         </div>
-                   </div>
+                    </div>
+                  
                     <div id="requirements_container">
                         <label class="text-form pb-2">Required Documents</label>
                         <table id="requirements">

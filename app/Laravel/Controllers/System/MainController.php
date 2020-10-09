@@ -12,7 +12,7 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\Transaction;
+use App\Laravel\Models\{Transaction,Department};
 
 /* App Classes
  */
@@ -29,13 +29,18 @@ class MainController extends Controller{
 
 	public function dashboard(PageRequest $request){
 		$auth = $request->user();
-		$this->data['page_title'] .= "Admin - Dashboard";
+		$this->data['page_title'] .= "Dashboard";
 
 		$this->data['applications'] = Transaction::orderBy('created_at',"DESC")->get(); 
 		$this->data['pending'] = Transaction::where('status',"PENDING")->count();
 		$this->data['approved'] = Transaction::where('status',"APPROVED")->count(); 
 		$this->data['declined'] = Transaction::where('status',"DECLINED")->count(); 
 		$this->data['application_today'] = Transaction::whereDate('created_at', Carbon::now())->count(); 
+
+		$this->data['department'] = Department::pluck('name')->toArray();
+
+		$this->data['transaction_per_department'] = Department::withCount('assignTransaction')->pluck('assign_transaction_count')->toArray();
+
 
 		$chart_data = [];
 		$per_month_date = [];
@@ -57,8 +62,13 @@ class MainController extends Controller{
 
 
 		$this->data['per_month_application'] = json_encode($per_month_application);
-		array_push($chart_data,$this->data['approved'],$this->data['declined'],$this->data['pending']);
-		$this->data['chart_data'] = json_encode($chart_data);
+
+		$this->data['department_data'] = json_encode($this->data['department']);
+
+		$this->data['chart_data'] = json_encode($this->data['transaction_per_department']);
+
+		
+
 		return view('system.dashboard',$this->data);
 	}
 

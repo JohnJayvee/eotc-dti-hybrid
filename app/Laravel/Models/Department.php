@@ -63,6 +63,8 @@ class Department extends Model{
     protected $casts = [
     ];
 
-    
+    public function assignTransaction(){
+        return $this->hasMany("App\Laravel\Models\Transaction", 'department_id', 'id');
+    }
 
 }

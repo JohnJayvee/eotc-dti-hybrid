@@ -121,7 +121,7 @@
 	var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: ['Approved', 'Disapproved', 'Pending'],
+        labels: {!! $department_data !!},
         datasets: [{
             data: {!! $chart_data !!},
             backgroundColor: ['#2F9A2A', '#D63231', '#F2B33D'],
