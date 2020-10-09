@@ -85,7 +85,7 @@ class ReportController extends Controller
 					})
 					->where(function($query){
 						if(strlen($this->data['selected_payment_method']) > 0){
-							return $query->where('payment_method',$this->data['selected_payment_method']);
+							return $query->where('payment_method',$this->data['selected_payment_method'])
 									->orWhereRaw('application_payment_method',$this->data['payment_method']);
 						}
 					})
