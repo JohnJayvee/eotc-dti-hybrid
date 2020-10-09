@@ -54,7 +54,7 @@
 					<h5 class="text-title d-inline-block p-3">Current Average</h5>
 					<div class="row pl-4">
 						<div class="col-md-12">
-							<canvas id='myChart' height="210"></canvas>
+							<canvas id='myChart' ></canvas>
 						</div>
 						<!-- <div class="col-md-12">
 							<div id="js-legend" class="chart-legend"></div>
@@ -132,7 +132,7 @@
     options: {
     	responsive: true,
        	legend: {
-            position: 'top',
+            position: 'right',
             labels: {
                 fontColor: "black",
                 boxWidth: 20,
