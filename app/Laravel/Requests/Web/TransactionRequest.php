@@ -15,7 +15,7 @@ class TransactionRequest extends RequestManager{
 			'application_id' => "required",
 			'department_id' => "required",
 			'processing_fee' => "required",
-			'regional_id' => "required",
+			// 'regional_id' => "required",
 			'contact_number' => "required|max:10|phone:PH",
     		'file.*' => 'required|mimes:pdf,docx,doc|max:204800',
 		];

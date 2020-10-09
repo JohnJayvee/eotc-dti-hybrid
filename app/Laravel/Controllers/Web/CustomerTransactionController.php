@@ -57,8 +57,8 @@ class CustomerTransactionController extends Controller
 			$new_transaction->company_name = $request->get('company_name');
 			$new_transaction->email = $request->get('email');
 			$new_transaction->contact_number = $request->get('contact_number');
-			$new_transaction->regional_id = $request->get('regional_id');
-			$new_transaction->regional_name = $request->get('regional_name');
+			// $new_transaction->regional_id = $request->get('regional_id');
+			// $new_transaction->regional_name = $request->get('regional_name');
 			$new_transaction->customer_id = $auth_id;
 			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_transaction->application_id = $request->get('application_id');
