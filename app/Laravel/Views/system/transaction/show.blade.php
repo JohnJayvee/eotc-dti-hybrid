@@ -90,7 +90,7 @@
                 <th>File Type</th>
                 <th>Status</th>
                 @if(Auth::user()->type == "processor")
-                  @if($transaction->status == "PENDING" || $transaction->status == "ONGOING")
+                  @if(in_array($transaction->status, ['PENDING', 'ONGOING']) AND $transaction->transaction_status == "COMPLETED")
                     <th>Action</th>
                   @endif
                 @endif

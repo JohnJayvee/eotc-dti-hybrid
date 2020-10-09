@@ -10,7 +10,7 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{Transaction,TransactionRequirements,Department,RegionalOffice,ApplicationRequirements};
+use App\Laravel\Models\{Transaction,TransactionRequirements,Department,RegionalOffice,ApplicationRequirements,Application};
 
 use App\Laravel\Requests\System\ProcessorTransactionRequest;
 
@@ -80,6 +80,11 @@ class TransactionController extends Controller{
 	
 	public function create(PageRequest $request){
 		$this->data['page_title'] = "- Add New Record";
+		$auth= Auth::user();
+		if($auth->type == "processor"){
+			$this->data['applications'] = ['' => "Choose Application Type"] + Application::whereIn('id',explode(",",$auth->application_id))->pluck('name','id')->toArray();
+
+		}
 
 		return view('system.transaction.create',$this->data);
 	}
@@ -97,8 +102,8 @@ class TransactionController extends Controller{
 			$new_transaction->lname = $request->get('lastname');
 			$new_transaction->email = $request->get('email');
 			$new_transaction->contact_number = $request->get('contact_number');
-			$new_transaction->regional_id = $request->get('regional_id');
-			$new_transaction->regional_name = $request->get('regional_name');
+			/*$new_transaction->regional_id = $request->get('regional_id');
+			$new_transaction->regional_name = $request->get('regional_name');*/
 			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');

@@ -56,14 +56,14 @@
         </div>
         <div class="form-group">
           <label for="input_title">User Type</label>
-          {!!Form::select("type", $user_type, old('type'), ['id' => "input_type", 'class' => "custom-select".($errors->first('type') ? ' is-invalid' : NULL)])!!}
+          <input type="text" class="form-control {{$errors->first('type') ? 'is-invalid' : NULL}}" id="input_type" name="type" placeholder="First Name" value="Processor" readonly>
           @if($errors->first('type'))
           <p class="mt-1 text-danger">{!!$errors->first('type')!!}</p>
           @endif
         </div>
         <div class="form-group">
           <label for="input_title">Bureau/Office</label>
-          {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "custom-select".($errors->first('department_id') ? ' is-invalid' : NULL)])!!}
+          <input type="text" class="form-control {{$errors->first('department_id') ? 'is-invalid' : NULL}}" id="input_department_id" name="department_id" placeholder="First Name" value="{{Auth::user()->department->name}}" readonly>
           @if($errors->first('department_id'))
           <p class="mt-1 text-danger">{!!$errors->first('department_id')!!}</p>
           @endif
@@ -126,54 +126,12 @@
 @section('page-scripts')
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
-  $.fn.get_application_type = function(department_id,input_application_id,selected){
-    $(input_application_id).empty().prop('disabled',true)
-    $(input_application_id).append($('<option>', {
-              value: "",
-              text: "Loading Content..."
-          }));
-    $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
-      $(input_application_id).empty().prop('disabled',true)
-      $.each(result.data,function(index,value){
-        $(input_application_id).append($('<option>', {
-          value: index,
-          text: value
-        }));
-      })
-      
-      $(input_application_id).prop('disabled',false)
-
-    });
-        // return result;
-  };
-
-  $("#input_department_id").on("change",function(){
-    var department_id = $(this).val()
-    var _text = $("#input_department_id option:selected").text();
-    $(this).get_application_type(department_id,"#input_application_id","")
-    $('#input_department_name').val(_text);
-    if (department_id == "office_head") {
-      $("#application_container").hide();
-    }
-  })
-
-  $("#input_type").on("change",function(){
-    var type = $(this).val()
-    if (type == "office_head" || type == "admin") {
-      $("#application_container").hide();
-    }else{
-      $("#application_container").show();
-    }
-
-  }).change();
   
-  $('#input_application_id').select2({placeholder: "Select Requirements"});
-  $('#input_application_id').prop('disabled',true)
 
-
-  @if(old('application_id'))
-    $('#input_application_id').prop('disabled',false)
-  @endif
+  
+  
+  $('#input_application_id').select2({placeholder: "Select Application"});
+  
 </script>
 
 @endsection

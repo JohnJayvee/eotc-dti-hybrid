@@ -14,6 +14,7 @@ use App\Laravel\Requests\System\ProcessorPasswordRequest;
 use App\Laravel\Models\User;
 use App\Laravel\Models\Transaction;
 use App\Laravel\Models\Department;
+use App\Laravel\Models\Application;
 /* App Classes
  */
 
@@ -29,28 +30,57 @@ class ProcessorController extends Controller
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
-		$this->data['department'] = ['' => "Choose Department/Agency"] + Department::pluck('name', 'id')->toArray();
-		$this->data['user_type'] = ['' => "Choose Type",'admin' =>  "Admin",'processor' => "Processor"];
+		$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::pluck('name', 'id')->toArray();
+		$this->data['user_type'] = ['' => "Choose Type",'admin' =>  "Admin",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
+		
+
 		$this->data['status_type'] = ['' => "Choose Status",'active' =>  "Active",'inactive' => "Inactive"];
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Accounts";
-		$this->data['processors'] = User::where('type','<>',"super_user")->orderBy('created_at',"DESC")->get(); 
+		$auth = Auth::user();
+
+		switch ($auth->type) {
+			case 'office_head':
+				$this->data['processors'] = User::where('type',"processor")->where('department_id',$auth->department_id)->orderBy('created_at',"DESC")->get(); 
+				break;
+			default:
+				$this->data['processors'] = User::where('type','<>','super_user')->orderBy('created_at',"DESC")->get(); 
+				break;
+		}
+		
 		return view('system.processor.index',$this->data);
 	}
 
 	public function  create(PageRequest $request){
 		$this->data['page_title'] .= "Processor - Add new record";
-		$ref_num = User::where('type','<>','super_user')->withTrashed()->latest('id')->first();
+		$auth = Auth::user();
+
+		if ($auth->type == "office_head") {
+			$this->data['applications'] = Application::where('department_id',$auth->department_id)->pluck('name', 'id')->toArray();
+		}else{
+			if(old('application_id') != NULL){
+		    	$this->data['applications'] = Application::where('department_id',old('department_id'))->pluck('name', 'id')->toArray();
+			}else{
+				$this->data['applications'] = Application::pluck('name', 'id')->toArray();
+			}
+		}
 		
+		$ref_num = User::where('type','<>','super_user')->withTrashed()->latest('id')->first();
 		$num =  $ref_num ? $ref_num->id : 1 ;
 
 		$this->data['reference_number'] = str_pad($num + 1, 5, "0", STR_PAD_LEFT);
+		
+		if ($auth->type == "office_head") {
+			return view('system.processor.processor-create',$this->data);
+		}
 		return view('system.processor.create',$this->data);
 	}
+
 	public function store(ProcessorRequest $request){
+		$auth = Auth::user();
 		DB::beginTransaction();
 		try{
 			$unique = uniqid();
@@ -59,7 +89,9 @@ class ProcessorController extends Controller
 			$new_processor->lname = $request->get('lname');
 			$new_processor->mname = $request->get('mname');
 			$new_processor->email = $request->get('email');
-			$new_processor->type = $request->get('type');
+			$new_processor->type = strtolower($request->get('type'));
+			$new_processor->department_id = $auth->type == "office_head" ? $auth->department_id : $request->get('department_id');	
+			$new_processor->application_id = $request->get('application_id') ? implode(",", $request->get('application_id')) : NULL;
 			$new_processor->reference_id = $request->get('reference_number');
 			$new_processor->username = $request->get('username');
 			$new_processor->contact_number = $request->get('contact_number');
@@ -108,7 +140,16 @@ class ProcessorController extends Controller
 
 	public function edit(PageRequest $request,$id = NULL){
 		$this->data['page_title'] .= "Processor - Edit record";
+
 		$this->data['processor'] = $request->get('processor_data');
+
+		if(old('application_id') != NULL || $this->data['processor']->department_id != NULL){
+		
+		    $this->data['applications'] = Application::where('department_id',old('department_id',$this->data['processor']->department_id))->pluck('name', 'id')->toArray();
+		}else{
+			$this->data['applications'] = Application::pluck('name', 'id')->toArray();
+		}
+
 		return view('system.processor.edit',$this->data);
 	}
 
@@ -124,7 +165,8 @@ class ProcessorController extends Controller
 			$processor->type = $request->get('type');
 			$processor->username = $request->get('username');
 			$processor->contact_number = $request->get('contact_number');
-			$processor->peza_unit = $request->get('peza_unit');
+			$processor->department_id = $request->get('department_id');
+			$processor->application_id = $request->get('application_id') ? implode(",", $request->get('application_id')) : NULL;
 			$processor->status = $request->get('status');
 			if($request->hasFile('file')) { 
 				$ext = $request->file->getClientOriginalExtension();
@@ -147,7 +189,7 @@ class ProcessorController extends Controller
 
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Processor had been modified.");
+			session()->flash('notification-msg', $processor->type." had been modified.");
 			return redirect()->route('system.processor.index');
 		}catch(\Exception $e){
 			DB::rollback();

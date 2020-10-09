@@ -3,12 +3,14 @@
 use Session,Auth;
 use App\Laravel\Requests\RequestManager;
 
-class DepartmentRequest extends RequestManager{
+class ActivationRequest extends RequestManager{
 
 	public function rules(){
 
 		$rules = [
-			'name' => "required|unique:department,name"
+			'otp' => "required",
+			'reference_id' => "required",
+			
 		];
 
 		return $rules;
@@ -17,7 +19,7 @@ class DepartmentRequest extends RequestManager{
 	public function messages(){
 		return [
 			'required'	=> "Field is required.",
-			'name.unique'	=> "The Department name is already exist.",
+			
 		];
 	}
 }

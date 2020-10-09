@@ -27,7 +27,8 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->string('otp')->nullable();
             $table->string('status')->default("inactive")->nullable();
-            $table->string('peza_unit')->nullable();
+            $table->string('department_id')->nullable();
+            $table->string('application_id')->nullable();
             $table->text('path')->nullable();
             $table->text('directory')->nullable();
             $table->string('filename')->nullable();

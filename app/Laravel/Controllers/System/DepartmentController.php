@@ -23,13 +23,12 @@ class DepartmentController extends Controller
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
-		
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
 	public function  index(PageRequest $request){
-		$this->data['page_title'] = "Department";
-		$this->data['departments'] = Department::orderBy('created_at',"DESC")->get(); 
+		$this->data['page_title'] = "Bureau/Office";
+		$this->data['departments'] = Department::orderBy('created_at',"DESC")->paginate($this->per_page);
 		return view('system.department.index',$this->data);
 	}
 
@@ -46,7 +45,7 @@ class DepartmentController extends Controller
 			$new_department->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "New Department has been added.");
+			session()->flash('notification-msg', "New Bureau/Office has been added.");
 			return redirect()->route('system.department.index');
 		}catch(\Exception $e){
 			DB::rollback();
@@ -73,7 +72,7 @@ class DepartmentController extends Controller
 
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Department had been modified.");
+			session()->flash('notification-msg', "Bureau/Office had been modified.");
 			return redirect()->route('system.department.index');
 		}catch(\Exception $e){
 			DB::rollback();
@@ -90,7 +89,7 @@ class DepartmentController extends Controller
 			$department->delete();
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Department removed successfully.");
+			session()->flash('notification-msg', "Bureau/Office removed successfully.");
 			return redirect()->route('system.department.index');
 		}catch(\Exception $e){
 			DB::rollback();

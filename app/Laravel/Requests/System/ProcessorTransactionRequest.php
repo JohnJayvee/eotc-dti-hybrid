@@ -16,7 +16,7 @@ class ProcessorTransactionRequest extends RequestManager{
 			'application_id' => "required",
 			'department_id' => "required",
 			'processing_fee' => "required",
-			'regional_id' => "required",
+			/*'regional_id' => "required",*/
 			'email' => "required",
 			'amount' => "required|numeric|min:0",
 			'contact_number' => "required|max:10|phone:PH",

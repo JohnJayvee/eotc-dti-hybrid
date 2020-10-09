@@ -11,11 +11,17 @@ class ProcessorRequest extends RequestManager{
 		$rules = [
 			'fname' => "required",
 			'lname' => "required",
+			'type' => "required",
+			'department_id' => "required",
 			'contact_number' => "required|max:10|phone:PH",
 			'email'	=> "required|unique:user,email,{$id}",
 			'username'	=> "required|unique:user,username,{$id}",
 			// 'file' => 'required|mimes:jpeg,jpg,png,JPEG,PNG|max:204800',
 		];
+
+		if ($this->get('type') == "processor" ) {
+			$rules['application_id'] = "required";
+		}
 		
 		return $rules;
 	}

@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-sm-12 col-md-6 col-lg-6">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1" class="text-form pb-2">Department</label>
+                                    <label for="exampleInputEmail1" class="text-form pb-2">Bureau/Office</label>
                                     {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "form-control form-control-sm classic ".($errors->first('department_id') ? 'border-red' : NULL)])!!}
                                 </div>
                                 @if($errors->first('department_id'))

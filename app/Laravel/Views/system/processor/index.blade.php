@@ -54,12 +54,12 @@
             <td>{{ Str::title($processor->lname)}}</td>
             <td>{{ Str::title($processor->fname)}}</td>
             <td>{{ Str::title($processor->status)}}</td>
-            <td>{{ Str::title($processor->type)}}</td>
+            <td>{{ Str::title(str_replace("_"," ",$processor->type))}}</td>
             <td>{{ Helper::date_format($processor->created_at)}}</td>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                <a class="dropdown-item" href="{{route('system.processor.edit',[$processor->id])}}">Edit Processor</a>
+                <a class="dropdown-item" href="{{route('system.processor.edit',[$processor->id])}}">Edit {{ Str::title(str_replace("_"," ",$processor->type))}}</a>
                 <a class="dropdown-item" href="{{route('system.processor.reset',[$processor->id])}}">Reset Password</a>
                 <!-- <a class="dropdown-item action-delete"  data-url="{{route('system.processor.destroy',[$processor->id])}}" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
               </div>
@@ -67,7 +67,7 @@
           </tr>
           @empty
           <tr>
-           <td colspan="6" class="text-center"><i>No Accounts Records Available.</i></td>
+            <td colspan="6" class="text-center"><i>No Accounts Records Available.</i></td>
           </tr>
           @endforelse
           

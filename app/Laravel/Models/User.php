@@ -93,4 +93,8 @@ class User extends Authenticatable{
         return Str::title("{$this->fname} {$this->lname} ");
     }
 
+    public function department(){
+        return $this->BelongsTo("App\Laravel\Models\Department",'department_id','id');
+    }
+
 }

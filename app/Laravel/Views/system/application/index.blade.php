@@ -56,7 +56,7 @@
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
                 <a class="dropdown-item" href="{{route('system.application.edit',[$application->id])}}">Edit Application</a>
-                <!-- <a class="dropdown-item action-delete"  data-url="{{route('system.application.destroy',[$application->id])}}" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
+                <a class="dropdown-item action-delete"  data-url="{{route('system.application.destroy',[$application->id])}}" data-toggle="modal" data-target="#confirm-delete">Remove Record</a>
               </div>
             </td>
           </tr>
@@ -65,10 +65,16 @@
             <td colspan="5" class="text-center"><i>No Application Types Records Available.</i></td>
           </tr>
           @endforelse
-          
         </tbody>
       </table>
     </div>
+    @if($applications->total() > 0)
+      <nav class="mt-2">
+        <p>Showing <strong>{{$applications->firstItem()}}</strong> to <strong>{{$applications->lastItem()}}</strong> of <strong>{{$applications->total()}}</strong> entries</p>
+        {!!$applications->appends(request()->query())->render()!!}
+        </ul>
+      </nav>
+    @endif
   </div>
 </div>
 @stop

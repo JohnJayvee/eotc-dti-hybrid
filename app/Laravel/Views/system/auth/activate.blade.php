@@ -37,11 +37,17 @@
                           
                             <div class="form-group">
                                 <input type="text" class="form-control login-input" id="input_reference_id" name="reference_id" value="{{old('reference_id')}}" placeholder="Reference Number">
+                                @if($errors->first('reference_id'))
+                                  <p class="mt-1 text-danger">{!!$errors->first('reference_id')!!}</p>
+                                @endif
                             </div>
                             <!-- Password -->
                             <div class="form-group">
                                 <input type="password" id="input_otp" class="form-control login-input" placeholder="Password" name="otp">
                                 <span toggle="#input_otp" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                @if($errors->first('otp'))
+                                  <p class="mt-1 text-danger">{!!$errors->first('otp')!!}</p>
+                                @endif
                             </div>
                             <!-- Submit -->
                             <button type="submit" class="btn btn-block btn-white fw-500 mt-4 mb-3 text-black">

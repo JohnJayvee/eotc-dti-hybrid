@@ -33,7 +33,7 @@ class ApplicationController extends Controller
 
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Application";
-		$this->data['applications'] = Application::orderBy('created_at',"DESC")->get(); 
+		$this->data['applications'] = Application::orderBy('created_at',"DESC")->paginate($this->per_page);
 		return view('system.application.index',$this->data);
 	}
 

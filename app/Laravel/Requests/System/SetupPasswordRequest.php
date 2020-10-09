@@ -8,7 +8,7 @@ class SetupPasswordRequest extends RequestManager{
 	public function rules(){
 
 		$rules = [
-			'password' => "required|confirmed",
+			'password'	=> "required|password_format|confirmed",
 			'reference_number' => "required",
 		];
 
@@ -19,6 +19,7 @@ class SetupPasswordRequest extends RequestManager{
 		return [
 			'required'	=> "Field is required.",
 			'confirmed' => "Password mismatch.",
+			'password_format' => "Password must be 6-20 alphanumeric and some allowed special characters only.",
 		];
 	}
 }

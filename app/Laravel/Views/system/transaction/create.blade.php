@@ -18,10 +18,9 @@
       <form class="create-form" method="POST" enctype="multipart/form-data">
         @include('system._components.notifications')
         {!!csrf_field()!!}
-        <input type="hidden" name="file_count" id="file_count">
-        <input type="hidden" name="department_name" id="input_department_name" value="{{old('department_name')}}">
+        <input type="hidden" name="department_id" id="input_department_id" value="{{Auth::user()->department_id}}">
         <input type="hidden" name="application_name" id="input_application_name" value="{{old('application_name')}}">
-        <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}">
+        <!-- <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}"> -->
         <div class="row">
           <div class="col-md-4">
             <div class="form-group">
@@ -85,7 +84,7 @@
 
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <div class="form-group">
               <label for="input_title">Regional Offices</label>
               {!!Form::select("regional_id", $regional_offices, old('regional_id'), ['id' => "input_regional_id", 'class' => "custom-select ".($errors->first('regional_id') ? 'border-red' : NULL)])!!}
@@ -93,27 +92,27 @@
               <p class="mt-1 text-danger">{!!$errors->first('regional_id')!!}</p>
               @endif
             </div>
-          </div>
+          </div> -->
           <div class="col-md-6">
             <div class="form-group">
-              <label for="input_title">Department</label>
-              {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "custom-select ".($errors->first('department_id') ? 'border-red' : NULL)])!!}
-              @if($errors->first('department_id'))
-              <p class="mt-1 text-danger">{!!$errors->first('department_id')!!}</p>
+              <label for="input_title">Bureau/Office</label>
+              <input type="text" class="form-control br-left-white br-right-white {{ $errors->first('department_name') ? 'is-invalid': NULL  }}" placeholder="Payment Amount" name="department_name" id="input_department_name" value="{{Auth::user()->department->name}}" readonly>
+              @if($errors->first('department_name'))
+              <p class="mt-1 text-danger">{!!$errors->first('department_name')!!}</p>
               @endif
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label for="input_title">Type of Application</label>
-              {!!Form::select('application_id',['' => "--Choose Application Type--"],old('application_id'),['id' => "input_application_id",'class' => "custom-select ".($errors->first('application_id') ? 'border-red' : NULL)])!!}
+              {!!Form::select('application_id',$applications,old('application_id'),['id' => "input_application_id",'class' => "custom-select ".($errors->first('application_id') ? 'border-red' : NULL)])!!}
               @if($errors->first('application_id'))
               <p class="mt-1 text-danger">{!!$errors->first('application_id')!!}</p>
               @endif
             </div>
           </div>
+        </div>
+        <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label for="exampleInputEmail1" class="text-form">Processing Fee</label>
@@ -149,7 +148,7 @@
           </div>
           <div class="col-lg-12 col-lg-12 mb-4">
             <input type="checkbox" name="hereby_check" value="yes">
-              "I hereby agree that I have read and reviewed the requirements listed above, and the physical copies of it are under my possession."
+              I hereby agree that I have read and reviewed the requirements listed above, and the physical copies of it are under my possession.
             
           </div> 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
@@ -181,67 +180,10 @@
 @section('page-scripts')
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
-  $('#file').change(function(e){
-    $('#lblName').empty();
-    $('#lblName').css("color", "black");
-   var files = [];
-    for (var i = 0; i < $(this)[0].files.length; i++) {
-        files.push($(this)[0].files[i].name);
-    }
-    $('#lblName').text(files.join(', '));
-    $('#file_count').val(files.length);
-  });
 
-  $.fn.get_application_type = function(department_id,input_purpose,selected){
-    $(input_purpose).empty().prop('disabled',true)
-    $(input_purpose).append($('<option>', {
-              value: "",
-              text: "Loading Content..."
-          }));
-    $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
-      $(input_purpose).empty().prop('disabled',true)
-      $.each(result.data,function(index,value){
-        // console.log(index+value)
-        $(input_purpose).append($('<option>', {
-            value: index,
-            text: value
-        }));
-      })
-
-      $(input_purpose).prop('disabled',false)
-      $(input_purpose).prepend($('<option>',{value : "",text : "--Choose Application Type--"}))
-
-      if(selected.length > 0){
-        $(input_purpose).val($(input_purpose+" option[value="+selected+"]").val());
-
-      }else{
-        $(input_purpose).val($(input_purpose+" option:first").val());
-        //$(this).get_extra(selected)
-      }
-    });
-        // return result;
-  };
-  // $.fn.get_requirements = function(application_id){
-  //   $("#requirements tr").remove(); 
-  //   $.getJSON( "{{route('web.get_requirements')}}?type_id="+application_id, function( response ) {
-  //       $.each(response.data,function(index,value){
-  //           $("#requirements").find('tbody').append("<tr><td>" + value + "</td></tr>");
-  //       })
-  //       $("#requirements_container").show();
-  //   });
-  //       // return result;
-  // };
-
-  $("#requirements_container").hide();
   $("#input_regional_id").on("change",function(){
     var _text = $("#input_regional_id option:selected").text();
     $('#input_regional_name').val(_text);
-  })
-  $("#input_department_id").on("change",function(){
-    var department_id = $(this).val()
-    var _text = $("#input_department_id option:selected").text();
-    $(this).get_application_type(department_id,"#input_application_id","")
-    $('#input_department_name').val(_text);
   })
 
   $('#input_application_id').change(function() {
@@ -258,9 +200,6 @@
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
   }
 
-  @if(old('application_id'))
-    $(this).get_application_type("{{old('department_id')}}","#input_application_id","{{old('application_id')}}")
-  @endif
   $('#input_requirements_id').select2({placeholder: "Select Requirements"});
 </script>
 

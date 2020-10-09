@@ -67,6 +67,20 @@
           @endif
         </div>
         <div class="form-group">
+          <label for="input_title">Bureau/Office</label>
+          {!!Form::select("department_id", $department, old('department_id',$processor->department_id), ['id' => "input_department_id", 'class' => "custom-select".($errors->first('department_id') ? ' is-invalid' : NULL)])!!}
+          @if($errors->first('department_id'))
+          <p class="mt-1 text-danger">{!!$errors->first('department_id')!!}</p>
+          @endif
+        </div>
+        <div class="form-group" id="application_container">
+          <label for="input_suffix">Application Type</label>
+          {!!Form::select("application_id[]",$applications, old('application_id',$processor->application_id), ['id' => "input_application_id", 'multiple' => 'multiple','class' => "custom-select select2 mb-2 mr-sm-2 ".($errors->first('application_id') ? 'is-invalid' : NULL)])!!}
+          @if($errors->first('application_id'))
+          <p class="mt-1 text-danger">{!!$errors->first('application_id')!!}</p>
+          @endif
+        </div>
+        <div class="form-group">
           <label for="input_title">Status</label>
           {!!Form::select("status", $status_type, old('status',$processor->status), ['id' => "input_status", 'class' => "custom-select".($errors->first('status') ? ' is-invalid' : NULL)])!!}
           @if($errors->first('status'))
@@ -102,14 +116,6 @@
             @endif
           </div>
         </div>
-        
-        <div class="form-group">
-          <label for="input_title">Department</label>
-           {!!Form::select("peza_unit", $department, old('peza_unit',$processor->peza_unit), ['id' => "input_peza_unit", 'class' => "custom-select".($errors->first('peza_unit') ? ' is-invalid' : NULL)])!!}
-          @if($errors->first('peza_unit'))
-          <p class="mt-1 text-danger">{!!$errors->first('peza_unit')!!}</p>
-          @endif
-        </div>
 
         <button type="submit" class="btn btn-primary mr-2">Update Record</button>
         <a href="{{route('system.processor.index')}}" class="btn btn-light">Return to Processors list</a>
@@ -119,15 +125,71 @@
 </div>
 @stop
 @section('page-styles')
+<link rel="stylesheet" type="text/css" href="{{asset('system/vendors/select2/select2.min.css')}}"/>
 <style type="text/css">
-  .is-invalid{
+   .is-invalid{
     border: solid 2px;
   }
-  .current-image{
-    width:200px;
-    display: block;
-    border-radius: 50%;
-    object-fit: cover;
+  .select2-container--default .select2-selection--multiple .select2-selection__choice{
+    font-size: 18px;
   }
+  span.select2.select2-container{
+    width: 100% !important;
+  }
+
 </style>
+@endsection
+@section('page-scripts')
+<script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
+<script type="text/javascript">
+  $.fn.get_application_type = function(department_id,input_application_id,selected){
+    $(input_application_id).empty().prop('disabled',true)
+    $(input_application_id).append($('<option>', {
+              value: "",
+              text: "Loading Content..."
+          }));
+    $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
+      $(input_application_id).empty().prop('disabled',true)
+      $.each(result.data,function(index,value){
+        $(input_application_id).append($('<option>', {
+          value: index,
+          text: value
+        }));
+      })
+      
+      $(input_application_id).prop('disabled',false)
+
+    });
+        // return result;
+  };
+
+  $("#input_department_id").on("change",function(){
+    var department_id = $(this).val()
+    var _text = $("#input_department_id option:selected").text();
+    $(this).get_application_type(department_id,"#input_application_id","")
+    $('#input_department_name').val(_text);
+    if (department_id == "office_head") {
+      $("#application_container").hide();
+    }
+  })
+
+  $("#input_type").on("change",function(){
+    var type = $(this).val()
+    if (type == "office_head" || type == "admin") {
+      $("#application_container").hide();
+    }else{
+      $("#application_container").show();
+    }
+
+  }).change();
+  
+  $('#input_application_id').select2({placeholder: "Select Requirements"});
+  $('#input_application_id').prop('disabled',true)
+
+
+  @if(old('application_id') || $processor->application_id)
+    $('#input_application_id').prop('disabled',false)
+  @endif
+</script>
+
 @endsection

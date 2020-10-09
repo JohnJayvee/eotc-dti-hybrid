@@ -50,6 +50,11 @@ Route::group(['as' => "auth."], function(){
 			Route::post('password',['uses' => "ProfileController@update_password"]);
 		});
 
+		Route::group(['as' => "report.",'prefix' => "report"], function(){
+			Route::get('/',['as' => "index",'uses' => "ReportCOntroller@index"]);
+			
+		});
+
 		Route::group(['as' => "department.",'prefix' => "department"], function(){
 			Route::get('/',['as' => "index",'uses' => "DepartmentController@index"]);
 			Route::get('create',['as' => "create",'uses' => "DepartmentController@create"]);

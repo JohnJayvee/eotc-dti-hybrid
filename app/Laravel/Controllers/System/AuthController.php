@@ -15,6 +15,7 @@ use App\Laravel\Models\User;
  */
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\System\AdminRequest;
+use App\Laravel\Requests\System\ActivationRequest;
 use App\Laravel\Requests\System\SetupPasswordRequest;
 
 
@@ -113,10 +114,11 @@ class AuthController extends Controller{
 		$this->data['page_title'] .=  " :: activate";
 		return view('system.auth.activate',$this->data);
 	}
-	public function activate_account(PageRequest $request){
+	public function activate_account(ActivationRequest $request){
 		$otp = $request->get('otp');
 		$reference_id = $request->get('reference_id');
 
+		
 		$has_account = User::where('reference_id',$reference_id)->where('otp',$otp)->first();
 		if ($otp) {
 			if ($has_account) {

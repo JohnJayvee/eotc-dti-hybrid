@@ -84,7 +84,10 @@
 				<th style="text-align: left;padding: 10px;">Amount:</th>
 				<th style="text-align: right;">{{Str::title($amount)}}</th>
 			</tr>
-			
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Payment Reference Number:</th>
+				<th style="text-align: right;">{{Str::title($ref_num)}}</th>
+			</tr>
 			<tr>
 				<th colspan="2">
 					<p style="float: left;text-align: justify;">Please visit the http://54.251.82.120/ and input the payment reference number to the E-Payment section to pay. This payment reference number will expire at 11:59 PM. You can pay via online(Debit/Credit card, e-wallet, etc.) or over-the-counter (7Eleven, Bayad Center, Cebuana Lhuillier, and to other affiliated partners)</p><br>

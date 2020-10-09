@@ -30,8 +30,8 @@
   </div>
   <div class="col-md-12">
     <h4 class="pb-4">Record Data</h4>
-    <div class="shadow fs-15">
-      <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
+    <div class="shadow fs-15 table-responsive">
+      <table class="table  table-striped table-wrap" style="table-layout: fixed;">
         <thead>
           <tr>
             <th class="text-title p-3" width="35%">Name</th>
