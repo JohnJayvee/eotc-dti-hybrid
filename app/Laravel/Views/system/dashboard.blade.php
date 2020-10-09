@@ -53,12 +53,12 @@
 				<div class="card-body">
 					<h5 class="text-title d-inline-block p-3">Current Average</h5>
 					<div class="row pl-4">
-						<div class="col-md-7">
-							<canvas id='myChart' height="410"></canvas>
+						<div class="col-md-12">
+							<canvas id='myChart' height="210"></canvas>
 						</div>
-						<div class="col-md-5">
+						<!-- <div class="col-md-12">
 							<div id="js-legend" class="chart-legend"></div>
-						</div>	
+						</div>	 -->
 					</div>
 				</div>
 			</div>
@@ -132,13 +132,12 @@
     options: {
     	responsive: true,
        	legend: {
-            display: false,
-            position: 'right',
+            position: 'top',
             labels: {
-                boxWidth: 30,
-                fontColor: '#111',
-                padding: 30
-            },
+                fontColor: "black",
+                boxWidth: 20,
+                padding: 20
+            }
         },
         tooltips: {
             enabled: false
