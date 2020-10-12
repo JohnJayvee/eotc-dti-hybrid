@@ -63,6 +63,13 @@ class Application extends Authenticatable{
         return $this->BelongsTo("App\Laravel\Models\Department",'department_id','id');
     }
 
-
+    public function assignAppTransaction(){
+        return $this->hasMany("App\Laravel\Models\Transaction", 'application_id', 'id');
+    }
+    
+    public function transaction_items() {
+        return $this->hasMany('App\Laravel\Models\Transaction', 'application_id');
+    
+    }
 
 }

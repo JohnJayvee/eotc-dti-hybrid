@@ -18,25 +18,12 @@
   <div class="col-12 ">
     <form>
       <div class="row">
-        
-        <div class="col-md-2 p-2">
-           {!!Form::select("type", $types, $selected_type, ['id' => "input_type", 'class' => "custom-select"])!!}
-        </div>
-        <div class="col-md-3 p-2">
-           {!!Form::select("department_id", $departments, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
-        </div>
-        <div class="col-md-3 p-2">
+        <div class="col-md-4 p-2">
            {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-2 p-2">
-          {!!Form::select("payment_method", $payment_methods, $selected_payment_method, ['id' => "input_payment_method", 'class' => "custom-select"])!!}
-        </div>
-         <div class="col-md-2 p-2">
+         <div class="col-md-4 p-2">
           {!!Form::select("payment_status", $status, $selected_payment_status, ['id' => "input_payment_status", 'class' => "custom-select"])!!}
         </div>
-        
-      </div>
-      <div class="row">
         <div class="col-md-4 p-2">
           <label class="sr-only" for="input_date_range">Date Range</label>
           <div class="input-group input-daterange d-flex align-items-center">
@@ -45,7 +32,9 @@
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly" name="end_date">
           </div>
         </div>
-        <div class="col-md-4 p-2">
+      </div>
+      <div class="row">
+        <div class="col-md-8 p-2">
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
             <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Keyword">
@@ -136,35 +125,7 @@
 @section('page-scripts')
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script type="text/javascript">
-  $.fn.get_application_type = function(department_id,input_purpose,selected){
-        $(input_purpose).empty().prop('disabled',true)
-        $(input_purpose).append($('<option>', {
-                  value: "",
-                  text: "Loading Content..."
-              }));
-        $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
-            $(input_purpose).empty().prop('disabled',true)
-            $.each(result.data,function(index,value){
-              // console.log(index+value)
-              $(input_purpose).append($('<option>', {
-                  value: index,
-                  text: value
-              }));
-            })
 
-            $(input_purpose).prop('disabled',false)
-            $(input_purpose).prepend($('<option>',{value : "",text : "--Choose Application Type--"}))
-
-            if(selected.length > 0){
-              $(input_purpose).val($(input_purpose+" option[value="+selected+"]").val());
-
-            }else{
-              $(input_purpose).val($(input_purpose+" option:first").val());
-              //$(this).get_extra(selected)
-            }
-        });
-        // return result;
-    };
 
   $(function(){
     $('.input-daterange').datepicker({
@@ -175,14 +136,7 @@
       var btn = $(this);
       $("#btn-confirm-delete").attr({"href" : btn.data('url')});
     });
-
-    $("#input_department_id").on("change",function(){
-      var department_id = $(this).val()
-      var _text = $("#input_department_id option:selected").text();
-      $(this).get_application_type(department_id,"#input_application_id","")
-      $('#input_department_name').val(_text);
-    })
-
+    
 
   })
 </script>

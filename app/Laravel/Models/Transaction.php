@@ -82,6 +82,7 @@ class Transaction extends Model{
         return Str::title("{$this->fname} {$this->lname} ");
     }
     
+  
    
 
 }

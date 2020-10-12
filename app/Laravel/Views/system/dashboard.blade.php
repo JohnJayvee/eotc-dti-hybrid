@@ -39,9 +39,10 @@
 	      </div>
 	    </div>
 	</div>
+	
 	<div class="row pt-2">
 		<div class="col-md-6 p-2">
-			<div class="card" style="border: none;border-radius: 10px;">
+			<div class="card h-100" style="border: none;border-radius: 10px;">
 				<div class="card-body">
 					<h5 class="text-title d-inline-block p-3">Monthly Summary</h5>
 					<div id="bar-example" ></div>
@@ -49,22 +50,49 @@
 			</div>
 		</div>
 		<div class="col-md-6 p-2">
-			<div class="card" style="border: none;border-radius: 10px;">
+			<div class="card h-100" style="border: none;border-radius: 10px;">
 				<div class="card-body">
 					<h5 class="text-title d-inline-block p-3">Current Average</h5>
-					<div class="row pl-4">
+					<div class="row">
 						<div class="col-md-12">
-							<canvas id='myChart' ></canvas>
+							<canvas id='myChart' height="180"></canvas>
 						</div>
-						<!-- <div class="col-md-12">
+						<div class="col-md-12">
 							<div id="js-legend" class="chart-legend"></div>
-						</div>	 -->
+						</div>	
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+	@if(Auth::user()->type != "processor")
+	<div class="row">
+		<div class="col-md-6">
+			<div class="card h-100" style="border: none;border-radius: 10px;">
+				<div class="card-body">
+					<table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
+						<thead>
+							<tr>
+								<th width="25%" class="text-title p-3">Application Name</th>
+								<th width="25%" class="text-title p-3">Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach($amount_per_application as $index)
+							<tr>
+								<td>{{$index->name}}</td>
+								<td>PHP {{Helper::money_format($index->amount_sum ?: "0.00")}}</td>
+							</tr>
+							@endforeach
+						</tbody>
+					</table>
+					<h5 class="p-2">Total Amount Collected : PHP {{Helper::money_format($total_amount->total ?: "0.00")}}</h5>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	@endif
 </div>
 @stop 
 
@@ -88,8 +116,13 @@
 	padding: 5px;
 }
 .chart-legend{
-	  padding-top: 7em;
+	  padding-top: 3em;
 }
+.chart-legend li{
+	display: inline;
+}
+
+
 </style>
 @stop
 
@@ -121,10 +154,10 @@
 	var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: {!! $department_data !!},
+        labels: {!! $label_data !!},
         datasets: [{
             data: {!! $chart_data !!},
-            backgroundColor: ['#2F9A2A', '#D63231', '#F2B33D'],
+            backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"],
             borderWidth: 0.5 ,
             borderColor: '#ddd'
         }]
@@ -132,12 +165,13 @@
     options: {
     	responsive: true,
        	legend: {
+            display: false,
             position: 'right',
             labels: {
-                fontColor: "black",
-                boxWidth: 20,
-                padding: 20
-            }
+                boxWidth: 30,
+                fontColor: '#111',
+                padding: 30
+            },
         },
         tooltips: {
             enabled: false
