@@ -51,7 +51,7 @@ Route::group(['as' => "auth."], function(){
 		});
 
 		Route::group(['as' => "report.",'prefix' => "report"], function(){
-			Route::get('/',['as' => "index",'uses' => "ReportCOntroller@index"]);
+			Route::get('/',['as' => "index",'uses' => "ReportController@index"]);
 			
 		});
 
