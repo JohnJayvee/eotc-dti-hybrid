@@ -18,7 +18,6 @@
   <div class="col-12 ">
     <form>
       <div class="row">
-        
         <div class="col-md-2 p-2">
            {!!Form::select("type", $types, $selected_type, ['id' => "input_type", 'class' => "custom-select"])!!}
         </div>

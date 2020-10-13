@@ -62,7 +62,8 @@ Route::group(['as' => "auth."], function(){
 			Route::get('edit/{id?}',['as' => "edit",'uses' => "DepartmentController@edit",'middleware' => "system.exist:department"]);
 			Route::post('edit/{id?}',['uses' => "DepartmentController@update",'middleware' => "system.exist:department"]);
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "DepartmentController@destroy",'middleware' => "system.exist:department"]);
-			
+			Route::get('upload',['as' => "upload",'uses' => "DepartmentController@upload"]);
+			Route::post('upload',['uses' => "DepartmentController@upload_department"]);
 		});
 
 		Route::group(['as' => "application_requirements.",'prefix' => "application-requirements"], function(){
@@ -72,6 +73,8 @@ Route::group(['as' => "auth."], function(){
 			Route::get('edit/{id?}',['as' => "edit",'uses' => "ApplicationRequirementController@edit",'middleware' => "system.exist:requirements"]);
 			Route::post('edit/{id?}',['uses' => "ApplicationRequirementController@update",'middleware' => "system.exist:requirements"]);
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "ApplicationRequirementController@destroy",'middleware' => "system.exist:requirements"]);
+			Route::get('upload',['as' => "upload",'uses' => "ApplicationRequirementController@upload"]);
+			Route::post('upload',['uses' => "ApplicationRequirementController@upload_department"]);
 			
 		});
 

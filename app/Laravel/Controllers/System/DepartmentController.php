@@ -13,7 +13,10 @@ use App\Laravel\Requests\System\DepartmentRequest;
 use App\Laravel\Models\Department;
 /* App Classes
  */
-use Carbon,Auth,DB,Str;
+use App\Laravel\Models\Imports\DepartmentImport;
+
+
+use Carbon,Auth,DB,Str,Helper,Excel;
 
 class DepartmentController extends Controller
 {
@@ -51,7 +54,7 @@ class DepartmentController extends Controller
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
+			return response()->json(['success'=>'errorList','message'=> $e->errors()]);
 
 		}
 	}
@@ -98,4 +101,36 @@ class DepartmentController extends Controller
 			return redirect()->back();
 		}
 	}
+
+	public function  upload(PageRequest $request){
+		$this->data['page_title'] .= " - Bulk Upload Department";
+		return view('system.department.upload-department',$this->data);
+	}
+
+	public function upload_department(PageRequest $request) 
+	{	
+		try {
+		    Excel::import(new DepartmentImport, request()->file('file'));
+
+		    session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Importing data was successful.");
+			return redirect()->route('system.department.index');
+		} catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+		     $failures = $e->failures();
+		     
+		     foreach ($failures as $failure) {
+		         $failure->row(); // row that went wrong
+		         $failure->attribute(); // either heading key (if using heading row concern) or column index
+		         $failure->errors(); // Actual error messages from Laravel validator
+		         $failure->values(); // The values of the row that has failed.
+		     }
+		    dd($failures);
+		    session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Something went wrong.");
+			return redirect()->route('system.department.index');
+		}
+	    
+	}
+
+	
 }

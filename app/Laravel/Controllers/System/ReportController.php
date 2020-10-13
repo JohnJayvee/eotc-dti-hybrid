@@ -63,8 +63,8 @@ class ReportController extends Controller
 
 			$this->data['transactions'] = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
-					return $query->whereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-								->orWhereRaw("LOWER(code)  LIKE  '{$this->data['keyword']}%'");
+					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -105,7 +105,6 @@ class ReportController extends Controller
 
 			return view('system.report.index',$this->data);
 		}elseif ($auth->type == "office_head") {
-
 			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$auth->department_id)->pluck('name', 'id')->toArray();
 
 			$first_record = Transaction::orderBy('created_at','ASC')->first();
@@ -119,17 +118,23 @@ class ReportController extends Controller
 
 			$this->data['selected_application_id'] = $request->get('application_id');
 			$this->data['selected_payment_status'] = $request->get('payment_status');
+			$this->data['selected_payment_method'] = $request->get('payment_method');
 			$this->data['keyword'] = Str::lower($request->get('keyword'));
 
 			$this->data['transactions'] = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
-					return $query->whereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-								->orWhereRaw("LOWER(code)  LIKE  '{$this->data['keyword']}%'");
+					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_application_id']) > 0){
 						return $query->where('application_id',$this->data['selected_application_id']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_payment_method']) > 0){
+						return $query->where('payment_method',$this->data['selected_payment_method']);
 					}
 				})
 				->where(function($query){

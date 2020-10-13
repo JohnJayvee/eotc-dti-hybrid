@@ -48,7 +48,7 @@ class CustomerTransactionController extends Controller
 	public function store(TransactionRequest $request){
 
 		$temp_id = time();
-		$auth_id = Auth::guard('customer')->user()->id;
+		$auth = Auth::guard('customer')->user();
 		
 		
 		DB::beginTransaction();
@@ -59,7 +59,10 @@ class CustomerTransactionController extends Controller
 			$new_transaction->contact_number = $request->get('contact_number');
 			// $new_transaction->regional_id = $request->get('regional_id');
 			// $new_transaction->regional_name = $request->get('regional_name');
-			$new_transaction->customer_id = $auth_id;
+			$new_transaction->customer_id = $auth->id;
+			$new_transaction->fname = $auth->fname;
+			$new_transaction->lname = $auth->lname;
+			$new_transaction->mname = $auth->mname;
 			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');

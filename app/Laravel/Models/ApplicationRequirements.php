@@ -36,7 +36,7 @@ class ApplicationRequirements extends Model{
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['name','is_required'];
 
 
     /**

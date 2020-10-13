@@ -31,6 +31,7 @@
   <div class="col-md-12">
     <h4 class="pb-4">Record Data
       <span class="float-right">
+        <a href="{{route('system.department.upload')}}" class="btn btn-sm btn-primary">Bulk Upload</a>
         <a href="{{route('system.department.create')}}" class="btn btn-sm btn-primary">Add New</a>
       </span>
     </h4>

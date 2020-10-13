@@ -249,8 +249,20 @@ class ProcessorController extends Controller
 
 	public function  list(){
 		$this->data['page_title'] .= " List of Processor";
-		$this->data['processors']  = User::where('type',"processor")->orderBy('created_at',"DESC")->get();
-
+		$auth = Auth::user();
+		switch ($auth->type) {
+			case 'super_user':
+				$this->data['processors']  = User::where('type',"processor")->orderBy('created_at',"DESC")->get();
+				break;
+			case 'admin':
+				$this->data['processors']  = User::where('type',"processor")->orderBy('created_at',"DESC")->get();
+				break;
+			case 'office_head':
+				$this->data['processors']  = User::where('department_id',$auth->department_id)->where('type',"processor")->orderBy('created_at',"DESC")->get();
+				break;
+			default:
+				break;
+		}
 
 		return view('system.processor.list',$this->data);
 	}
