@@ -37,7 +37,7 @@ class TransactionController extends Controller{
 
 		if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {
 			$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
-		}elseif (Auth::user()->type == "office_head") {
+		}elseif (Auth::user()->type == "office_head" || Auth::user()->type == "processor") {
 			$this->data['department'] = ['' => "Choose Department"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
 		}
 
