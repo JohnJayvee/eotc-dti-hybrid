@@ -23,7 +23,7 @@
           @if(Auth::user()->type == "super_user")
           {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
           @elseif(Auth::user()->type == "office_head" || Auth::user()->type == "processor")
-          <input type="text" class="form-control mb-2 mr-sm-2" value="{{Auth::user()->department->name}}" readonly>
+          <input type="text" class="form-control mb-2 mr-sm-2" value="{{Auth::user()->department ? Auth::user()->department->name : "N/A"}}" readonly>
           <input type="hidden" name="selected_department_id" value="{{$selected_department_id}}">
           @endif
         </div>
