@@ -20,7 +20,12 @@
       <div class="row pb-2">
         <div class="col-md-4">
           <label>Bureau/Office</label>
+          @if(Auth::user()->type == "super_user")
           {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
+          @elseif(Auth::user()->type == "office_head" || Auth::user()->type == "processor")
+          <input type="text" class="form-control mb-2 mr-sm-2" value="{{Auth::user()->department->name}}" readonly>
+          <input type="hidden" name="selected_department_id" value="{{$selected_department_id}}">
+          @endif
         </div>
         <div class="col-md-4">
           <label>Application Type</label>
@@ -59,7 +64,7 @@
         <thead>
           <tr class="text-center ">
             <th class="text-title p-3" width="15%">Transaction Date</th>
-            <th class="text-title p-3" width="15%">Submitted By</th>
+            <th class="text-title p-3" width="15%">Submitted By/Company Name</th>
             <th class="text-title p-3" width="15%">Bureau/Office</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
@@ -72,7 +77,7 @@
           @forelse($transactions as $transaction)
           <tr class="text-center">
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
-            <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}</td>
+            <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}/<br>{{str::title($transaction->company_name)}}</td>
             <td>{{ $transaction->department->name}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>

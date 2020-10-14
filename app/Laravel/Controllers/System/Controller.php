@@ -41,7 +41,7 @@ class Controller extends BaseController{
 
 		if($auth){
 		$this->data['counter'] = [
-			'pending' => Transaction::where('status','PENDING')->count(),
+			'pending' => Transaction::where('status','PENDING')->where('is_resent',0)->count(),
 			'approved' => Transaction::where('status','APPROVED')->count(),
 			'declined' => Transaction::where('status','DECLINED')->count(),
 			'resent' => Transaction::where('status',"PENDING")->where('is_resent',1)->count()

@@ -7,6 +7,7 @@ namespace App\Laravel\Controllers\System;
  */
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\System\DepartmentRequest;
+use App\Laravel\Requests\System\UploadRequest;
 /*
  * Models
  */
@@ -107,7 +108,7 @@ class DepartmentController extends Controller
 		return view('system.department.upload-department',$this->data);
 	}
 
-	public function upload_department(PageRequest $request) 
+	public function upload_department(UploadRequest $request) 
 	{	
 		try {
 		    Excel::import(new DepartmentImport, request()->file('file'));

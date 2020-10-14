@@ -37,8 +37,8 @@
           </div>
           <div class="col-md-6">
             <p class="text-title fw-500">Deparatment/Agency: <span class="text-black">{{$transaction->department ? Str::title($transaction->department->name) : "N/A"}}</span></p>
+            <p class="text-title fw-500">Company Name: <span class="text-black">{{str::title($transaction->company_name)}}</span></p>
             <p class="text-title fw-500">Contact Number: <span class="text-black">+63{{$transaction->contact_number}}</span></p>
-          
             @if($transaction->status == "DECLINED")
               <p class="text-title fw-500">Remarks: <span class="text-black">{{$transaction->remarks}}</span></p>
             @endif

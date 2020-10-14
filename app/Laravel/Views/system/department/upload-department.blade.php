@@ -22,7 +22,7 @@
               <label>File</label>
               <input type="file" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" name="file" value="{{old('file')}}" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
               @if($errors->first('file'))
-              <span class="help-block">{{$errors->first('file')}}</span>
+              <span class="help-block" style="color: red">{{$errors->first('file')}}</span>
               @endif
             </div>
 

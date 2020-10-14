@@ -35,7 +35,12 @@ class TransactionController extends Controller{
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
 
-		$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
+		if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {
+			$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
+		}elseif (Auth::user()->type == "office_head") {
+			$this->data['department'] = ['' => "Choose Department"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
+		}
+
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
@@ -53,6 +58,8 @@ class TransactionController extends Controller{
 	public function pending (PageRequest $request){
 		$this->data['page_title'] = "Pending Transactions";
 
+		$auth = Auth::user();
+		$this->data['auth'] = Auth::user();
 
 		$first_record = Transaction::orderBy('created_at','ASC')->first();
 		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
@@ -63,29 +70,51 @@ class TransactionController extends Controller{
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
 
-		$this->data['selected_department_id'] = $request->get('department_id');
+		$this->data['selected_department_id'] = $auth->type == "office_head" || $auth->type == "processor" ? $auth->department_id : $request->get('department_id');
+
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['selected_application_ammount_status'] = $request->get('application_ammount_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
-		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
+		if ($auth->type == "office_head") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$auth->department_id)->pluck('name', 'id')->toArray();
+		}elseif ($auth->type == "processor") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::whereIn('id',explode(",", $auth->application_id))->pluck('name', 'id')->toArray();
+		}else{
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
+		}
 
-		$this->data['transactions'] = Transaction::where('status',"PENDING")->where(function($query){
+
+		$this->data['transactions'] = Transaction::where('status',"PENDING")->where('is_resent',0)->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
 							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_department_id']) > 0){
-						return $query->where('department_id',$this->data['selected_department_id']);
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+						return $query->where('department_id',$this->data['auth']->department_id);
+					}else{
+						if(strlen($this->data['selected_department_id']) > 0){
+							return $query->where('department_id',$this->data['selected_department_id']);
+						}
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_application_id']) > 0){
-						return $query->where('application_id',$this->data['selected_application_id']);
+					if ($this->data['auth']->type == "processor") {
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}else{
+							return $query->whereIn('application_id',explode(",", $this->data['auth']->application_id));
+						}
+						
+					}else{
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}
 					}
+					
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
@@ -105,9 +134,8 @@ class TransactionController extends Controller{
 	}
 	public function approved (PageRequest $request){
 		$this->data['page_title'] = "Approved Transactions";
-
-
-		
+		$auth = Auth::user();
+		$this->data['auth'] = Auth::user();
 
 		$first_record = Transaction::orderBy('created_at','ASC')->first();
 		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
@@ -118,12 +146,19 @@ class TransactionController extends Controller{
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
 
-		$this->data['selected_department_id'] = $request->get('department_id');
+		$this->data['selected_department_id'] = $auth->type == "office_head" || $auth->type == "processor" ? $auth->department_id : $request->get('department_id');
+
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_application_status'] = $request->get('application_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
-		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
+		if ($auth->type == "office_head") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$auth->department_id)->pluck('name', 'id')->toArray();
+		}elseif ($auth->type == "processor") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::whereIn('id',explode(",", $auth->application_id))->pluck('name', 'id')->toArray();
+		}else{
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
+		}
 
 		$this->data['transactions'] = Transaction::where('status',"APPROVED")->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
@@ -132,13 +167,26 @@ class TransactionController extends Controller{
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_department_id']) > 0){
-						return $query->where('department_id',$this->data['selected_department_id']);
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+						return $query->where('department_id',$this->data['auth']->department_id);
+					}else{
+						if(strlen($this->data['selected_department_id']) > 0){
+							return $query->where('department_id',$this->data['selected_department_id']);
+						}
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_application_id']) > 0){
-						return $query->where('application_id',$this->data['selected_application_id']);
+					if ($this->data['auth']->type == "processor") {
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}else{
+							return $query->whereIn('application_id',explode(",", $this->data['auth']->application_id));
+						}
+						
+					}else{
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}
 					}
 				})
 				
@@ -156,7 +204,9 @@ class TransactionController extends Controller{
 	}
 	public function declined (PageRequest $request){
 		$this->data['page_title'] = "Declined Transactions";
-		
+		$auth = Auth::user();
+		$this->data['auth'] = Auth::user();
+
 		$first_record = Transaction::orderBy('created_at','ASC')->first();
 		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
 
@@ -166,27 +216,48 @@ class TransactionController extends Controller{
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
 
-		$this->data['selected_department_id'] = $request->get('department_id');
+		$this->data['selected_department_id'] = $auth->type == "office_head" || $auth->type == "processor" ? $auth->department_id : $request->get('department_id');
+
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
-		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
-
-		$this->data['transactions'] = Transaction::where('status',"DECLINED")->where(function($query){
+		if ($auth->type == "office_head") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$auth->department_id)->pluck('name', 'id')->toArray();
+		}elseif ($auth->type == "processor") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::whereIn('id',explode(",", $auth->application_id))->pluck('name', 'id')->toArray();
+		}else{
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
+		}
+		
+		$this->data['transactions'] = Transaction::where('status',"DECLINED")
+				->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
 							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_department_id']) > 0){
-						return $query->where('department_id',$this->data['selected_department_id']);
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+						return $query->where('department_id',$this->data['auth']->department_id);
+					}else{
+						if(strlen($this->data['selected_department_id']) > 0){
+							return $query->where('department_id',$this->data['selected_department_id']);
+						}
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_application_id']) > 0){
-						return $query->where('application_id',$this->data['selected_application_id']);
+					if ($this->data['auth']->type == "processor") {
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}else{
+							return $query->whereIn('application_id',explode(",", $this->data['auth']->application_id));
+						}
+						
+					}else{
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}
 					}
 				})
 				
@@ -204,6 +275,9 @@ class TransactionController extends Controller{
 	public function resent (PageRequest $request){
 		$this->data['page_title'] = "Resent Transactions";
 		
+		$auth = Auth::user();
+		$this->data['auth'] = Auth::user();
+
 		$first_record = Transaction::orderBy('created_at','ASC')->first();
 		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
 
@@ -213,12 +287,19 @@ class TransactionController extends Controller{
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
 
-		$this->data['selected_department_id'] = $request->get('department_id');
+		$this->data['selected_department_id'] = $auth->type == "office_head" || $auth->type == "processor" ? $auth->department_id : $request->get('department_id');
+
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
-		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
+		if ($auth->type == "office_head") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$auth->department_id)->pluck('name', 'id')->toArray();
+		}elseif ($auth->type == "processor") {
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::whereIn('id',explode(",", $auth->application_id))->pluck('name', 'id')->toArray();
+		}else{
+			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->pluck('name', 'id')->toArray();
+		}
 
 		$this->data['transactions'] = Transaction::where('is_resent',1)->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
@@ -227,13 +308,26 @@ class TransactionController extends Controller{
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_department_id']) > 0){
-						return $query->where('department_id',$this->data['selected_department_id']);
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+						return $query->where('department_id',$this->data['auth']->department_id);
+					}else{
+						if(strlen($this->data['selected_department_id']) > 0){
+							return $query->where('department_id',$this->data['selected_department_id']);
+						}
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_application_id']) > 0){
-						return $query->where('application_id',$this->data['selected_application_id']);
+					if ($this->data['auth']->type == "processor") {
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}else{
+							return $query->whereIn('application_id',explode(",", $this->data['auth']->application_id));
+						}
+						
+					}else{
+						if(strlen($this->data['selected_application_id']) > 0){
+							return $query->where('application_id',$this->data['selected_application_id']);
+						}
 					}
 				})
 				->where(function($query){

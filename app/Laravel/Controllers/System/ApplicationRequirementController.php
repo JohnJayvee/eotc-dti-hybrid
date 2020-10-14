@@ -7,6 +7,7 @@ namespace App\Laravel\Controllers\System;
  */
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\System\ApplicationRequirementsRequest;
+use App\Laravel\Requests\System\UploadRequest;
 /*
  * Models
  */
@@ -106,7 +107,7 @@ class ApplicationRequirementController extends Controller
 		return view('system.application-requirements.upload',$this->data);
 	}
 
-	public function upload_department(PageRequest $request) 
+	public function upload_department(UploadRequest $request) 
 	{	
 		try {
 		    Excel::import(new ApplicationRequirementsImport, request()->file('file'));
