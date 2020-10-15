@@ -40,6 +40,13 @@
           <p class="mt-1 text-danger">{!!$errors->first('processing_fee')!!}</p>
           @endif
         </div>
+        <div class="form-group">
+          <label for="input_title">Partial Amount<code style="font-size: 12px;"><i>Note: Input 0 If there is no partial amount</i></code></label>
+          <input type="text" class="form-control {{$errors->first('partial_amount') ? 'is-invalid' : NULL}}" id="input_title" name="partial_amount" placeholder="Partial Amount" value="{{old('partial_amount')}}">
+          @if($errors->first('partial_amount'))
+          <p class="mt-1 text-danger">{!!$errors->first('partial_amount')!!}</p>
+          @endif
+        </div>
         <!-- <div class="form-group">
           <label for="input_title">Processing Days</label>
           <input type="text" class="form-control {{$errors->first('processing_days') ? 'is-invalid' : NULL}}" id="input_processing_days" name="processing_days" placeholder="Processing Days" value="{{old('processing_days')}}">

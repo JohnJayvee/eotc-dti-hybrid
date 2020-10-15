@@ -53,6 +53,7 @@
         <div class="col-md-4 p-2">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.report.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
+          <a href="{{route('system.report.export')}}?keyword={{$keyword}}&start_date={{$start_date}}&end_date={{$end_date}}&type={{$selected_type}}&department_id={{$selected_department_id}}&application_id={{$selected_application_id}}&payment_method={{$selected_payment_method}}&payment_status={{$selected_payment_status}}" class="btn btn-primary btn-sm p-2 float-right">Export Excel</a>
         </div>
       </div>
     </form>
@@ -78,7 +79,7 @@
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
             <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
-            <td>{{ $transaction->department->name}}</td>
+            <td>{{ $transaction->department ? $transaction->department->name : "N/A"}}</td>
             <td>
               <div>{{Helper::money_format($transaction->processing_fee) ?: 0 }}</div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::upper($transaction->payment_status)}}</span></small></div>
