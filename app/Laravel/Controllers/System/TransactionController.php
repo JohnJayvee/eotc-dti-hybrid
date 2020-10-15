@@ -470,7 +470,7 @@ class TransactionController extends Controller{
 			}
 			if ($type == "DECLINED") {
 				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->where('status',"pending")->update(['status' => "DECLINED"]);
-				/*$insert[] = [
+				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
 	                'ref_num' => $transaction->document_reference_code,
 	                'email' => $transaction->email,
@@ -486,7 +486,7 @@ class TransactionController extends Controller{
 			    Event::dispatch('send-sms-declined', $notification_data);
 
 			    $notification_data_email = new SendDeclinedEmailReference($insert);
-			    Event::dispatch('send-email-declined', $notification_data_email);*/
+			    Event::dispatch('send-email-declined', $notification_data_email);
 			}
 			
 
