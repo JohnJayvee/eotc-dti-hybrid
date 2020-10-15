@@ -117,18 +117,18 @@
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Partial Payment</label>
+                                <label for="exampleInputEmail1" class="text-form pb-2">Partial Payment <code>Allowed partial amount is PHP <input type="text"  id="input_partial_label" value="{{old('partial_label')}}" name="partial_label" style="width: 70px;border:none;" readonly></code></label>
                                 <div class="input-group mb-3">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text text-title fw-600">PHP <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                   </div>
-                                  <input type="number" class="form-control br-left-white br-right-white {{ $errors->first('partial_payment') ? 'is-invalid': NULL  }}" placeholder="Partial Payment Amount" name="partial_payment" id="input_partial_payment" value="{{old('partial_payment')}}" >
+                                  <input type="number" class="form-control br-left-white br-right-white {{ $errors->first('partial_amount') ? 'is-invalid': NULL  }}" placeholder="Partial Payment Amount" name="partial_amount" id="input_partial_amount" value="{{old('partial_amount')}}" >
                                   <div class="input-group-append">
                                     <span class="input-group-text text-title fw-600">| <span class="text-gray pl-2 pr-2 pt-1"> .00</span></span>
                                   </div>
                                 </div>
-                                @if($errors->first('partial_payment'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('partial_payment')}}</small>
+                                @if($errors->first('partial_amount'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('partial_amount')}}</small>
                                 @endif
                             </div>
                         </div>
@@ -200,6 +200,9 @@
     .custom-btn:hover{
         background-color: #7093DC !important;
         color: #fff !important;
+    }
+    #input_partial_label:focus{
+         outline:none;
     }
 </style>
 @endsection
@@ -278,14 +281,22 @@
         var amount;
         var _text = $("#input_application_id option:selected").text();
         $.getJSON('/amount?type_id='+this.value, function(result){
-            amount = parseFloat(result.data)
+            amount = parseFloat(result.data[0])
+            if (result.data[1]) {
+                partial = parseFloat(result.data[1])
+            }else{
+                 partial = 0
+            }
+           
             $('#input_processing_fee').val(formatNumber(amount));
+            $('#input_partial_label').val(partial);
         });
         var application_id = $(this).val()
         $(this).get_requirements(application_id,"#input_application_id","")
         
         $('#input_application_name').val(_text);
-    });
+
+    }).change();
     function formatNumber (num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }

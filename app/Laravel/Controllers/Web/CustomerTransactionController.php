@@ -64,6 +64,7 @@ class CustomerTransactionController extends Controller
 			$new_transaction->lname = $auth->lname;
 			$new_transaction->mname = $auth->mname;
 			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
+			$new_transaction->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');
 			$new_transaction->department_id = $request->get('department_id');
@@ -138,10 +139,7 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
-
 		}
-		
-			
 		
 	}
 	public function history(){
@@ -286,7 +284,7 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 
-		$amount = $prefix == 'APP' ? $transaction->amount : Helper::db_amount($transaction->processing_fee);
+		$amount = $prefix == 'APP' ? $transaction->amount - $transaction->partial_amount : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
 
 		$customer = $transaction->customer;
 

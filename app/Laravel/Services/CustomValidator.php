@@ -26,6 +26,21 @@ class CustomValidator extends Validator {
         return TRUE;
             
     }
+    public function validateMinimumAmount($attribute,$value,$parameters){
+
+  
+        if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
+        if(is_array($parameters) AND isset($parameters[0])){ $partial_amount = Request::get($parameters[1]); }
+
+        $application = Application::find($application_id);
+        $amount = $application->partial_amount ?: 0;
+        
+        if ($application->partial_amount > $partial_amount) {
+            return TRUE;
+        }
+        return false;
+            
+    }
     protected function replaceWithLeave($message, $attribute, $rule, $parameters)
     {
         $value = $this->getValue($attribute);

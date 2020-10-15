@@ -13,8 +13,11 @@ class TransactionRequest extends RequestManager{
 			'full_name' => "required",
 			'company_name' => "required",
 			'application_id' => "required",
+			'email' => "required",
+			'contact_number' => "required",
 			'department_id' => "required",
 			'processing_fee' => "required",
+			'partial_amount' => "required|minimum_amount:application_id,partial_amount",
 			// 'regional_id' => "required",
 			'contact_number' => "required|max:10|phone:PH",
     		'file.*' => 'required|mimes:pdf,docx,doc|max:204800',
@@ -32,6 +35,7 @@ class TransactionRequest extends RequestManager{
 	public function messages(){
 		return [
 			'required'	=> "Field is required.",
+			'partial_amount.minimum_amount'	=> "The amount you entered exceeded the allowed partial amount.",
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
 			'file.required'	=> "No File Uploaded.",
 			'file.*' => 'Only PDF File are allowed.',
