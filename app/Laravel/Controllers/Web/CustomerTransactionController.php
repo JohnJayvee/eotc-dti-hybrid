@@ -64,7 +64,7 @@ class CustomerTransactionController extends Controller
 			$new_transaction->lname = $auth->lname;
 			$new_transaction->mname = $auth->mname;
 			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
-			$new_transaction->partial_amount = Helper::db_amount($request->get('partial_amount'));
+			$new_transaction->partial_amount = Helper::db_amount($request->get('partial_amount') ?: 0);
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');
 			$new_transaction->department_id = $request->get('department_id');

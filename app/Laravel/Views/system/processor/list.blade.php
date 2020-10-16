@@ -36,6 +36,7 @@
           <tr>
             <th class="text-title p-3" width="35%">Name</th>
             <th class="text-title p-3" width="35%"># of Application Processed</th>
+            <th class="text-title p-3" width="35%">Bureau/Office</th>
             <th class="text-title p-3" width="30%">Action</th>
           </tr>
         </thead>
@@ -44,6 +45,7 @@
           <tr>
             <td>{{ $processor->full_name}}</td>
             <td>{{ Helper::processed_count($processor->id)}} as of {{Helper::date_format(Carbon::now())}}</td>
+            <td>{{ Str::title($processor->department ? $processor->department->name : "N/A")}}</td>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">

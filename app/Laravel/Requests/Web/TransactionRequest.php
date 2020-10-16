@@ -9,6 +9,7 @@ class TransactionRequest extends RequestManager{
 
 		$id = $this->route('id')?:0;
 		$file = $this->file('file') ? count($this->file('file')) : 0;
+
 		$rules = [
 			'full_name' => "required",
 			'company_name' => "required",
@@ -17,7 +18,7 @@ class TransactionRequest extends RequestManager{
 			'contact_number' => "required",
 			'department_id' => "required",
 			'processing_fee' => "required",
-			'partial_amount' => "required|minimum_amount:application_id,partial_amount",
+			'partial_amount' => "nullable|minimum_amount:application_id,partial_amount",
 			// 'regional_id' => "required",
 			'contact_number' => "required|max:10|phone:PH",
     		'file.*' => 'required|mimes:pdf,docx,doc|max:204800',
@@ -28,6 +29,8 @@ class TransactionRequest extends RequestManager{
 		if ($this->get('file_count') != 0) {
 			$rules['file_count'] = "required|with_count:file_count,application_id";
 		}
+
+
 		return $rules;
 		
 	}
@@ -35,12 +38,13 @@ class TransactionRequest extends RequestManager{
 	public function messages(){
 		return [
 			'required'	=> "Field is required.",
-			'partial_amount.minimum_amount'	=> "The amount you entered exceeded the allowed partial amount.",
+			'partial_amount.minimum_amount' => ":message",
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
 			'file.required'	=> "No File Uploaded.",
 			'file.*' => 'Only PDF File are allowed.',
 			'file_count.with_count' => 'Please Submit minimum requirements.'
 
 		];
+
 	}
 }

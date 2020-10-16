@@ -8,6 +8,7 @@ use App\Laravel\Models\{User,Citizen,Barangay};
 use App\Laravel\Models\{AccountCode};
 use App\Laravel\Models\{Application,ApplicationRequirements};
 
+
 use Auth, Hash,Str,Carbon,Helper,Request;
 
 class CustomValidator extends Validator {
@@ -26,21 +27,44 @@ class CustomValidator extends Validator {
         return TRUE;
             
     }
-    public function validateMinimumAmount($attribute,$value,$parameters){
+    public function validateMinimumAmount($attribute, $rule, $parameters){
 
-  
+        $value = $this->getValue($attribute);
+     
+
         if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
         if(is_array($parameters) AND isset($parameters[0])){ $partial_amount = Request::get($parameters[1]); }
+       
+
 
         $application = Application::find($application_id);
         $amount = $application->partial_amount ?: 0;
         
-        if ($application->partial_amount > $partial_amount) {
+        if ($amount >= $partial_amount) {
             return TRUE;
         }
-        return false;
-            
+
+        return FALSE;
+        $custom_message = "The amount you entered exceeded the allowed partial amount. allowed Partial Amount is PHP ".$amount;
+        return str_replace(':message', $custom_message, (array)$message);
+        
+        
+       
     }
+
+    protected function replaceMinimumAmount($message,$attribute, $rule, $parameters)
+    {
+     
+        if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
+        if(is_array($parameters) AND isset($parameters[0])){ $partial_amount = Request::get($parameters[1]); }
+       
+        $application = Application::find($application_id);
+        $amount = $application->partial_amount ?: 0;
+        
+        $custom_message = "The amount you entered exceeded the allowed partial amount. allowed Partial Amount is PHP ".$amount;
+        return str_replace(':message', $custom_message, $message);
+    }
+
     protected function replaceWithLeave($message, $attribute, $rule, $parameters)
     {
         $value = $this->getValue($attribute);

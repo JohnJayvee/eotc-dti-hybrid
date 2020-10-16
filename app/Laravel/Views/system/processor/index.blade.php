@@ -42,6 +42,7 @@
             <th width="25%" class="text-title p-3">Last Name</th>
             <th width="25%" class="text-title p-3">First Name</th>
             <th width="10%" class="text-title p-3">Status</th>
+            <th width="10%" class="text-title p-3">Bureau/Office</th>
             <th width="10%" class="text-title p-3">Type</th>
             <th width="10%" class="text-title p-3">Date Created</th>
             <th width="10%" class="text-title p-3">Action</th>
@@ -53,6 +54,7 @@
             <td>{{ $processor->reference_id}}</td>
             <td>{{ Str::title($processor->lname)}}</td>
             <td>{{ Str::title($processor->fname)}}</td>
+            <td>{{ Str::title($processor->department ? $processor->department->name : "N/A")}}</td>
             <td>{{ Str::title($processor->status)}}</td>
             <td>{{ Str::title(str_replace("_"," ",$processor->type))}}</td>
             <td>{{ Helper::date_format($processor->created_at)}}</td>

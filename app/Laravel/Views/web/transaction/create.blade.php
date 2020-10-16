@@ -117,7 +117,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Partial Payment <code>Allowed partial amount is PHP <input type="text"  id="input_partial_label" value="{{old('partial_label')}}" name="partial_label" style="width: 70px;border:none;" readonly></code></label>
+                                <label for="exampleInputEmail1" class="text-form pb-2">Patial Payment<code>(Optional)</code></label>
                                 <div class="input-group mb-3">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text text-title fw-600">PHP <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                     </div>
-                  
+                   
                     <div id="requirements_container">
                         <label class="text-form pb-2">Required Documents</label>
                         <table id="requirements">
@@ -282,14 +282,9 @@
         var _text = $("#input_application_id option:selected").text();
         $.getJSON('/amount?type_id='+this.value, function(result){
             amount = parseFloat(result.data[0])
-            if (result.data[1]) {
-                partial = parseFloat(result.data[1])
-            }else{
-                 partial = 0
-            }
-           
+            
             $('#input_processing_fee').val(formatNumber(amount));
-            $('#input_partial_label').val(partial);
+            
         });
         var application_id = $(this).val()
         $(this).get_requirements(application_id,"#input_application_id","")
