@@ -36,7 +36,6 @@ class CustomValidator extends Validator {
         if(is_array($parameters) AND isset($parameters[0])){ $partial_amount = Request::get($parameters[1]); }
        
 
-
         $application = Application::find($application_id);
         $amount = $application->partial_amount ?: 0;
         
@@ -44,11 +43,7 @@ class CustomValidator extends Validator {
             return TRUE;
         }
 
-        return FALSE;
-        $custom_message = "The amount you entered exceeded the allowed partial amount. allowed Partial Amount is PHP ".$amount;
-        return str_replace(':message', $custom_message, (array)$message);
-        
-        
+            return FALSE;
        
     }
 
@@ -60,8 +55,11 @@ class CustomValidator extends Validator {
        
         $application = Application::find($application_id);
         $amount = $application->partial_amount ?: 0;
-        
         $custom_message = "The amount you entered exceeded the allowed partial amount. allowed Partial Amount is PHP ".$amount;
+        if ($amount == 0) {
+           $custom_message = "This Application doesn't allowed partial payment";
+        }
+        
         return str_replace(':message', $custom_message, $message);
     }
 
