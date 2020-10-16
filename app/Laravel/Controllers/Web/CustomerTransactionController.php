@@ -52,7 +52,7 @@ class CustomerTransactionController extends Controller
 		
 		
 		DB::beginTransaction();
-		try{
+		
 			$new_transaction = new Transaction;
 			$new_transaction->company_name = $request->get('company_name');
 			$new_transaction->email = $request->get('email');
@@ -134,12 +134,7 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-msg',' Thank you, we have received your application. Our processor in charge will process your application and will inform you of the status');
 			return redirect()->route('web.transaction.history');
 			
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
-		}
+		
 		
 	}
 	public function history(){
