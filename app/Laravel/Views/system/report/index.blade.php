@@ -54,6 +54,7 @@
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.report.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
           <a href="{{route('system.report.export')}}?keyword={{$keyword}}&start_date={{$start_date}}&end_date={{$end_date}}&type={{$selected_type}}&department_id={{$selected_department_id}}&application_id={{$selected_application_id}}&payment_method={{$selected_payment_method}}&payment_status={{$selected_payment_status}}" class="btn btn-primary btn-sm p-2 float-right">Export Excel</a>
+          <a href="{{route('system.report.pdf')}}?keyword={{$keyword}}&start_date={{$start_date}}&end_date={{$end_date}}&type={{$selected_type}}&department_id={{$selected_department_id}}&application_id={{$selected_application_id}}&payment_method={{$selected_payment_method}}&payment_status={{$selected_payment_status}}" class="btn btn-primary btn-sm p-2 float-right mr-2">Export PDF</a>
         </div>
       </div>
     </form>

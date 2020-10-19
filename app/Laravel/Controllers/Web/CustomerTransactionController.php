@@ -284,7 +284,7 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 
-		$amount = $prefix == 'APP' ? $transaction->amount - $transaction->partial_amount : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
+		$amount = $prefix == 'APP' ? $transaction->partial_amount - $transaction->amount : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
 
 		$customer = $transaction->customer;
 
@@ -304,7 +304,6 @@ class CustomerTransactionController extends Controller
 				'return_url' => route('web.confirmation',[$code]),
 				'failed_url' => route('web.digipep.failed',[$code]),
 				'first_name' => $transaction->company_name,
-				
 				'contact_number' => $customer ? $customer->contact_number : $transaction->contact_number,
 				'email' => $customer ? $customer->email : $transaction->email
 			]);  

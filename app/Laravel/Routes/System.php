@@ -53,7 +53,7 @@ Route::group(['as' => "auth."], function(){
 		Route::group(['as' => "report.",'prefix' => "report"], function(){
 			Route::get('/',['as' => "index",'uses' => "ReportController@index"]);
 			Route::get('export',['as' => "export",'uses' => "ReportController@export"]);
-			
+			Route::get('pdf',['as' => "pdf",'uses' => "ReportController@pdf"]);
 		});
 
 		Route::group(['as' => "department.",'prefix' => "department"], function(){

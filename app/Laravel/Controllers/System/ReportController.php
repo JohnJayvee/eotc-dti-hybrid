@@ -12,7 +12,7 @@ use App\Laravel\Models\{Transaction,Department,Application};
 
 /* App Classes
  */
-use Carbon,Auth,DB,Str,Helper,Excel;
+use Carbon,Auth,DB,Str,Helper,Excel,PDF;
 
 class ReportController extends Controller
 {
@@ -161,7 +161,7 @@ class ReportController extends Controller
 		
 	}
 
-	 public function export(PageRequest $request){
+	public function export(PageRequest $request){
 	 	$auth = Auth::user();
 	 	
     	$first_record = Transaction::orderBy('created_at','ASC')->first();
@@ -230,6 +230,80 @@ class ReportController extends Controller
 				->orderBy('created_at',"DESC")->get();
 
         return Excel::download(new ReportTransactionExport($transactions), 'transaction-record'.Carbon::now()->format('Y-m-d').'.xlsx'); 
+    }
+
+    public function pdf (PageRequest $request){
+    	$auth = Auth::user();
+	 	
+    	$first_record = Transaction::orderBy('created_at','ASC')->first();
+		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
+
+		if($first_record){
+			$start_date = $request->get('start_date',$first_record->created_at->format("Y-m-d"));
+		}
+		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
+		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
+
+		$this->data['selected_type'] = $request->get('type');
+		$this->data['selected_department_id'] = $auth->type == "office_head" || $auth->type == "processor" ? $auth->department_id : $request->get('department_id');
+
+		$this->data['selected_application_id'] = $request->get('application_id');
+		$this->data['selected_payment_method'] = $request->get('payment_method');
+		$this->data['selected_payment_status'] = $request->get('payment_status');
+
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+
+		$this->data['resent'] = NULL;
+		if ($request->get('type') == "resent") {
+			$this->data['resent'] = "1";
+		}
+
+        $this->data['transactions'] = Transaction::where(function($query){
+				if(strlen($this->data['keyword']) > 0){
+					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_type']) > 0){
+						return $query->where('status',$this->data['selected_type']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['resent']) > 0){
+						return $query->where('is_resent',$this->data['resent']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_department_id']) > 0){
+						return $query->where('department_id',$this->data['selected_department_id']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_application_id']) > 0){
+						return $query->where('application_id',$this->data['selected_application_id']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_payment_method']) > 0){
+						return $query->where('payment_method',$this->data['selected_payment_method'])
+								->orWhere('application_payment_method',$this->data['selected_payment_method']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_payment_status']) > 0){
+						return $query->where('payment_status',$this->data['selected_payment_status'])
+								->orWhere('application_payment_status',$this->data['selected_payment_status']);
+					}
+				})
+				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
+				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
+				->orderBy('created_at',"DESC")->get();
+
+
+		$pdf = PDF::loadView('pdf.report',$this->data)->setPaper('a4', 'landscape');;
+		return $pdf->download("report.pdf");	
+
     }
 
 }
