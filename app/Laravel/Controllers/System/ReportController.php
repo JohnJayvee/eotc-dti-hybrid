@@ -64,7 +64,7 @@ class ReportController extends Controller
 			$this->data['transactions'] = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -128,7 +128,7 @@ class ReportController extends Controller
 			$this->data['transactions'] = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -190,7 +190,7 @@ class ReportController extends Controller
         $transactions = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -261,7 +261,7 @@ class ReportController extends Controller
         $this->data['transactions'] = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereIn('fname' , $this->data['keyword']);
 					}
 				})
 				->where(function($query){

@@ -76,7 +76,7 @@ class TransactionController extends Controller{
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['selected_application_ammount_status'] = $request->get('application_ammount_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
-
+		
 		if ($auth->type == "office_head") {
 			$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$auth->department_id)->pluck('name', 'id')->toArray();
 		}elseif ($auth->type == "processor") {
@@ -89,7 +89,7 @@ class TransactionController extends Controller{
 		$this->data['transactions'] = Transaction::where('status',"PENDING")->where('is_resent',0)->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -163,7 +163,7 @@ class TransactionController extends Controller{
 		$this->data['transactions'] = Transaction::where('status',"APPROVED")->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -234,7 +234,7 @@ class TransactionController extends Controller{
 				->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -304,7 +304,7 @@ class TransactionController extends Controller{
 		$this->data['transactions'] = Transaction::where('is_resent',1)->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',mname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){

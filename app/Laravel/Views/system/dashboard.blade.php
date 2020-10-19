@@ -52,7 +52,7 @@
 		<div class="col-md-6 p-2">
 			<div class="card h-100" style="border: none;border-radius: 10px;">
 				<div class="card-body">
-					<h5 class="text-title d-inline-block p-3">Current Average</h5>
+					<h5 class="text-title d-inline-block p-3">Total Transactions</h5>
 					<div class="row">
 						<div class="col-md-12">
 							<canvas id='myChart' height="180"></canvas>
