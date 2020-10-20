@@ -22,7 +22,7 @@
            {!!Form::select("type", $types, $selected_type, ['id' => "input_type", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-3 p-2">
-           {!!Form::select("department_id", $departments, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
+           {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-3 p-2">
            {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
@@ -67,7 +67,7 @@
             <th class="text-title p-3" width="10%">Transaction Date</th>
             <th class="text-title p-3" width="10%">Submitted By</th>
             <th class="text-title p-3" width="10%">Application Type</th>
-            <th class="text-title p-3" width="10%">Department</th>
+            <th class="text-title p-3" width="10%">Bureau/Office</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
             <th class="text-title p-3" width="10%">Amount</th>
             <th class="text-title p-3" width="10%">Processor/Status</th>

@@ -31,8 +31,11 @@ class ProcessorController extends Controller
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
 		$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::pluck('name', 'id')->toArray();
-		$this->data['user_type'] = ['' => "Choose Type",'admin' =>  "Admin",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
-		
+		if (Auth::user()->type == "admin" || Auth::user()->type == "office_head") {
+			$this->data['user_type'] = ['' => "Choose Type",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
+		}else {
+			$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
+		}
 
 		$this->data['status_type'] = ['' => "Choose Status",'active' =>  "Active",'inactive' => "Inactive"];
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
@@ -189,7 +192,7 @@ class ProcessorController extends Controller
 
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', $processor->type." had been modified.");
+			session()->flash('notification-msg', str::title($processor->type)." had been modified.");
 			return redirect()->route('system.processor.index');
 		}catch(\Exception $e){
 			DB::rollback();

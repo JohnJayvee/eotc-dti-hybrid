@@ -295,13 +295,16 @@
         
         $('#input_application_name').val(_text);
 
-    }).change();
+    });
     function formatNumber (num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
-    @if(old('application_id'))
-        $(this).get_requirements("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
+    @if(old('department_id'))
+        $(this).get_application_type("{{old('department_id')}}","#input_application_id","")
+    @endif
+    @if(old('department_id') and  old('application_id'))
         $(this).get_application_type("{{old('department_id')}}","#input_application_id","{{old('application_id')}}")
+        $(this).get_requirements("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
     @endif
 </script>
 

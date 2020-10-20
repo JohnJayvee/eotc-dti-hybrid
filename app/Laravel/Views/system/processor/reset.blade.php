@@ -14,7 +14,7 @@
 <div class="col-md-8 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Department Update Form</h4>
+      <h4 class="card-title">Account Update Form</h4>
       <p class="card-description">
         Fill up the <strong class="text-danger">* required</strong> fields.
       </p>

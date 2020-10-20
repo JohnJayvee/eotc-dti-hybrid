@@ -19,7 +19,7 @@
       <div class="row pb-2">
         <div class="col-md-4">
           <label>Bureau/Office</label>
-          @if(Auth::user()->type == "super_user")
+          @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
           {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
           @elseif(Auth::user()->type == "office_head" || Auth::user()->type == "processor")
           <input type="text" class="form-control mb-2 mr-sm-2" value="{{Auth::user()->department->name}}" readonly>
@@ -31,20 +31,17 @@
           {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-4">
-          <label>Processing Fee Status</label>
-          {!!Form::select("processing_fee_status", $status, $selected_processing_fee_status, ['id' => "input_processing_fee_status", 'class' => "custom-select"])!!}
-        </div>
-     
-      </div>
-      <div class="row">
-        <div class="col-md-4 p-2">
+          <label>Date Range</label>
           <div class="input-group input-daterange d-flex align-items-center">
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly" name="start_date">
             <div class="input-group-addon mx-2">to</div>
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly" name="end_date">
           </div>
         </div>
-        <div class="col-md-4 p-2">
+     
+      </div>
+      <div class="row">
+        <div class="col-md-8 p-2">
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
             <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Keyword">

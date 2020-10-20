@@ -20,7 +20,7 @@
       <div class="row pb-2">
         <div class="col-md-4">
           <label>Bureau/Office</label>
-          @if(Auth::user()->type == "super_user")
+          @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
           {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
           @elseif(Auth::user()->type == "office_head" || Auth::user()->type == "processor")
           <input type="text" class="form-control mb-2 mr-sm-2" value="{{Auth::user()->department->name}}" readonly>

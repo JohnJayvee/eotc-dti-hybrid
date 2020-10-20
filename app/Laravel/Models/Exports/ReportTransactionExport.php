@@ -30,7 +30,7 @@ class  ReportTransactionExport implements FromCollection,WithMapping,WithHeading
                 'Submitted By',
                 'Application Code',
                 "Application Type",
-                "Department",
+                "Bureau/Office",
                 "Processing Fee",
                 "Processing Fee Status",
                 "Application Fee",
@@ -52,6 +52,7 @@ class  ReportTransactionExport implements FromCollection,WithMapping,WithHeading
             Str::upper($value->payment_status),
             Helper::money_format($value->amount) ?: '---',
             Str::upper($value->application_payment_status),
+            str::title($value->admin ? $value->admin->full_name : '---'),
             
         ];
     }

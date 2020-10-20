@@ -41,8 +41,8 @@
             <th width="25%" class="text-title p-3">Reference #</th>
             <th width="25%" class="text-title p-3">Last Name</th>
             <th width="25%" class="text-title p-3">First Name</th>
-            <th width="10%" class="text-title p-3">Status</th>
             <th width="10%" class="text-title p-3">Bureau/Office</th>
+            <th width="10%" class="text-title p-3">Status</th>
             <th width="10%" class="text-title p-3">Type</th>
             <th width="10%" class="text-title p-3">Date Created</th>
             <th width="10%" class="text-title p-3">Action</th>

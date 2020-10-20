@@ -14,7 +14,7 @@
 <div class="col-md-8 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Department Create Form</h4>
+      <h4 class="card-title">Account Create Form</h4>
       <form class="create-form" method="POST" enctype="multipart/form-data">
         @include('system._components.notifications')
         {!!csrf_field()!!}
@@ -61,7 +61,7 @@
           <p class="mt-1 text-danger">{!!$errors->first('type')!!}</p>
           @endif
         </div>
-        <div class="form-group">
+        <div class="form-group" id="office_container">
           <label for="input_title">Bureau/Office</label>
           {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "custom-select".($errors->first('department_id') ? ' is-invalid' : NULL)])!!}
           @if($errors->first('department_id'))
@@ -159,10 +159,16 @@
 
   $("#input_type").on("change",function(){
     var type = $(this).val()
-    if (type == "office_head" || type == "admin") {
+    if (type == "office_head") {
       $("#application_container").hide();
-    }else{
+      $("#office_container").show();
+    }else if(type == "admin"){
+      $("#office_container").hide();
+      $("#application_container").hide();
+    }
+    else{
       $("#application_container").show();
+      $("#office_container").show();
     }
 
   }).change();

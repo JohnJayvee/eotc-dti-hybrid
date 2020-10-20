@@ -17,7 +17,7 @@ class DepartmentRequest extends RequestManager{
 	public function messages(){
 		return [
 			'required'	=> "Field is required.",
-			'name.unique'	=> "The Department name is already exist.",
+			'name.unique'	=> "The Bureau/Office name is already exist.",
 		];
 	}
 }
