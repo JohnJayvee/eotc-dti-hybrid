@@ -283,11 +283,10 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-msg', "The processor has not yet validated your application.");
 			return redirect()->back();
 		}
-
-		$amount = $prefix == 'APP' ?  $transaction->amount - $transaction->partial_amount : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
+		$amount = $prefix == 'APP' ?  Helper::db_amount($transaction->amount - $transaction->partial_amount) : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
 
 		$customer = $transaction->customer;
-
+		dd($amount);
 		try{
 			session()->put('transaction.code', $code);
 
