@@ -286,7 +286,7 @@ class CustomerTransactionController extends Controller
 		$amount = $prefix == 'APP' ?  Helper::db_amount($transaction->amount - $transaction->partial_amount) : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
 
 		$customer = $transaction->customer;
-		dd($amount);
+		
 		try{
 			session()->put('transaction.code', $code);
 
