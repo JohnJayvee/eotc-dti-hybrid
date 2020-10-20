@@ -284,7 +284,7 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 
-		$amount = $prefix == 'APP' ? $transaction->partial_amount - $transaction->amount : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
+		$amount = $prefix == 'APP' ?  $transaction->amount - $transaction->partial_amount : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
 
 		$customer = $transaction->customer;
 
