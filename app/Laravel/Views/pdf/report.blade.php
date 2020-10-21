@@ -22,7 +22,7 @@
 			@forelse($transactions as $value)
 				<tr align="center">
 					<td>{{Helper::date_format($value->created_at)}}</td>
-					<td>{{$value->customer->full_name}}</td>
+					<td>{{$value->customer_name}}</td>
 					<td>{{$value->company_name}}</td>
 					<td>{{$value->department->name}}</td>
 					<td>{{Helper::money_format($value->processing_fee)}}</td>
