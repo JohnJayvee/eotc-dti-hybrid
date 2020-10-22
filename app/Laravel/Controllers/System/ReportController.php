@@ -73,12 +73,13 @@ class ReportController extends Controller
 
 			$this->data['transactions'] = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
-					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'");
+					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_type']) > 0){
+					if(strlen($this->data['selected_type']) > 0 and strlen($this->data['resent']) == 0){
 						return $query->where('status',$this->data['selected_type']);
 					}
 				})
@@ -146,12 +147,13 @@ class ReportController extends Controller
 
         $transactions = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
-					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '{$this->data['keyword']}%'");
+					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_type']) > 0){
+					if(strlen($this->data['selected_type']) > 0 and strlen($this->data['resent']) == 0){
 						return $query->where('status',$this->data['selected_type']);
 					}
 				})
@@ -217,12 +219,13 @@ class ReportController extends Controller
 
         $this->data['transactions'] = Transaction::where(function($query){
 				if(strlen($this->data['keyword']) > 0){
-					return $query->WhereRaw("LOWER(company_name)  LIKE  '{$this->data['keyword']}%'")
-							->orWhereIn('fname' , $this->data['keyword']);
+					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
-					if(strlen($this->data['selected_type']) > 0){
+					if(strlen($this->data['selected_type']) > 0 and strlen($this->data['resent']) == 0){
 						return $query->where('status',$this->data['selected_type']);
 					}
 				})

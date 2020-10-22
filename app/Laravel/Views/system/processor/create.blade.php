@@ -102,7 +102,7 @@
           @endif
         </div>
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
-        <a href="{{route('system.department.index')}}" class="btn btn-light">Return to Processors list</a>
+        <a href="{{route('system.processor.index')}}" class="btn btn-light">Return to Processors list</a>
       </form>
     </div>
   </div>

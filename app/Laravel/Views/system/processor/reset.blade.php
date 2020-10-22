@@ -4,8 +4,8 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('system.dashboard')}}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{route('system.department.index')}}">Processor Management</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Edit Processor</li>
+    <li class="breadcrumb-item"><a href="{{route('system.department.index')}}">Account Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Reset Password</li>
   </ol>
 </nav>
 @stop

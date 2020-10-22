@@ -12,6 +12,7 @@ use App\Laravel\Requests\System\{ProfileRequest,ProfilePasswordRequest,ProfileIm
 /*
  * Models
  */
+use App\Laravel\Models\application;
 use App\Laravel\Models\Employee;
 use App\Laravel\Models\EmployeeDocument;
 use App\Laravel\Models\EmployeeLeaveCredit;
@@ -30,14 +31,22 @@ class ProfileController extends Controller{
 	}
 
 	public function index(PageRequest $request){
-		$this->data['employee'] = Auth::user();
+		$this->data['account'] = Auth::user();
+		$this->data['application_list'] = application::whereIn('id',explode(",", $this->data['account']->application_id))->get();
+
+		/*$this->data['application_list'] = [];
+
+		foreach ($application as $key => $value) {
+			array_push($this->data['application_list'], $value->name);
+		}
+*/
 
 		return view('system.profile.index',$this->data);
 	}
 
 	public function edit(PageRequest $request){
 		$this->data['page_title'] .= " - Update Personal Information";
-		$this->data['employee'] = Auth::user();
+		$this->data['account'] = Auth::user();
 
 		return view('system.profile.edit',$this->data);
 	}
@@ -45,16 +54,18 @@ class ProfileController extends Controller{
 	public function update(ProfileRequest $request){
 		DB::beginTransaction();
 		try{
-			$employee = Auth::user();
+			$account = Auth::user();
 
-			$employee->personal_email = Str::lower($request->get('personal_email'));
-			$employee->contact_number = $request->get('contact_number');
-			$employee->residence_address = Str::upper($request->get('residence_address'));
+			$account->email = Str::lower($request->get('email'));
+			$account->contact_number = $request->get('contact_number');
+			$account->fname = $request->get('fname');
+			$account->mname = $request->get('mname');
+			$account->lname = $request->get('lname');
 
-			$employee->save();
+			$account->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Personal Information modified successfully.");
+			session()->flash('notification-msg', "Account Information modified successfully.");
 			return redirect()->route('system.profile.index');
 		}catch(\Exception $e){
 			DB::rollback();

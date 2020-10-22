@@ -60,7 +60,7 @@
         <thead>
           <tr class="text-center ">
             <th class="text-title p-3" width="15%">Transaction Date</th>
-            <th class="text-title p-3" width="15%">Submitted By</th>
+            <th class="text-title p-3" width="15%">Submitted By/Company Name</th>
             <th class="text-title p-3" width="15%">Bureau/Office</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
@@ -104,7 +104,7 @@
           </tr>
           @empty
           <tr>
-           <td colspan="5" class="text-center"><i>No transaction Records Available.</i></td>
+           <td colspan="8" class="text-center"><i>No transaction Records Available.</i></td>
           </tr>
           @endforelse
           

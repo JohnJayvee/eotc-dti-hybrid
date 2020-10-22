@@ -36,6 +36,7 @@ class  ReportTransactionExport implements FromCollection,WithMapping,WithHeading
                 "Application Fee",
                 "Application Fee Status",
                 "Processed By",
+                "Status",
                 
             ];
         }
@@ -53,6 +54,7 @@ class  ReportTransactionExport implements FromCollection,WithMapping,WithHeading
             Helper::money_format($value->amount) ?: '---',
             Str::upper($value->application_payment_status),
             str::title($value->admin ? $value->admin->full_name : '---'),
+            $value->is_resent == 1 ? "RESENT" : $value->status,
             
         ];
     }

@@ -26,30 +26,30 @@
       <div class="collapse" id="my_report">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.pending')}}">Pending
-            @if($counter['pending'] > 0)
+            <!-- @if($counter['pending'] > 0)
               <span class="badge badge-sm badge-primary">{{$counter['pending']}}</span>
-            @endif
+            @endif -->
           </a></li>
         </ul>
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.approved')}}">Approved
-            @if($counter['approved'] > 0)
+            <!-- @if($counter['approved'] > 0)
               <span class="badge badge-sm badge-primary">{{$counter['approved']}}</span>
-            @endif
+            @endif -->
           </a></li>
         </ul>
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.declined')}}">Declined
-            @if($counter['declined'] > 0)
+            <!-- @if($counter['declined'] > 0)
               <span class="badge badge-sm badge-primary">{{$counter['declined']}}</span>
-            @endif
+            @endif -->
           </a></li>
         </ul>
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.resent')}}">Resent
-            @if($counter['resent'] > 0)
+           <!--  @if($counter['resent'] > 0)
               <span class="badge badge-sm badge-primary">{{$counter['resent']}}</span>
-            @endif
+            @endif -->
           </a></li>
         </ul>
         @if(in_array($auth->type,['processor']))

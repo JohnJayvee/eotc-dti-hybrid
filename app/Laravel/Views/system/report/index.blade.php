@@ -65,7 +65,7 @@
         <thead>
           <tr class="text-center ">
             <th class="text-title p-3" width="10%">Transaction Date</th>
-            <th class="text-title p-3" width="10%">Submitted By</th>
+            <th class="text-title p-3" width="10%">Submitted By/Company Name</th>
             <th class="text-title p-3" width="10%">Application Type</th>
             <th class="text-title p-3" width="10%">Bureau/Office</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
@@ -78,7 +78,7 @@
           @forelse($transactions as $transaction)
           <tr class="text-center">
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
-            <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}</td>
+            <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}} /<br> {{ str::title($transaction->company_name)}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>{{ $transaction->department ? $transaction->department->name : "N/A"}}</td>
             <td>

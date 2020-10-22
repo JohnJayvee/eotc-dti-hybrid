@@ -17,10 +17,10 @@
 
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a class="dropdown-item disabled">Welcome {{$auth->name}}!</a>
-          {{-- <a href="{{route('system.profile.index')}}" class="dropdown-item">
+          <a href="{{route('system.profile.index')}}" class="dropdown-item">
             <i class="mdi mdi-settings "></i>
             My Profile
-          </a> --}}
+          </a>
           <a href="{{route('system.profile.password.edit')}}" class="dropdown-item">
             <i class="mdi mdi-key"></i>
             Change Password

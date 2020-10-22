@@ -6,11 +6,14 @@ use App\Laravel\Requests\RequestManager;
 class ProfileRequest extends RequestManager{
 
 	public function rules(){
-
+		$id = $this->route('id')?:0;
 		$rules = [
-			'personal_email' => "required|email",
+			'email' => "required|email",
 			'contact_number' => "required|phone:PH",
-			'residence_address' => "required"
+			'fname' => "required",
+			'mname' => "required",
+			'lname' => "required",
+			
 		];
 
 		return $rules;

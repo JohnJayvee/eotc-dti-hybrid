@@ -10,12 +10,13 @@
 				<td>Transaction Date</td>
 				<td>Submitted By</td>
 				<td>Company Name</td>
-				<td>Department Name</td>
+				<td>Bureau/Office</td>
 				<td>Processing Fee</td>
 				<td>Processing Fee Status</td>
 				<td>Application Amount</td>
 				<td>Application Status</td>
 				<td>Processor</td>
+				<td>Status</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,6 +31,7 @@
 					<td>{{Helper::money_format($value->amount) ?: '---'}}</td>
 					<td>{{$value->application_payment_status}}</td>
 					<td>{{ $value->admin ? $value->admin->full_name : '---' }}</td>
+					<td>{{ $value->is_resent == 1 ? "RESENT" : $value->status}}</td>
 				</tr>
 			@empty
 			@endforelse

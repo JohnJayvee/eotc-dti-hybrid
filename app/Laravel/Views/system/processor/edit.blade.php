@@ -75,7 +75,7 @@
         </div>
         <div class="form-group" id="application_container">
           <label for="input_suffix">Application Type</label>
-          {!!Form::select("application_id[]",$applications, old('application_id',$processor->application_id), ['id' => "input_application_id", 'multiple' => 'multiple','class' => "custom-select select2 mb-2 mr-sm-2 ".($errors->first('application_id') ? 'is-invalid' : NULL)])!!}
+          {!!Form::select("application_id[]",$applications, old('application_id',explode(",",$processor->application_id)), ['id' => "input_application_id", 'multiple' => 'multiple','class' => "custom-select select2 mb-2 mr-sm-2 ".($errors->first('application_id') ? 'is-invalid' : NULL)])!!}
           @if($errors->first('application_id'))
           <p class="mt-1 text-danger">{!!$errors->first('application_id')!!}</p>
           @endif
