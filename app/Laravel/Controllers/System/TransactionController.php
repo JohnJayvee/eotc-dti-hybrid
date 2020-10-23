@@ -430,7 +430,15 @@ class TransactionController extends Controller{
 		$type = strtoupper($request->get('status_type'));
 		DB::beginTransaction();
 		try{
+
 			$transaction = $request->get('transaction_data');
+
+
+			if ($request->get('amount') < $transaction->partial_amount) {
+				session()->flash('notification-status', "success");
+				session()->flash('notification-msg', "Invalid Amount.");
+				return redirect()->route('system.transaction.show',[$transaction->id]);
+			}
 			$transaction->status = $type;
 			$transaction->amount = $type == "APPROVED" ? $request->get('amount') : NULL;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
@@ -439,6 +447,7 @@ class TransactionController extends Controller{
 			$transaction->save();
 
 			if ($type == "APPROVED") {
+
 				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->where('status',"pending")->update(['status' => "APPROVED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
