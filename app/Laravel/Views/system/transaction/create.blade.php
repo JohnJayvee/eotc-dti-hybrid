@@ -152,7 +152,7 @@
             
           </div> 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
-        <a href="{{route('system.department.index')}}" class="btn btn-light">Return to Transaction list</a>
+        <a href="{{route('system.transaction.approved')}}" class="btn btn-light">Return to Transaction list</a>
       </form>
     </div>
   </div>
