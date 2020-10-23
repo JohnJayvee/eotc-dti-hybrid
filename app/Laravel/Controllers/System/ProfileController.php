@@ -12,7 +12,7 @@ use App\Laravel\Requests\System\{ProfileRequest,ProfilePasswordRequest,ProfileIm
 /*
  * Models
  */
-use App\Laravel\Models\application;
+use App\Laravel\Models\Application;
 use App\Laravel\Models\Employee;
 use App\Laravel\Models\EmployeeDocument;
 use App\Laravel\Models\EmployeeLeaveCredit;
@@ -32,7 +32,7 @@ class ProfileController extends Controller{
 
 	public function index(PageRequest $request){
 		$this->data['account'] = Auth::user();
-		$this->data['application_list'] = application::whereIn('id',explode(",", $this->data['account']->application_id))->get();
+		$this->data['application_list'] = Application::whereIn('id',explode(",", $this->data['account']->application_id))->get();
 
 		/*$this->data['application_list'] = [];
 
