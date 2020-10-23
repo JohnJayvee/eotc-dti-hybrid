@@ -162,8 +162,9 @@
                                         <label id="lblName" style="vertical-align: top;padding-top: 40px;color: red;" class="fw-500 pl-3">{{$error}}</label>
                                     @endif
                                 @empty
-                                    <label id="lblName" style="vertical-align: top;padding-top: 40px;" class="fw-500 pl-3"></label>
+                                   
                                 @endforelse
+                                <label id="lblName" style="vertical-align: top;padding-top: 40px;" class="fw-500 pl-3"></label>
                             </div>
                         </div>
                     </div>
