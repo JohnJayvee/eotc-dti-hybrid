@@ -303,8 +303,8 @@ class CustomerTransactionController extends Controller
 				'return_url' => route('web.confirmation',[$code]),
 				'failed_url' => route('web.digipep.failed',[$code]),
 				'first_name' => $transaction->company_name,
-				'contact_number' => $customer ? $customer->contact_number : $transaction->contact_number,
-				'email' => $customer ? $customer->email : $transaction->email
+				'contact_number' => $transaction->contact_number,
+				'email' => $transaction->email
 			]);  
 
 			$response = Curl::to(env('DIGIPEP_CHECKOUT_URL'))
