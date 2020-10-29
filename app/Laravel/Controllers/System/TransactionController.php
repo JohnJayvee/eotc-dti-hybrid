@@ -46,7 +46,7 @@ class TransactionController extends Controller{
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
 		
 
-		$this->per_page = env("DEFAULT_PER_PAGE",10);
+		$this->per_page = env("DEFAULT_PER_PAGE",2);
 	}
 
 	public function  index(PageRequest $request){
@@ -94,7 +94,7 @@ class TransactionController extends Controller{
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "processor") {
 						return $query->where('department_id',$this->data['auth']->department_id);
 					}else{
 						if(strlen($this->data['selected_department_id']) > 0){
@@ -169,7 +169,7 @@ class TransactionController extends Controller{
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "processor") {
 						return $query->where('department_id',$this->data['auth']->department_id);
 					}else{
 						if(strlen($this->data['selected_department_id']) > 0){
@@ -239,7 +239,7 @@ class TransactionController extends Controller{
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "processor") {
 						return $query->where('department_id',$this->data['auth']->department_id);
 					}else{
 						if(strlen($this->data['selected_department_id']) > 0){
@@ -302,7 +302,7 @@ class TransactionController extends Controller{
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "office_head") {
+					if ($this->data['auth']->type == "office_head" || $this->data['auth']->type == "processor") {
 						return $query->where('department_id',$this->data['auth']->department_id);
 					}else{
 						if(strlen($this->data['selected_department_id']) > 0){
@@ -330,7 +330,6 @@ class TransactionController extends Controller{
 
 		return view('system.transaction.resent',$this->data);
 	}
-
 
 	public function show(PageRequest $request,$id = NULL){
 		$this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
@@ -422,8 +421,6 @@ class TransactionController extends Controller{
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg','Application was successfully submitted.');
 			return redirect()->route('system.transaction.approved');
-		
-		
 
 	}
 	public function process($id = NULL,PageRequest $request){
@@ -432,9 +429,9 @@ class TransactionController extends Controller{
 		try{
 
 			$transaction = $request->get('transaction_data');
+			$application = Application::find($transaction->id);
 
-
-			if ($request->get('amount') < $transaction->partial_amount) {
+			if ($request->get('amount') < $application->partial_amount ?: 0) {
 				session()->flash('notification-status', "success");
 				session()->flash('notification-msg', "Invalid Amount.");
 				return redirect()->route('system.transaction.show',[$transaction->id]);

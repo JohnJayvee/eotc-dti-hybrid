@@ -18,12 +18,29 @@
   <div class="col-12 ">
     <form>
       <div class="row">
-        
-        <div class="col-md-3 p-2">
+        <div class="col-md-3">
+          <label>Bureau/Office</label>
+          @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
+            {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
+          @elseif(Auth::user()->type == "office_head")
+            <input type="text" class="form-control mb-2 mr-sm-2" value="{{Auth::user()->department->name}}" readonly>
+            <input type="hidden" name="selected_department_id" value="{{$selected_department_id}}">
+          @endif
+        </div>
+        <div class="col-md-3">
+          <label>Account Type</label>
+          {!!Form::select("type", $user_type, $selected_type, ['id' => "input_type", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-3">
+          <label>Keywords</label>
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control form-control-lg" placeholder="Search">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Keyword">
           </div>
+        </div>
+        <div class="col-md-3 mt-4 p-1">
+          <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
+          <a href="{{route('system.processor.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
       </div>
     </form>
@@ -106,7 +123,14 @@
   </div>
 </div>
 @stop
+@section('page-styles')
+<style type="text/css" >
+  .btn-sm{
+    border-radius: 10px;
+  }
+</style>
 
+@stop
 @section('page-scripts')
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script type="text/javascript">

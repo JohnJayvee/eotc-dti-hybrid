@@ -2,7 +2,7 @@
 
 use Session,Auth;
 use App\Laravel\Requests\RequestManager;
-
+use App\Laravel\Models\ApplicationRequirements;
 class TransactionRequest extends RequestManager{
 
 	public function rules(){
@@ -21,13 +21,12 @@ class TransactionRequest extends RequestManager{
 			'partial_amount' => "nullable|minimum_amount:application_id,partial_amount",
 			// 'regional_id' => "required",
 			'contact_number' => "required|max:10|phone:PH",
-    		'file.*' => 'required|mimes:pdf,docx,doc|max:204800',
 		];
-		if ($this->get('is_check') != 1 ) {
-			$rules['file'] = "required";
-		}
-		if ($this->get('file_count') != 0) {
-			$rules['file_count'] = "required|with_count:file_count,application_id";
+
+		$required = ApplicationRequirements::whereIn('id',explode(",", $this->get('requirements_id')))->where('is_required',"yes")->get();
+
+		foreach ($required as $key => $value) {
+			$rules['file'.$value->id] = "required|mimes:pdf,docx,doc|max:204800";
 		}
 
 
@@ -41,7 +40,7 @@ class TransactionRequest extends RequestManager{
 			'partial_amount.minimum_amount' => ":message",
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
 			'file.required'	=> "No File Uploaded.",
-			'file.*' => 'Only PDF File are allowed.',
+			'file.mime' => 'Only PDF File are allowed.',
 			'file_count.with_count' => 'Please Submit minimum requirements.'
 
 		];

@@ -117,56 +117,60 @@
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Patial Payment<code>(Optional)</code></label>
+                                <label for="exampleInputEmail1" class="text-form pb-2">Partial Amount</label>
                                 <div class="input-group mb-3">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text text-title fw-600">PHP <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                   </div>
-                                  <input type="text" class="form-control br-left-white br-right-white {{ $errors->first('partial_amount') ? 'is-invalid': NULL  }}" placeholder="Partial Payment Amount" name="partial_amount" id="input_partial_amount" value="{{old('partial_amount')}}" readonly>
-                                  
+                                  <input type="text" class="form-control br-left-white" placeholder="Partial Amountr" name="partial_amount" value="{{old('partial_amount')}}" id="input_partial_amount" readonly>
                                 </div>
                                 @if($errors->first('partial_amount'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('partial_amount')}}</small>
                                 @endif
                             </div>
                         </div>
+                       
                     </div>
+                   <input type="hidden" name="requirements_id" id="requirements_id_containter">
                    
                     <div id="requirements_container">
-                        <label class="text-form pb-2">Required Documents</label>
-                        <table id="requirements">
-                           <tbody>
+                        
+                        <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;" id="requirements">
+                            <thead>
                                
-                           </tbody>
+                            </thead>
+                            <tbody>
+                               
+                            </tbody>
                         </table>
                     </div>
-                    <input type="hidden" name="file_count" id="file_count">
-                    <h5 class="text-title text-uppercase pt-3">Upload Requirements</h5>
-                    <div class="row">
-                        <div class="col-md-12 col-lg-12">
-                            <label class="text-form pb-2">Application Requirements</label>
-                            <div class="form-group">
-                                <div class="upload-btn-wrapper">
-                                    <button class="btn vertical" style="color: #ADADAD">
-                                        <i class="fa fa-upload fa-4x" ></i>
-                                        <span class="pt-1">Upload Here</span>
-                                    </button>
-                                    <input type="file" name="file[]" class="form-control" id="file" accept="application/pdf" multiple>
-                                </div>
-                                @forelse($errors->all() as $error)
-                                    @if($error == "Only PDF File are allowed.")
-                                        <label id="lblName" style="vertical-align: top;padding-top: 40px;color: red;" class="fw-500 pl-3">{{$error}}</label>
-                                    @elseif($error == "No File Uploaded.")
-                                        <label id="lblName" style="vertical-align: top;padding-top: 40px;color: red;" class="fw-500 pl-3">{{$error}}</label>
-                                    @elseif($error == "Please Submit minimum requirements.")
-                                        <label id="lblName" style="vertical-align: top;padding-top: 40px;color: red;" class="fw-500 pl-3">{{$error}}</label>
-                                    @endif
-                                @empty
-                                   
-                                @endforelse
-                                <label id="lblName" style="vertical-align: top;padding-top: 40px;" class="fw-500 pl-3"></label>
-                            </div>
-                        </div>
+                    <div id="old_requirements_container">
+                        @if(old('requirements_id'))
+                        <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;"  id="old_requirements">
+                            <thead>
+                                <tr>
+                                    <th class="text-title fs-15 fs-500 p-3" width="15%">Requirement Name</th>
+                                    <th class="text-title fs-15 fs-500 p-3" width="15%">File</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(explode(",",old('requirements_id')) as $index => $value)
+                                    @foreach($all_requirements as $req)
+                                         @if($value == $req->id)
+                                        <tr>
+                                            <td>{{$req->name}} {{$req->is_rquired == "yes" ? "(Required)" : "(Optional)"}}</td>
+                                            <td><input type="file" name="file{{$value}}" accept="application/pdf,application/vnd.ms-excel">
+                                            @if($errors->first('file'.$value))
+                                                <small class="form-text pl-1" style="color:red;">{{$errors->first('file'.$value)}}</small>
+                                            @endif
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                         @endif
                     </div>
                 </div>
                 <hr class="form pt-0">
@@ -206,7 +210,9 @@
 </style>
 @endsection
 @section('page-scripts')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
 
     $('#file').change(function(e){
         $('#lblName').empty();
@@ -250,19 +256,53 @@
         });
         // return result;
     };
-
     $.fn.get_requirements = function(application_id){
-        $("#requirements tr").remove(); 
+        str = '';
+        var html = "";
+        var file = "file1"
         $.getJSON( "{{route('web.get_requirements')}}?type_id="+application_id, function( response ) {
             $.each(response.data,function(index,value){
-                $("#requirements").find('tbody').append("<tr><td>" + value + "</td></tr>");
-            })
+                    html += "<tr>";
+                    html += "<td>" + value[0] + "</td>";
+                    html += "<td><input type='file' accept='application/pdf,application/vnd.ms-excel' name=" + value[1] + "></td>"
+                    html += "</tr>";
+                str += value[2] + ",";
+                resultString = str.replace(/,(?=[^,]*$)/, '')
 
-            $("#requirements_container").show();
+            })
+            $("#requirements").find('tbody').append(html);
+             $("#requirements").find('thead').append("<tr><th class='text-title fs-15 fs-500 p-3' width='15%''>Requirement Name</th><th class='text-title fs-15 fs-500 p-3' width='15%'>File</th></tr>");
+            $("#requirements_id_containter").val(resultString);
         });
         // return result;
     };
-    $("#requirements_container").hide();
+    $.fn.get_requirements_id = function(application_id){
+        str = '';
+        var html = "";
+        var file = "file1"
+        $.getJSON( "{{route('web.get_requirements')}}?type_id="+application_id, function( response ) {
+            $.each(response.data,function(index,value){
+                str += value[2] + ",";
+                resultString = str.replace(/,(?=[^,]*$)/, '')
+
+            })
+            $("#requirements_id_containter").val(resultString);
+        });
+        // return result;
+    };
+    $.fn.get_partial_amount = function(application_id){
+        $.getJSON('/amount?type_id='+application_id, function(result){
+            amount = parseFloat(result.data[0])
+            partial_amount = parseFloat(result.data[1])
+            if (partial_amount > 0) {
+                $('#input_partial_amount').prop("readonly" ,false);
+            }else{
+                $('#input_partial_amount').prop("readonly" ,true);
+            }
+            $('#input_processing_fee').val(formatNumber(amount));
+        });
+        // return result;
+    };
 
     $("#input_department_id").on("change",function(){
       var department_id = $(this).val()
@@ -276,22 +316,15 @@
       $('#input_regional_name').val(_text);
     })
 
-    $('#input_application_id').change(function() {
+    $('#input_application_id').on("change",function(){
         var amount;
+        $("#old_requirements").find('tbody').empty();
+        $("#requirements").find('tbody').empty();
+        $("#requirements").find('thead').empty();
         var _text = $("#input_application_id option:selected").text();
-        $.getJSON('/amount?type_id='+this.value, function(result){
-            amount = parseFloat(result.data[0])
-            partial_amount = parseFloat(result.data[1])
-            
-            if (partial_amount > 0) {
-                $('#input_partial_amount').prop("readonly" ,false);
-            }else{
-                 $('#input_partial_amount').prop("readonly" ,true);
-            }
-            $('#input_processing_fee').val(formatNumber(amount));
-            
-        });
+        
         var application_id = $(this).val()
+        $(this).get_partial_amount(application_id,"#input_application_id","")
         $(this).get_requirements(application_id,"#input_application_id","")
         
         $('#input_application_name').val(_text);
@@ -305,8 +338,10 @@
     @endif
     @if(old('department_id') and  old('application_id'))
         $(this).get_application_type("{{old('department_id')}}","#input_application_id","{{old('application_id')}}")
-        $(this).get_requirements("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
+        $(this).get_requirements_id("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
+        $(this).get_partial_amount("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
     @endif
+ });
 </script>
 
 @endsection

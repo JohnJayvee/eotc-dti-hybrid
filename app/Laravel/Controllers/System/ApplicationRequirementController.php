@@ -32,7 +32,18 @@ class ApplicationRequirementController extends Controller
 
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Application Requirements";
-		$this->data['application_requirements'] = ApplicationRequirements::orderBy('created_at',"DESC")->get(); 
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+		$this->data['selected_type'] = Str::lower($request->get('type'));
+		$this->data['application_requirements'] = ApplicationRequirements::where(function($query){
+		if(strlen($this->data['keyword']) > 0){
+			return $query->WhereRaw("LOWER(name)  LIKE  '%{$this->data['keyword']}%'");
+			}
+		})->where(function($query){
+			if(strlen($this->data['selected_type']) > 0){
+				return $query->where('is_required',$this->data['selected_type']);
+			}
+		})->orderBy('created_at',"DESC")->paginate($this->per_page);
+
 		return view('system.application-requirements.index',$this->data);
 	}
 

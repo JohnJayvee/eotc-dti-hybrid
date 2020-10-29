@@ -32,7 +32,13 @@ class DepartmentController extends Controller
 
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Bureau/Office";
-		$this->data['departments'] = Department::orderBy('created_at',"DESC")->paginate($this->per_page);
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+
+		$this->data['departments'] = Department::where(function($query){
+		if(strlen($this->data['keyword']) > 0){
+			return $query->WhereRaw("LOWER(name)  LIKE  '%{$this->data['keyword']}%'");
+			}
+		})->orderBy('created_at',"DESC")->paginate($this->per_page);
 		return view('system.department.index',$this->data);
 	}
 

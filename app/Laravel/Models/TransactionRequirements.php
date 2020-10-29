@@ -23,4 +23,8 @@ class TransactionRequirements extends Model
     ];
     
     public $timestamps = true;
+
+    public function requirement_name(){
+        return $this->BelongsTo("App\Laravel\Models\ApplicationRequirements",'requirement_id','id');
+    }
 }

@@ -33,7 +33,25 @@ class ApplicationController extends Controller
 
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Application";
-		$this->data['applications'] = Application::orderBy('created_at',"DESC")->paginate($this->per_page);
+		$auth = Auth::user();
+
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+		$this->data['selected_department_id'] = $auth->type == "office_head" ? $auth->department_id : $request->get('department_id');
+
+		$this->data['applications'] = Application::where(function($query){
+		if(strlen($this->data['keyword']) > 0){
+			return $query->WhereRaw("LOWER(name)  LIKE  '%{$this->data['keyword']}%'");
+			}
+		})
+		->where(function($query){
+			if ($this->data['auth']->type == "office_head") {
+				return $query->where('department_id',$this->data['auth']->department_id);
+			}else{
+				if(strlen($this->data['selected_department_id']) > 0){
+					return $query->where('department_id',$this->data['selected_department_id']);
+				}
+			}
+		})->orderBy('created_at',"DESC")->paginate($this->per_page);
 		return view('system.application.index',$this->data);
 	}
 

@@ -16,7 +16,7 @@
   </div>
 
   <div class="col-12 ">
-     <form>
+    <form>
       <div class="row pb-2">
         <div class="col-md-3">
           <label>Bureau/Office</label>
@@ -62,12 +62,13 @@
     </form>
   </div>
   <div class="col-md-12">
-     <div class="shadow fs-15">
+    <div class="shadow-sm fs-15">
       <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
         <thead>
           <tr class="text-center ">
             <th class="text-title p-3" width="15%">Transaction Date</th>
-            <th class="text-title p-3" width="15%">Submitted By/Company Name</th>
+            <th class="text-title p-3" width="15%">Submitted By/<br>Company Name</th>
+            <th class="text-title p-3" width="15%">Bureau/Office</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
             <th class="text-title p-3" width="10%">Amount</th>
@@ -80,6 +81,7 @@
           <tr class="text-center">
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
             <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}/<br>{{str::title($transaction->company_name)}}</td>
+            <td>{{ $transaction->department->name}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>
               <div>{{Helper::money_format($transaction->processing_fee) ?: 0 }}</div>
@@ -112,10 +114,18 @@
            <td colspan="8" class="text-center"><i>No transaction Records Available.</i></td>
           </tr>
           @endforelse
+         
           
         </tbody>
       </table>
     </div>
+    @if($transactions->total() > 0)
+      <nav class="mt-2">
+        <!-- <p>Showing <strong>{{$transactions->firstItem()}}</strong> to <strong>{{$transactions->lastItem()}}</strong> of <strong>{{$transactions->total()}}</strong> entries</p> -->
+        {!!$transactions->appends(request()->query())->render()!!}
+        </ul>
+      </nav>
+    @endif
   </div>
 </div>
 @stop

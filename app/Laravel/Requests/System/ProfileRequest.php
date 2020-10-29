@@ -11,9 +11,7 @@ class ProfileRequest extends RequestManager{
 			'email' => "required|email",
 			'contact_number' => "required|phone:PH",
 			'fname' => "required",
-			'mname' => "required",
 			'lname' => "required",
-			
 		];
 
 		return $rules;

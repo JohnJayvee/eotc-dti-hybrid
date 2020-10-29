@@ -41,6 +41,8 @@ class CustomerTransactionController extends Controller
 	public function create(PageRequest $request){
 		
 		$this->data['page_title'] = "E-Submission";
+
+		$this->data['all_requirements'] = ApplicationRequirements::all();
 		return view('web.transaction.create',$this->data);
 	}
 
@@ -49,7 +51,6 @@ class CustomerTransactionController extends Controller
 
 		$temp_id = time();
 		$auth = Auth::guard('customer')->user();
-		
 		
 		DB::beginTransaction();
 		try{
@@ -84,32 +85,34 @@ class CustomerTransactionController extends Controller
 				$new_transaction->is_printed_requirements = $request->get('is_check');
 				$new_transaction->document_reference_code = 'EOTC-DOC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
 			}
-
 			$new_transaction->save();
-
-			if($request->hasFile('file')) { 
-				foreach ($request->file as $key => $image) {
-					$ext = $image->getClientOriginalExtension();
-					if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){ 
-						$type = 'file';
-						$original_filename = $image->getClientOriginalName();
-						$upload_image = FileUploader::upload($image, "uploads/documents/transaction/{$new_transaction->transaction_code}");
-					} 
-					$new_file = new TransactionRequirements;
-					$new_file->path = $upload_image['path'];
-					$new_file->directory = $upload_image['directory'];
-					$new_file->filename = $upload_image['filename'];
-					$new_file->type =$type;
-					$new_file->original_name =$original_filename;
-					$new_file->transaction_id = $new_transaction->id;
-					$new_file->save();
+			if($request->get('requirements_id')) { 
+				$req_id = explode(",", $request->get('requirements_id'));
+				foreach ($req_id as $key => $image) {
+					if ($request->file('file'.$image)) {
+						$ext = $request->file('file'.$image)->getClientOriginalExtension();
+						if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){ 
+							$type = 'file';
+							$original_filename = $request->file('file'.$image)->getClientOriginalName();
+							$upload_image = FileUploader::upload($request->file('file'.$image), "uploads/documents/transaction/{$new_transaction->transaction_code}");
+						} 
+						$new_file = new TransactionRequirements;
+						$new_file->path = $upload_image['path'];
+						$new_file->directory = $upload_image['directory'];
+						$new_file->filename = $upload_image['filename'];
+						$new_file->type =$type;
+						$new_file->original_name =$original_filename;
+						$new_file->transaction_id = $new_transaction->id;
+						$new_file->requirement_id = $image;
+						$new_file->save();
+					}
+					
 				}
 			}
 			
 			DB::commit();
 
 			if($request->get('is_check')) {
-
 				if($new_transaction->customer) {
 					$insert_data[] = [
 		                'email' => $new_transaction->email,

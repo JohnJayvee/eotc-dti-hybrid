@@ -87,7 +87,8 @@
           <div class="row justify-content-center">
             <table class="table table-striped">
               <thead>
-                <th>FileName</th>
+                <th>Requirement Name</th>
+                <th>File</th>
                 <th>File Type</th>
                 <th>Status</th>
                 @if(Auth::user()->type == "processor")
@@ -99,6 +100,7 @@
               <tbody>
               @forelse($attachments as $index => $attachment)
                 <tr>
+                  <td>{{$attachment->requirement_name->name}}</td>
                   <td><a href="{{$attachment->directory}}/{{$attachment->filename}}" target="_blank">{{$attachment->original_name}}</a></td>
                   <td>{{$attachment->type}}</td>
                   <td>{{Str::title($attachment->status)}}</td>

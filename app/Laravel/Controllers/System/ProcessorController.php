@@ -34,9 +34,17 @@ class ProcessorController extends Controller
 		if (Auth::user()->type == "admin" || Auth::user()->type == "office_head") {
 			$this->data['user_type'] = ['' => "Choose Type",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
 		}else {
-
 			$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
 		}
+
+		if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {
+			$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::pluck('name', 'id')->toArray();
+		}elseif (Auth::user()->type == "office_head" || Auth::user()->type == "processor") {
+			$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
+		}
+
+		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
+		
 
 		$this->data['status_type'] = ['' => "Choose Status",'active' =>  "Active",'inactive' => "Inactive"];
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
@@ -46,14 +54,32 @@ class ProcessorController extends Controller
 		$this->data['page_title'] = "Accounts";
 		$auth = Auth::user();
 
-		switch ($auth->type) {
-			case 'office_head':
-				$this->data['processors'] = User::where('type',"processor")->where('department_id',$auth->department_id)->orderBy('created_at',"DESC")->get(); 
-				break;
-			default:
-				$this->data['processors'] = User::where('type','<>','super_user')->orderBy('created_at',"DESC")->get(); 
-				break;
-		}
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+		$this->data['selected_department_id'] = $auth->type == "office_head" ? $auth->department_id : $request->get('department_id');
+		$this->data['selected_type'] = $request->get('type');
+
+		$this->data['processors'] = User::where('type','<>','super_user')->where(function($query){
+		if(strlen($this->data['keyword']) > 0){
+			return $query->WhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'")
+					->orWhereRaw("LOWER(reference_id) LIKE  '%{$this->data['keyword']}%'");
+			}
+		})
+		->where(function($query){
+			if ($this->data['auth']->type == "office_head") {
+				return $query->where('department_id',$this->data['auth']->department_id);
+			}else{
+				if(strlen($this->data['selected_department_id']) > 0){
+					return $query->where('department_id',$this->data['selected_department_id']);
+				}
+			}
+		})
+		->where(function($query){
+			if(strlen($this->data['selected_type']) > 0){
+				return $query->where('type',$this->data['selected_type']);
+			}
+		})
+		->orderBy('created_at',"DESC")->paginate($this->per_page);
+			
 		
 		return view('system.processor.index',$this->data);
 	}
@@ -251,29 +277,81 @@ class ProcessorController extends Controller
 		}
 	}
 
-	public function  list(){
+	public function  list(PageRequest $request){
 		$this->data['page_title'] .= " List of Processor";
 		$auth = Auth::user();
-		switch ($auth->type) {
-			case 'super_user':
-				$this->data['processors']  = User::where('type',"processor")->orderBy('created_at',"DESC")->get();
-				break;
-			case 'admin':
-				$this->data['processors']  = User::where('type',"processor")->orderBy('created_at',"DESC")->get();
-				break;
-			case 'office_head':
-				$this->data['processors']  = User::where('department_id',$auth->department_id)->where('type',"processor")->orderBy('created_at',"DESC")->get();
-				break;
-			default:
-				break;
-		}
+
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+		$this->data['selected_department_id'] = $auth->type == "office_head" ? $auth->department_id : $request->get('department_id');
+
+		$this->data['processors'] = User::where('type',"processor")->where(function($query){
+		if(strlen($this->data['keyword']) > 0){
+			return $query->WhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'")
+					->orWhereRaw("LOWER(reference_id) LIKE  '%{$this->data['keyword']}%'");
+			}
+		})
+		->where(function($query){
+			if ($this->data['auth']->type == "office_head") {
+				return $query->where('department_id',$this->data['auth']->department_id);
+			}else{
+				if(strlen($this->data['selected_department_id']) > 0){
+					return $query->where('department_id',$this->data['selected_department_id']);
+				}
+			}
+		})->orderBy('created_at',"DESC")->paginate($this->per_page);
 
 		return view('system.processor.list',$this->data);
 	}
 
-	public function  show($id = NULL){
+	public function  show(PageRequest $request,$id = NULL){
 		$this->data['page_title'] .= " List of Transaction";
-		$this->data['transactions']  = Transaction::where('processor_user_id',$id)->orderBy('created_at',"DESC")->get();
+		$auth = Auth::user();
+		
+		$this->data['processor'] = User::find($id);
+
+		$first_record = Transaction::orderBy('created_at','ASC')->first();
+		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
+
+		if($first_record){
+			$start_date = $request->get('start_date',$first_record->created_at->format("Y-m-d"));
+		}
+		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
+		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
+
+
+		$this->data['selected_application_id'] = $request->get('application_id');
+		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
+		$this->data['selected_application_ammount_status'] = $request->get('application_ammount_status');
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+		
+		$this->data['applications'] = ['' => "Choose Applications"] + Application::whereIn('id',explode(",",$this->data['processor']->application_id))->pluck('name', 'id')->toArray();
+		
+
+		$this->data['transactions'] = Transaction::where('processor_user_id',$id)->where(function($query){
+				if(strlen($this->data['keyword']) > 0){
+					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'");
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_application_id']) > 0){
+						return $query->where('application_id',$this->data['selected_application_id']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_processing_fee_status']) > 0){
+						return $query->where('payment_status',$this->data['selected_processing_fee_status']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_application_ammount_status']) > 0){
+						return $query->where('application_payment_status',$this->data['selected_application_ammount_status']);
+					}
+				})
+				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
+				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
+				->orderBy('created_at',"DESC")->paginate($this->per_page);
 
 
 		return view('system.processor.show',$this->data);

@@ -67,13 +67,15 @@
         <div class="row justify-content-center">
           <table class="table table-striped">
             <thead>
-              <th>FileName</th>
+              <th>Requirement Name</th>
+              <th>File</th>
               <th>Date Submitted</th>
               <th>Status</th>
             </thead>
             <tbody>
             @forelse($attachments as $index => $attachment)
               <tr>
+                <td>{{$attachment->requirement_name->name}}</td>
                 <td><a href="{{$attachment->directory}}/{{$attachment->filename}}" target="_blank" class="fw-600">{{$attachment->original_name}}</a></td>
                 <td>{{Helper::date_format($attachment->created_at)}}</td>
                 <td><p class="btn-sm text-center fw-600 text-black {{Helper::status_color($attachment->status)}}">{{Str::title($attachment->status)}}</p></td>

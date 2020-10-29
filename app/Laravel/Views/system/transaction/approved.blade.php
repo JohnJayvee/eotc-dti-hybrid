@@ -59,12 +59,12 @@
     </form>
   </div>
   <div class="col-md-12">
-     <div class="shadow fs-15">
+    <div class="shadow-sm fs-15">
       <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
         <thead>
           <tr class="text-center ">
             <th class="text-title p-3" width="15%">Transaction Date</th>
-            <th class="text-title p-3" width="15%">Submitted By/Company Name</th>
+            <th class="text-title p-3" width="15%">Submitted By/<br>Company Name</th>
             <th class="text-title p-3" width="15%">Bureau/Office</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
@@ -111,10 +111,18 @@
            <td colspan="8" class="text-center"><i>No transaction Records Available.</i></td>
           </tr>
           @endforelse
+         
           
         </tbody>
       </table>
     </div>
+    @if($transactions->total() > 0)
+      <nav class="mt-2">
+        <!-- <p>Showing <strong>{{$transactions->firstItem()}}</strong> to <strong>{{$transactions->lastItem()}}</strong> of <strong>{{$transactions->total()}}</strong> entries</p> -->
+        {!!$transactions->appends(request()->query())->render()!!}
+        </ul>
+      </nav>
+    @endif
   </div>
 </div>
 @stop

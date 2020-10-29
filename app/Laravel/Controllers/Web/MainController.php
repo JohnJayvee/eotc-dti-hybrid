@@ -72,18 +72,23 @@ class MainController extends Controller{
 		foreach ($requirements as $key => $value) {
 			if ($value->is_required == "yes") {
 				$string = $value->name . " (Required)";
+				$string_id = "file".$value->id;
+				$is_required = "required";
 			}else{
 				$string = $value->name . " (Optional)";
+				$string_id = "file".$value->id;
+				$is_required = " ";
 			}
-			array_push($required, [$string]);
+			
+			array_push($required, [$string,$string_id,$value->id,$is_required]);
 		}
 		$response['msg'] = "List of Requirements";
 		$response['status_code'] = "TYPE_LIST";
 		$response['data'] = $required;
 		callback:
-		
 		return response()->json($response, 200);
 	}
+
 	public function confirmation($code = NULL){
 		$this->data['page_title'] = " :: confirmation";
 
