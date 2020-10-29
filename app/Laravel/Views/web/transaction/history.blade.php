@@ -11,7 +11,7 @@
             <h5 class="text-title pb-3"><i class="fa fa-file"></i> E<span class="text-title-two"> APPLICATION HISTORY</span></h5>
             <a href="{{route('web.transaction.create')}}" class="custom-btn badge-primary-2 text-white " style="float: right;margin-left: auto;">E-Submission</a>
          </div>
-
+        @include('web._components.notifications')
         <div class="card">
           <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
               <thead>
