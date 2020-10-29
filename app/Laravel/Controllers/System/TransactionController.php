@@ -441,7 +441,7 @@ class TransactionController extends Controller{
 			if ($type == "APPROVED") {
 				if ($request->get('amount') < $application->partial_amount ?: 0) {
 					session()->flash('notification-status', "success");
-					session()->flash('notification-msg', "Invalid Amount.");
+					session()->flash('notification-msg', "Sorry, the amount should be not greater than the set partial amount.");
 					return redirect()->route('system.transaction.show',[$transaction->id]);
 				}
 				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->where('status',"pending")->update(['status' => "APPROVED"]);
