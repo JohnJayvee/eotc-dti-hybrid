@@ -18,8 +18,11 @@ class ProcessorRequest extends RequestManager{
 			// 'file' => 'required|mimes:jpeg,jpg,png,JPEG,PNG|max:204800',
 		];
 
-		if ($this->get('type') == "processor" || $this->get('type') == "office_head" ) {
+		if ($this->get('type') == "processor") {
 			$rules['application_id'] = "required";
+			$rules['department_id'] = "required";
+		}
+		if ($this->get('type') == "office_head") {
 			$rules['department_id'] = "required";
 		}
 		
