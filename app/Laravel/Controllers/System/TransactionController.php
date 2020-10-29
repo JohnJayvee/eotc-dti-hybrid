@@ -431,11 +431,6 @@ class TransactionController extends Controller{
 			$transaction = $request->get('transaction_data');
 			$application = Application::find($transaction->id);
 
-			if ($request->get('amount') < $application->partial_amount ?: 0) {
-				session()->flash('notification-status', "success");
-				session()->flash('notification-msg', "Invalid Amount.");
-				return redirect()->route('system.transaction.show',[$transaction->id]);
-			}
 			$transaction->status = $type;
 			$transaction->amount = $type == "APPROVED" ? $request->get('amount') : NULL;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
@@ -444,7 +439,11 @@ class TransactionController extends Controller{
 			$transaction->save();
 
 			if ($type == "APPROVED") {
-
+				if ($request->get('amount') < $application->partial_amount ?: 0) {
+					session()->flash('notification-status', "success");
+					session()->flash('notification-msg', "Invalid Amount.");
+					return redirect()->route('system.transaction.show',[$transaction->id]);
+				}
 				$requirements = TransactionRequirements::where('transaction_id',$transaction->id)->where('status',"pending")->update(['status' => "APPROVED"]);
 				$insert[] = [
 	            	'contact_number' => $transaction->contact_number,
