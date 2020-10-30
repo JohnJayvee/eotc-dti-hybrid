@@ -158,7 +158,7 @@
                                     @foreach($all_requirements as $req)
                                          @if($value == $req->id)
                                         <tr>
-                                            <td>{{$req->name}} {{$req->is_rquired == "yes" ? "(Required)" : "(Optional)"}}</td>
+                                            <td>{{$req->name}} {{$req->is_required == "yes" ? "(Required)" : "(Optional)"}}</td>
                                             <td><input type="file" name="file{{$value}}" accept="application/pdf,application/vnd.ms-excel">
                                             @if($errors->first('file'.$value))
                                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('file'.$value)}}</small>

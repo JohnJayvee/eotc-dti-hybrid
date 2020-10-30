@@ -193,7 +193,7 @@
         title: "All the submitted requirements will be marked as approved. Are you sure you want to approve this application?",
         
         icon: 'info',
-        input: 'number',
+        input: 'text',
         inputPlaceholder: "Put Amount",
         showCancelButton: true,
         confirmButtonText: 'Approved!',

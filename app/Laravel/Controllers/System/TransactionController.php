@@ -439,8 +439,14 @@ class TransactionController extends Controller{
 			$transaction->save();
 
 			if ($type == "APPROVED") {
+				if (!is_numeric($request->input('amount'))){
+					session()->flash('notification-status', "failed");
+					session()->flash('notification-msg', "Invalid Amount.");
+					return redirect()->route('system.transaction.show',[$transaction->id]);
+
+				}
 				if ($request->get('amount') < $application->partial_amount ?: 0) {
-					session()->flash('notification-status', "success");
+					session()->flash('notification-status', "failed");
 					session()->flash('notification-msg', "Sorry, the amount should be not greater than the set partial amount.");
 					return redirect()->route('system.transaction.show',[$transaction->id]);
 				}
