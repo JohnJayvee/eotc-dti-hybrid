@@ -319,6 +319,7 @@ $(document).ready(function() {
     $('#input_application_id').on("change",function(){
         var amount;
         $("#old_requirements").find('tbody').empty();
+        $("#old_requirements").find('thead').empty();
         $("#requirements").find('tbody').empty();
         $("#requirements").find('thead').empty();
         var _text = $("#input_application_id option:selected").text();
