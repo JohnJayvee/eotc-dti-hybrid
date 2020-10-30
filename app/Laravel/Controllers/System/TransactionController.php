@@ -429,7 +429,7 @@ class TransactionController extends Controller{
 		
 
 			$transaction = $request->get('transaction_data');
-			$application = Application::find($transaction->id);
+			$application = Application::find($transaction->application_id);
 
 			$transaction->status = $type;
 			$transaction->amount = $type == "APPROVED" ? $request->get('amount') : NULL;
