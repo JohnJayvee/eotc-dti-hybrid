@@ -426,7 +426,7 @@ class TransactionController extends Controller{
 	public function process($id = NULL,PageRequest $request){
 		$type = strtoupper($request->get('status_type'));
 		DB::beginTransaction();
-		try{
+		
 
 			$transaction = $request->get('transaction_data');
 			$application = Application::find($transaction->id);
@@ -494,12 +494,7 @@ class TransactionController extends Controller{
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");
 			return redirect()->route('system.transaction.'.strtolower($type));
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
-		}
+		
 	}
 
 	public function process_requirements($id = NULL,$status = NULL,PageRequest $request){
