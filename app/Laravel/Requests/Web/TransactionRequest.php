@@ -40,7 +40,7 @@ class TransactionRequest extends RequestManager{
 			'partial_amount.minimum_amount' => ":message",
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
 			'file.required'	=> "No File Uploaded.",
-			'file.mime' => 'Only PDF File are allowed.',
+			'mimes' => 'Only PDF File are allowed.',
 			'file_count.with_count' => 'Please Submit minimum requirements.'
 
 		];

@@ -33,7 +33,7 @@ class SendReference extends Event {
 			$nexmo = Nexmo::message()->send([
 				'to' => '+63'.(int)$phone,
 				'from' => 'EOTCPH' ,
-				'text' => "The transaction code for your application for EOTC-PH is #" . $ref_num . "\r\n\n Please enter this reference code on the EPAYMENT section on:\r\n www.eotcphp.ph to proceed.",
+				'text' => "The transaction code for your application for EOTC-PH is #" . $ref_num . "\r\n\n Please enter this reference code on the EPAYMENT section on:\r\n ".env("APP_URL")." to proceed.",
 			]);
 			
 		}

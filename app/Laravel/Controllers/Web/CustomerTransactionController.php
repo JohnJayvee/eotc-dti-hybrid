@@ -122,7 +122,7 @@ class CustomerTransactionController extends Controller
 		                'application_name' => $new_transaction->application_name,
 		                'ref_num' => $new_transaction->code,
 		                'created_at' => Helper::date_only($new_transaction->created_at),
-		                'link' => "http://54.251.82.120/physical-copy/".$new_transaction->id,
+		                'link' => env("APP_URL")."/physical-copy/".$new_transaction->id,
 
 		            ];	
 					$application_data = new SendApplication($insert_data);

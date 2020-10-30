@@ -72,7 +72,7 @@ class DigipepController extends Controller
 			            'department_name' => $transaction->department_name,
 			            'modified_at' => $transaction->modified_at,
 			            'ref_num' => $transaction->transaction_code,
-			            'link' => "http://54.251.82.120/certificate/".$transaction->id,
+			            'link' => env("APP_URL")."/certificate/".$transaction->id,
 			        ];	
 
 					$application_data = new SendCertificate($insert_data);

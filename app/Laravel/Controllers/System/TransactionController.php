@@ -479,7 +479,7 @@ class TransactionController extends Controller{
 	                'application_name' => $transaction->application_name,
 	                'department_name' => $transaction->department_name,
 	                'modified_at' => Helper::date_only($transaction->modified_at),
-	                'link' => "http://54.251.82.120/show-pdf/".$transaction->id,
+	                'link' => env("APP_URL")."show-pdf/".$transaction->id,
             	];	
 
 				$notification_data = new SendDeclinedReference($insert);
