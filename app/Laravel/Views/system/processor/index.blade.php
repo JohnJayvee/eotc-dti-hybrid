@@ -93,6 +93,13 @@
         </tbody>
       </table>
     </div>
+     @if($processors->total() > 0)
+      <nav class="mt-2">
+       <!--  <p>Showing <strong>{{$processors->firstItem()}}</strong> to <strong>{{$processors->lastItem()}}</strong> of <strong>{{$processors->total()}}</strong> entries</p> -->
+        {!!$processors->appends(request()->query())->render()!!}
+        </ul>
+      </nav>
+    @endif
   </div>
 </div>
 @stop
