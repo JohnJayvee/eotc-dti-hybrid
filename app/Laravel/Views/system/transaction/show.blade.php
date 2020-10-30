@@ -100,7 +100,7 @@
               <tbody>
               @forelse($attachments as $index => $attachment)
                 <tr>
-                  <td>{{$attachment->requirement_name->name}}</td>
+                  <td>{{$attachment->requirement_name ? $attachment->requirement_name->name : "N/A"}}</td>
                   <td><a href="{{$attachment->directory}}/{{$attachment->filename}}" target="_blank">{{$attachment->original_name}}</a></td>
                   <td>{{$attachment->type}}</td>
                   <td>{{Str::title($attachment->status)}}</td>
@@ -125,7 +125,7 @@
         </div>
       </div>  
     @endif
-   @if(Auth::user()->type == "processor")
+    @if(Auth::user()->type == "processor")
       @if(in_array($transaction->status, ['PENDING', 'ONGOING']) AND $transaction->transaction_status == "COMPLETED")
         <a data-url="{{route('system.transaction.process',[$transaction->id])}}?status_type=approved"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
         <a  data-url="{{route('system.transaction.process',[$transaction->id])}}?status_type=declined" class="btn btn-danger mt-4 btn-decline border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}""><i class="fa fa-times-circle"></i> Decline Transactions</a>
