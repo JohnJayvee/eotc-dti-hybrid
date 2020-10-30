@@ -26,7 +26,7 @@ class TransactionRequest extends RequestManager{
 		$required = ApplicationRequirements::whereIn('id',explode(",", $this->get('requirements_id')))->where('is_required',"yes")->get();
 
 		foreach ($required as $key => $value) {
-			$rules['file'.$value->id] = "required|mimes:pdf,docx,doc|max:204800";
+			$rules['file'.$value->id] = "required|mimes:pdf,docx,doc|max:5000";
 		}
 
 
@@ -41,6 +41,7 @@ class TransactionRequest extends RequestManager{
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
 			'file.required'	=> "No File Uploaded.",
 			'mimes' => 'Only PDF File are allowed.',
+			'max' => 'This file is greater than allowed file size.',
 			'file_count.with_count' => 'Please Submit minimum requirements.'
 
 		];
