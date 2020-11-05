@@ -350,8 +350,8 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-msg',"Record record not found.");
 			return redirect()->route('web.main.index');
 		}
-		
-		$this->data['transaction_requirements'] = TransactionRequirements::where('transaction_id',$transaction->id)->where('status',"DECLINED")->get();
+
+		$this->data['transaction_requirements'] = TransactionRequirements::groupBy('requirement_id')->where('transaction_id',$transaction->id)->where('status',"DECLINED")->get();
 
 		$this->data['transaction'] = $transaction;
 										
