@@ -21,7 +21,7 @@
 <table width="100%">
 	<tr >
 		<td style="border: dashed #0070C0;padding: 1.5em">
-			<p class="text-bold" style="font-size: 25px;">Reference #: {{$transaction->code}}</p><br><br><br>
+			<p class="text-bold" style="font-size: 25px;">Reference #: {{$transaction->document_reference_code}}</p><br><br><br>
 			<p style="font-size: 25px;"><b>Application Name:</b> {{Str::title($transaction->application_name)}}</p>
 			<p style="font-size: 25px;"><b>Department Name:</b> {{Str::title($transaction->department_name)}}</p>
 			<p style="font-size: 25px;"><b>Date Generated:</b> {{Helper::date_only($transaction->modified_at)}}</p>

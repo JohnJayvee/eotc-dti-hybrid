@@ -18,11 +18,12 @@ class ProcessorTransactionRequest extends RequestManager{
 			'processing_fee' => "required",
 			/*'regional_id' => "required",*/
 			'email' => "required",
-			'amount' => "required|numeric|min:0",
+			'amount' => "required|transaction_amount:application_id,amount",
 			'contact_number' => "required|max:10|phone:PH",
 			'requirements_id' => "required",
     		
 		];
+
 		return $rules;
 		
 	}
@@ -32,7 +33,7 @@ class ProcessorTransactionRequest extends RequestManager{
 			'required'	=> "Field is required.",
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
 			'numeric' => "Please input a valid amount.",
-
+			'amount.transaction_amount' => ":message",
 		];
 	}
 }

@@ -2,7 +2,7 @@
 
 use Session,Auth;
 use App\Laravel\Requests\RequestManager;
-
+use App\Laravel\Models\ApplicationRequirements;
 class UploadRequest extends RequestManager{
 
 	public function rules(){
@@ -10,12 +10,13 @@ class UploadRequest extends RequestManager{
 		$id = $this->route('id')?:0;
 		$file = $this->file('file') ? count($this->file('file')) : 0;
 
-		$rules = [
-    		'file.*' => 'required|mimes:pdf,docx,doc|max:204800'
-		];
-		if ($file < 1 ) {
-			$rules['file'] = "required";
+		
+		$required = ApplicationRequirements::whereIn('id',$this->get('requirement_id'))->get();
+
+		foreach ($required as $key => $value) {
+			$rules['file'.$value->id] = "required|mimes:pdf,docx,doc|max:5000";
 		}
+
 
 		return $rules;
 		
@@ -24,8 +25,6 @@ class UploadRequest extends RequestManager{
 	public function messages(){
 		return [
 			'required'	=> "Field is required.",
-			'file.required'	=> "No File Uploaded.",
-			'file.*' => 'Only PDF File are allowed.'
 		];
 	}
 }

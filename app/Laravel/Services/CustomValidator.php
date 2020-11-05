@@ -47,6 +47,7 @@ class CustomValidator extends Validator {
        
     }
 
+
     protected function replaceMinimumAmount($message,$attribute, $rule, $parameters)
     {
      
@@ -59,6 +60,40 @@ class CustomValidator extends Validator {
         if ($amount == 0) {
            $custom_message = "This Application doesn't allowed partial payment";
         }
+        
+        return str_replace(':message', $custom_message, $message);
+    }
+
+    public function validateTransactionAmount($attribute, $rule, $parameters){
+
+        $value = $this->getValue($attribute);
+       
+
+        if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
+        if(is_array($parameters) AND isset($parameters[0])){ $amount = Request::get($parameters[1]); }
+       
+
+        $application = Application::find($application_id);
+        $partial_amount = $application->partial_amount ?: 0;
+        
+        if ($amount <= $partial_amount) {
+            return FALSE;
+        }
+
+            return TRUE;
+       
+    }
+
+    protected function replaceTransactionAmount($message,$attribute, $rule, $parameters)
+    {
+     
+        if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
+        if(is_array($parameters) AND isset($parameters[0])){ $amount = Request::get($parameters[1]); }
+       
+        $application = Application::find($application_id);
+        $partial_amount = $application->partial_amount ?: 0;
+        $custom_message = "The amount you entered is less than the set partial amount PHP ".$partial_amount;
+    
         
         return str_replace(':message', $custom_message, $message);
     }

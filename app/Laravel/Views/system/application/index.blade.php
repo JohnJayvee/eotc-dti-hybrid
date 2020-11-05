@@ -38,6 +38,9 @@
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.application.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
+        <div class="col-md-3  mt-4 p-1">
+          <a href="{{route('system.department.create')}}" class="btn btn-sm btn-primary float-right">Add New</a>
+        </div>
       </div>
     </form>
   </div>

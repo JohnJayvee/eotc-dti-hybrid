@@ -130,7 +130,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="input_title">Amount</label>
-              <input type="text" class="form-control {{$errors->first('amount') ? 'is-invalid' : NULL}}" id="input_amount" name="amount" placeholder="Amount" value="{{old('amount')}}">
+              <input type="text" class="form-control {{$errors->first('amount') ? 'is-invalid' : NULL}}" id="input_amount" name="amount" placeholder="Amount" value="{{old('amount')}}" readonly>
               @if($errors->first('amount'))
               <p class="mt-1 text-danger">{!!$errors->first('amount')!!}</p>
               @endif
@@ -194,12 +194,15 @@
     });
     var application_id = $(this).val()
     $('#input_application_name').val(_text);
+    $('#input_amount').prop("readonly",false);
   });
 
   function formatNumber (num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
   }
-
+  @if(old('application_id'))
+    $('#input_amount').prop("readonly",false);
+  @endif
   $('#input_requirements_id').select2({placeholder: "Select Requirements"});
 </script>
 

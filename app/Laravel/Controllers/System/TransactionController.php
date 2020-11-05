@@ -428,6 +428,8 @@ class TransactionController extends Controller{
 		DB::beginTransaction();
 		try{
 
+			
+
 			$transaction = $request->get('transaction_data');
 			$application = Application::find($transaction->application_id);
 
@@ -436,6 +438,10 @@ class TransactionController extends Controller{
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->modified_at = Carbon::now();
+			if (!$transaction->document_reference_code) {
+				$transaction->document_reference_code = 'EOTC-DOC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+			}
+			
 			$transaction->save();
 
 			if ($type == "APPROVED") {
