@@ -22,6 +22,7 @@ class DigipepController extends Controller
 
 	public function success(PageRequest $request,$code = NULL){
 		Log::info("Digipep Success",array($request->all()));
+		dd("a");
 		$response = json_decode(json_encode($request->all()));
 		if(isset($response->referenceCode)){
 			$code = strtolower($response->referenceCode);
