@@ -272,7 +272,7 @@ class CustomerTransactionController extends Controller
 		$amount = $prefix == 'APP' ?  Helper::db_amount($transaction->amount - $transaction->partial_amount) : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
 		if ($amount == 0) {
 			$transaction->application_payment_status = $amount > 0 ? "UNPAID" : "PAID";
-			$transaction->application_transaction_status =  $amount > 0 ? "UNPAID" : "PAID";
+			$transaction->application_transaction_status =  $amount > 0 ? "PENDING" : "COMPLETED";
 			$transaction->save();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg','Thank you, Your Transaction is completed');
