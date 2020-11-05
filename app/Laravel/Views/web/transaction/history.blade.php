@@ -63,7 +63,12 @@
               </tbody>
           </table>
         </div>
-        
+        @if($transactions->total() > 0)
+          <nav class="mt-2 float-right">
+            {!!$transactions->appends(request()->query())->render()!!}
+            </ul>
+          </nav>
+        @endif
     </div>
 
 </section>

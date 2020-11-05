@@ -122,7 +122,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text text-title fw-600">PHP <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                   </div>
-                                  <input type="text" class="form-control br-left-white" placeholder="Partial Amountr" name="partial_amount" value="{{old('partial_amount')}}" id="input_partial_amount" readonly>
+                                  <input type="text" class="form-control br-left-white" placeholder="Partial Amount" name="partial_amount" value="{{old('partial_amount')}}" id="input_partial_amount" readonly>
                                 </div>
                                 @if($errors->first('partial_amount'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('partial_amount')}}</small>

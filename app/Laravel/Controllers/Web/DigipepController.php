@@ -240,4 +240,88 @@ class DigipepController extends Controller
 
 		end:
 	}
+
+	public function void(PageRequest $request,$code = NULL){
+		Log::info("Digipep Void",array($request->all()));
+
+		$response = json_decode(json_encode($request->all()));
+		
+		if(isset($response->referenceCode)){
+			$code = strtolower($response->referenceCode);
+			$prefix = explode('-', $code)[0];
+
+			switch (strtoupper($prefix)) {
+				case 'APP':
+					$transaction = Transaction::whereRaw("LOWER(transaction_code)  LIKE  '%{$code}%'")->first();
+					break;
+				
+				default:
+					$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
+					break;
+			}
+
+			if(!$transaction){
+				Log::info("Digipep Record not found : {$response->referenceCode}");
+				goto end;
+			}
+
+			$prefix = strtoupper($prefix);
+
+			if(isset($response->payment) AND Str::upper($response->payment->status) == "FAILED" AND $transaction->status != "COMPLETED" AND $prefix == "APP"){
+			
+				DB::beginTransaction();
+				try{
+					$transaction->application_payment_reference = $response->transactionCode;
+					$transaction->application_payment_method  = $response->payment->paymentMethod;
+					$transaction->application_payment_type  = $response->payment->paymentType;
+
+					$transaction->application_payment_option  = "DIGIPEP";
+
+					$transaction->application_payment_date = Carbon::now();
+					$transaction->application_transaction_status  = "FAILED";
+					$transaction->application_payment_status  = "UNPAID";
+					$transaction->application_eor_url = $response->payment->eorURL;
+
+					$convenience_fee = $response->payment->convenienceFee;
+					$transaction->application_convenience_fee = $convenience_fee; 
+					$transaction->application_total_amount = $transaction->amount + $convenience_fee;
+					$transaction->save();
+					DB::commit();
+
+				}catch(\Exception $e){
+					DB::rollBack();
+					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
+				}
+			}
+
+			if(isset($response->payment) AND Str::upper($response->payment->status) == "FAILED" AND $transaction->status != "COMPLETED" AND $prefix == "PF"){
+			
+				DB::beginTransaction();
+				try{
+					$transaction->payment_reference = $response->transactionCode;
+					$transaction->payment_method  = $response->payment->paymentMethod;
+					$transaction->payment_type  = $response->payment->paymentType;
+
+					$transaction->payment_option  = "DIGIPEP";
+
+					$transaction->payment_date = Carbon::now();
+					$transaction->transaction_status  = "FAILED";
+					$transaction->payment_status  = "UNPAID";
+					$transaction->eor_url = $response->payment->eorURL;
+
+					$convenience_fee = $response->payment->convenienceFee;
+					$transaction->convenience_fee = $convenience_fee; 
+					$transaction->total_amount = $transaction->processing_fee + $convenience_fee;
+					$transaction->save();
+					DB::commit();
+
+				}catch(\Exception $e){
+					DB::rollBack();
+					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
+				}
+			}
+		}
+
+		end:
+	}
 }
