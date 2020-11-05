@@ -10,7 +10,7 @@
     <div class="container">
          
          <div class="row flex-row items-center px-4">
-            <h5 class="text-title pb-3"><i class="fa fa-file"></i> E<span class="text-title-two"> Application History</span></h5>
+            <h5 class="text-title pb-3"><i class="fa fa-file"></i> E<span class="text-title-two"> APPLICATION DETAILS</span></h5>
             <a href="{{route('web.transaction.history')}}" class="custom-btn badge-primary-2 text-white " style="float: right;margin-left: auto;">E-Submission</a>
          </div>
           
