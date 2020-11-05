@@ -65,7 +65,7 @@ class DigipepController extends Controller
 					$transaction->save();
 					DB::commit();
 
-					$insert_data[] = [
+					/*$insert_data[] = [
 			            'email' => $transaction->email,
 			            'full_name' => $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name,
 			            'application_name' => $transaction->application_name,
@@ -77,7 +77,7 @@ class DigipepController extends Controller
 
 					$application_data = new SendCertificate($insert_data);
 				    Event::dispatch('send-email-certificate', $application_data);
-
+*/
 				}catch(\Exception $e){
 					DB::rollBack();
 					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
