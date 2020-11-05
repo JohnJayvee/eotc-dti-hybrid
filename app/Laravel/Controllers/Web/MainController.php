@@ -108,7 +108,7 @@ class MainController extends Controller{
 		}
 
 		$current_transaction_code = Str::lower(session()->get('transaction.code'));
-		dd($transaction->transaction_status);
+
 		if($current_transaction_code == $code){
 			session()->forget('transaction');
 			$this->data['transaction'] = $transaction;
