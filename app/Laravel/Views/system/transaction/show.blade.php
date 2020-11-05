@@ -50,12 +50,14 @@
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p>
             <p class="text-title fw-500">Partial Payment : Php {{Helper::money_format($transaction->partial_amount)}} </p>
           </div>
+          @if($transaction->amount)
           <div class="col-md-6 mt-4">
             <p class="text-title fw-500">Application Details:</span></p>
             <p class="text-title fw-500">Status: <span class="badge  badge-{{Helper::status_badge($transaction->application_transaction_status)}} p-2">{{Str::title($transaction->application_transaction_status)}}</span></p>
             <p class="fw-500" style="color: #DC3C3B;">Amount: Php {{Helper::money_format($transaction->amount ? $transaction->amount : "0.00")}} [{{ $transaction->transaction_code }}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->application_payment_status)}} p-2">{{Str::title($transaction->application_payment_status)}}</span></p>
           </div>
+          @endif
           @if($transaction->process_by == "processor")
           <div class="col-md-6">
             <table>

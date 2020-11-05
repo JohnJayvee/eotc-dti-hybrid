@@ -297,6 +297,7 @@ $(document).ready(function() {
             if (partial_amount > 0) {
                 $('#input_partial_amount').prop("readonly" ,false);
             }else{
+                $('#input_partial_amount').val('');
                 $('#input_partial_amount').prop("readonly" ,true);
             }
             $('#input_processing_fee').val(formatNumber(amount));
