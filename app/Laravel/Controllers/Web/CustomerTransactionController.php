@@ -221,23 +221,6 @@ class CustomerTransactionController extends Controller
 	}
 
 	public function pay(PageRequest $request, $code = null){
-		/*$insert[] = [
-                'contact_number' => $new_transaction->contact_number,
-                'ref_num' => $new_transaction->code
-            ];	
-		$notification_data = new SendReference($insert);
-	    Event::dispatch('send-sms', $notification_data);
-		
-		$insert_data[] = [
-            'email' => $new_transaction->email,
-            'name' => $new_transaction->customer->full_name,
-            'company_name' => $new_transaction->company_name,
-            'department' => $new_transaction->department->name,
-            'purpose' => $new_transaction->type->name,
-            'ref_num' => $new_transaction->code
-        ];	
-		$application_data = new SendApplication($insert_data);
-	    Event::dispatch('send-application', $application_data);*/
 
 		$code = $request->has('code') ? $request->get('code') : $code;
 		$prefix = explode('-', $code)[0];
@@ -287,7 +270,14 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 		$amount = $prefix == 'APP' ?  Helper::db_amount($transaction->amount - $transaction->partial_amount) : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
-
+		if ($amount == 0) {
+			$transaction->application_payment_status = $amount > 0 ? "UNPAID" : "PAID";
+			$transaction->application_transaction_status =  $amount > 0 ? "UNPAID" : "PAID";
+			$transaction->save();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg','Thank you, Your Transaction is completed');
+			return redirect()->route('web.transaction.history');
+		}
 		$customer = $transaction->customer;
 		
 		try{
