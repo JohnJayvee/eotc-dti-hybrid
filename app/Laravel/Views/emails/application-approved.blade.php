@@ -82,7 +82,7 @@
 			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Amount:</th>
-				<th style="text-align: right;">{{Str::title($amount)}}</th>
+				<th style="text-align: right;">PHP {{Helper::money_format($amount)}}</th>
 			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Payment Reference Number:</th>
