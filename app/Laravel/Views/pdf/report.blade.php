@@ -31,7 +31,7 @@
 					<td>{{Helper::money_format($value->amount) ?: '---'}}</td>
 					<td>{{$value->application_payment_status}}</td>
 					<td>{{ $value->admin ? $value->admin->full_name : '---' }}</td>
-					<td>{{ $value->is_resent == 1 ? "RESENT" : $value->status}}</td>
+					<td>{{ $value->is_resent == 1 && $value->status == "PENDING" ? "RESENT" : $value->status}}</td>
 				</tr>
 			@empty
 			@endforelse
