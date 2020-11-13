@@ -73,7 +73,7 @@
 					<table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
 						<thead>
 							<tr>
-								<th width="25%" class="text-title p-3">Application Name</th>
+								<th width="25%" class="text-title p-3">Department Name</th>
 								<th width="25%" class="text-title p-3">Amount</th>
 							</tr>
 						</thead>

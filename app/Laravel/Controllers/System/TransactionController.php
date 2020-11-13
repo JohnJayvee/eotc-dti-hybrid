@@ -10,7 +10,7 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{Transaction,TransactionRequirements,Department,RegionalOffice,ApplicationRequirements,Application};
+use App\Laravel\Models\{Transaction,TransactionRequirements,Department,RegionalOffice,ApplicationRequirements,Application,AccountTitle};
 
 use App\Laravel\Requests\System\ProcessorTransactionRequest;
 
@@ -347,6 +347,8 @@ class TransactionController extends Controller{
 		$this->data['page_title'] = "- Add New Record";
 		$auth= Auth::user();
 		if($auth->type == "processor"){
+			$this->data['account_titles'] = ['' => "Choose Account Title"] + AccountTitle::where('department_id',$auth->department_id)->pluck('name','id')->toArray();
+
 			$this->data['applications'] = ['' => "Choose Application Type"] + Application::whereIn('id',explode(",",$auth->application_id))->pluck('name','id')->toArray();
 
 		}
@@ -374,6 +376,8 @@ class TransactionController extends Controller{
 			$new_transaction->application_name = $request->get('application_name');
 			$new_transaction->department_id = $request->get('department_id');
 			$new_transaction->department_name = $request->get('department_name');
+			$new_transaction->account_title = $request->get('account_title');
+			$new_transaction->account_title_id = $request->get('account_title_id');
 			$new_transaction->payment_status = $request->get('processing_fee') > 0 ? "UNPAID" : "PAID";
 			$new_transaction->transaction_status = $request->get('processing_fee') > 0 ? "PENDING" : "COMPLETED";
 			$new_transaction->processor_user_id = Auth::user()->id;

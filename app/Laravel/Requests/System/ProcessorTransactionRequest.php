@@ -14,6 +14,7 @@ class ProcessorTransactionRequest extends RequestManager{
 			'lastname' => "required",
 			'company_name' => "required",
 			'application_id' => "required",
+			'account_title_id' => "required",
 			'department_id' => "required",
 			'processing_fee' => "required",
 			/*'regional_id' => "required",*/

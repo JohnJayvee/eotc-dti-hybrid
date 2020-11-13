@@ -53,6 +53,7 @@
             <th width="25%" class="text-title p-3">Application Name</th>
             <th width="25%" class="text-title p-3">Payment Fee</th>
             <th width="25%" class="text-title p-3">Department</th>
+            <th width="25%" class="text-title p-3">Account Title</th>
             <th width="25%" class="text-title p-3">Created At</th>
             <th width="10%" class="text-title p-3">Action</th>
           </tr>
@@ -63,6 +64,7 @@
             <td>{{ $application->name}}</td>
             <td>PHP {{ Helper::money_format($application->processing_fee)}}</td>
             <td>{{ $application->department ? Str::title($application->department->name) : "N/A"}}</td>
+            <td>{{ $application->title ? Str::title($application->title->name) : "N/A"}}</td>
             <td>{{ Helper::date_format($application->created_at)}}</th>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
@@ -74,7 +76,7 @@
           </tr>
           @empty
           <tr>
-            <td colspan="5" class="text-center"><i>No Application Types Records Available.</i></td>
+            <td colspan="6" class="text-center"><i>No Application Types Records Available.</i></td>
           </tr>
           @endforelse
         </tbody>

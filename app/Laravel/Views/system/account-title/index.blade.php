@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Bureau/Office</p>
+        <p class="text-dim  float-right">EOR-PHP Processor Portal /Account Title</p>
       </div>
     </div>
   
@@ -34,47 +34,47 @@
   <div class="col-md-12">
     <h4 class="pb-4">Record Data
       <span class="float-right">
-        <a href="{{route('system.department.upload')}}" class="btn btn-sm btn-primary">Bulk Upload</a>
-        <a href="{{route('system.department.create')}}" class="btn btn-sm btn-primary">Add New</a>
+        <!-- <a href="{{route('system.department.upload')}}" class="btn btn-sm btn-primary">Bulk Upload</a> -->
+        <a href="{{route('system.account_title.create')}}" class="btn btn-sm btn-primary">Add New</a>
       </span>
     </h4>
     <div class="table-responsive shadow-sm fs-15">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th width="25%" class="text-title p-3">Code</th>
+            <th width="25%" class="text-title p-3">Department</th>
             <th width="25%" class="text-title p-3">Name</th>
             <th width="25%" class="text-title p-3">Created At</th>
             <th width="10%" class="text-title p-3">Action</th>
           </tr>
         </thead>
         <tbody>
-          @forelse($departments as $index => $department)
+          @forelse($account_titles as $index => $account_title)
           <tr>
-            <td>{{ $department->code}}</td>
-            <td>{{ $department->name}}</td>
-            <td>{{ Helper::date_format($department->created_at)}}</td>
+            <td>{{ $account_title->department ? $account_title->department->name : "N/A"}}</td>
+            <td>{{ $account_title->name}}</td>
+            <td>{{ Helper::date_format($account_title->created_at)}}</td>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                <a class="dropdown-item" href="{{route('system.department.edit',[$department->id])}}">Edit Bureau/Office</a>
-                <a class="dropdown-item action-delete"  data-url="{{route('system.department.destroy',[$department->id])}}" data-toggle="modal" data-target="#confirm-delete">Remove Record</a>
+                <a class="dropdown-item" href="{{route('system.account_title.edit',[$account_title->id])}}">Edit Account Title</a>
+                <a class="dropdown-item action-delete"  data-url="{{route('system.account_title.destroy',[$account_title->id])}}" data-toggle="modal" data-target="#confirm-delete">Remove Record</a>
               </div>
             </td>
           </tr>
           @empty
           <tr>
-           <td colspan="5" class="text-center"><i>No Bureau/Office Records Available.</i></td>
+           <td colspan="5" class="text-center"><i>No Account Title Records Available.</i></td>
           </tr>
           @endforelse
           
         </tbody>
       </table>
     </div>
-    @if($departments->total() > 0)
+    @if($account_titles->total() > 0)
     <nav class="mt-2">
-     <!--  <p>Showing <strong>{{$departments->firstItem()}}</strong> to <strong>{{$departments->lastItem()}}</strong> of <strong>{{$departments->total()}}</strong> entries</p> -->
-      {!!$departments->appends(request()->query())->render()!!}
+     <!--  <p>Showing <strong>{{$account_titles->firstItem()}}</strong> to <strong>{{$account_titles->lastItem()}}</strong> of <strong>{{$account_titles->total()}}</strong> entries</p> -->
+      {!!$account_titles->appends(request()->query())->render()!!}
       </ul>
     </nav>
     @endif

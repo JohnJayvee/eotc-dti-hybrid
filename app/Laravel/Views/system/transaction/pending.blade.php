@@ -28,6 +28,10 @@
           @endif
         </div>
         <div class="col-md-3">
+          <label>Particulars</label>
+         {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-3">
           <label>Application Type</label>
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
         </div>
@@ -69,7 +73,8 @@
             <th class="text-title p-3" width="15%">Transaction Date</th>
             <th class="text-title p-3" width="15%">Submitted By/<br>Company Name</th>
             <th class="text-title p-3" width="15%">Bureau/Office</th>
-            <th class="text-title p-3" width="30%">Application Type</th>
+            <th class="text-title p-3" width="15%">Account Title</th>
+            <th class="text-title p-3" width="30%">Particulars</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
             <th class="text-title p-3" width="10%">Amount</th>
             <th class="text-title p-3" width="10%">Processor/Status</th>
@@ -82,6 +87,7 @@
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
             <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}/<br>{{str::title($transaction->company_name)}}</td>
             <td>{{ $transaction->department->name}}</td>
+            <td>{{ $transaction->account ? Strtoupper($transaction->account->name) : "N/A"}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>
               <div>{{Helper::money_format($transaction->processing_fee) ?: 0 }}</div>
@@ -145,33 +151,33 @@
 @section('page-scripts')
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script type="text/javascript">
-  $.fn.get_application_type = function(department_id,input_purpose,selected){
-        $(input_purpose).empty().prop('disabled',true)
-        $(input_purpose).append($('<option>', {
-                  value: "",
-                  text: "Loading Content..."
-              }));
-        $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
-            $(input_purpose).empty().prop('disabled',true)
-            $.each(result.data,function(index,value){
-              // console.log(index+value)
-              $(input_purpose).append($('<option>', {
-                  value: index,
-                  text: value
-              }));
-            })
+    $.fn.get_application_type = function(department_id,input_purpose,selected){
+      $(input_purpose).empty().prop('disabled',true)
+      $(input_purpose).append($('<option>', {
+                value: "",
+                text: "Loading Content..."
+            }));
+      $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
+          $(input_purpose).empty().prop('disabled',true)
+          $.each(result.data,function(index,value){
+            // console.log(index+value)
+            $(input_purpose).append($('<option>', {
+                value: index,
+                text: value
+            }));
+          })
 
-            $(input_purpose).prop('disabled',false)
-            $(input_purpose).prepend($('<option>',{value : "",text : "--Choose Application Type--"}))
+          $(input_purpose).prop('disabled',false)
+          $(input_purpose).prepend($('<option>',{value : "",text : "--Choose Application Type--"}))
 
-            if(selected.length > 0){
-              $(input_purpose).val($(input_purpose+" option[value="+selected+"]").val());
+          if(selected.length > 0){
+            $(input_purpose).val($(input_purpose+" option[value="+selected+"]").val());
 
-            }else{
-              $(input_purpose).val($(input_purpose+" option:first").val());
-              //$(this).get_extra(selected)
-            }
-        });
+          }else{
+            $(input_purpose).val($(input_purpose+" option:first").val());
+            //$(this).get_extra(selected)
+          }
+      });
         // return result;
     };
 

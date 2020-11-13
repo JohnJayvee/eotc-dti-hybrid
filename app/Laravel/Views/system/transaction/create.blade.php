@@ -20,6 +20,7 @@
         {!!csrf_field()!!}
         <input type="hidden" name="department_id" id="input_department_id" value="{{Auth::user()->department_id}}">
         <input type="hidden" name="application_name" id="input_application_name" value="{{old('application_name')}}">
+        <input type="hidden" name="account_title" id="input_account_title" value="{{old('account_title')}}">
         <!-- <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}"> -->
         <div class="row">
           <div class="col-md-4">
@@ -104,6 +105,15 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
+              <label for="input_title">Account Title</label>
+              {!!Form::select('account_title_id',$account_titles,old('account_title_id'),['id' => "input_account_title_id",'class' => "custom-select ".($errors->first('account_title_id') ? 'border-red' : NULL)])!!}
+              @if($errors->first('account_title_id'))
+              <p class="mt-1 text-danger">{!!$errors->first('account_title_id')!!}</p>
+              @endif
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
               <label for="input_title">Type of Application</label>
               {!!Form::select('application_id',$applications,old('application_id'),['id' => "input_application_id",'class' => "custom-select ".($errors->first('application_id') ? 'border-red' : NULL)])!!}
               @if($errors->first('application_id'))
@@ -180,17 +190,52 @@
 @section('page-scripts')
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
+  $.fn.get_application_type = function(department_id,input_purpose,selected){
+    $(input_purpose).empty().prop('disabled',true)
+    $(input_purpose).append($('<option>', {
+      value: "",
+      text: "Loading Content..."
+    }));
+    $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
+      $(input_purpose).empty().prop('disabled',true)
+      $.each(result.data,function(index,value){
+        // console.log(index+value)
+        $(input_purpose).append($('<option>', {
+            value: index,
+            text: value
+        }));
+      })
 
-  $("#input_regional_id").on("change",function(){
+      $(input_purpose).prop('disabled',false)
+      $(input_purpose).prepend($('<option>',{value : "",text : "--Choose Application Type--"}))
+
+      if(selected.length > 0){
+        $(input_purpose).val($(input_purpose+" option[value="+selected+"]").val());
+
+      }else{
+        $(input_purpose).val($(input_purpose+" option:first").val());
+        //$(this).get_extra(selected)
+      }
+    });
+        // return result;
+  };
+
+  /*$("#input_regional_id").on("change",function(){
     var _text = $("#input_regional_id option:selected").text();
     $('#input_regional_name').val(_text);
+  })*/
+  $("#input_account_title_id").on("change",function(){
+    var account_title_id = $(this).val()
+    var _text = $("#input_account_title_id option:selected").text();
+    $(this).get_application_type(account_title_id,"#input_application_id","")
+    $('#input_account_title').val(_text);
   })
 
   $('#input_application_id').change(function() {
     var _text = $("#input_application_id option:selected").text();
     $.getJSON('/amount?type_id='+this.value, function(result){
-        amount = parseFloat(result.data)
-        $('#input_processing_fee').val(formatNumber(amount));
+      amount = parseFloat(result.data)
+      $('#input_processing_fee').val(formatNumber(amount));
     });
     var application_id = $(this).val()
     $('#input_application_name').val(_text);
@@ -202,6 +247,9 @@
   }
   @if(old('application_id'))
     $('#input_amount').prop("readonly",false);
+  @endif
+  @if(old('account_title_id'))
+    $(this).get_application_type("{{old('account_title_id')}}","#input_application_id","{{old('application_id')}}")
   @endif
   $('#input_requirements_id').select2({placeholder: "Select Requirements"});
 </script>

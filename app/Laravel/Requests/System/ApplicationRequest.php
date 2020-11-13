@@ -10,6 +10,8 @@ class ApplicationRequest extends RequestManager{
 		$rules = [
 			'name' => "required",
 			'department_id' => "required",
+			'account_title_id' => "required",
+			'collection_type' => "required",
 			'processing_fee' => "required|numeric|min:0",
 			'partial_amount' => "required|numeric|min:0",
 			// 'processing_days' => "required|integer",

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTableApplicationAddFieldPartialAmount extends Migration
+class UpdateApplicationTableAddFieldCollectionType extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class UpdateTableApplicationAddFieldPartialAmount extends Migration
     public function up()
     {
         Schema::table('application', function($table){
-            $table->string('partial_amount')->nullable()->after('processing_fee');
+            $table->string('collection_type')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class UpdateTableApplicationAddFieldPartialAmount extends Migration
     public function down()
     {
         Schema::table('application', function($table){
-            $table->dropColumn(['partial_amount']);
+            $table->dropColumn(['collection_type']);
         });
     }
 }

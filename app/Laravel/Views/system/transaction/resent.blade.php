@@ -62,7 +62,8 @@
             <th class="text-title p-3" width="15%">Transaction Date</th>
             <th class="text-title p-3" width="15%">Submitted By/Company Name</th>
             <th class="text-title p-3" width="15%">Bureau/Office</th>
-            <th class="text-title p-3" width="30%">Application Type</th>
+            <th class="text-title p-3" width="15%">Account Title</th>
+            <th class="text-title p-3" width="30%">Particulars</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
             <th class="text-title p-3" width="10%">Amount</th>
             <th class="text-title p-3" width="10%">Processor/Status</th>
@@ -75,6 +76,7 @@
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
             <td>{{ $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}/<br>{{str::title($transaction->company_name)}}</td>
             <td>{{ $transaction->department->name}}</td>
+            <td>{{ $transaction->account ? Strtoupper($transaction->account->name) : "N/A"}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>
               <div>{{Helper::money_format($transaction->processing_fee) ?: 0 }}</div>

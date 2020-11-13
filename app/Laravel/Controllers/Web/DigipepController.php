@@ -65,7 +65,7 @@ class DigipepController extends Controller
 					$transaction->save();
 					DB::commit();
 
-					$insert_data[] = [
+					/*$insert_data[] = [
 			            'email' => $transaction->email,
 			            'full_name' => $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name,
 			            'application_name' => $transaction->application_name,
@@ -73,7 +73,7 @@ class DigipepController extends Controller
 			            'modified_at' => $transaction->modified_at,
 			            'ref_num' => $transaction->transaction_code,
 			            'link' => env("APP_URL")."/certificate/".$transaction->id,
-			        ];	
+			        ];	*/
 
 					$application_data = new SendCertificate($insert_data);
 				    Event::dispatch('send-email-certificate', $application_data);

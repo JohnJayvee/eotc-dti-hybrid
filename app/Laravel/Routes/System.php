@@ -92,6 +92,15 @@ Route::group(['as' => "auth."], function(){
 			
 		});
 
+		Route::group(['as' => "account_title.",'prefix' => "account-title"], function(){
+			Route::get('/',['as' => "index",'uses' => "AccountTitleController@index"]);
+			Route::get('create',['as' => "create",'uses' => "AccountTitleController@create"]);
+			Route::post('create',['uses' => "AccountTitleController@store"]);
+			Route::get('edit/{id?}',['as' => "edit",'uses' => "AccountTitleController@edit",'middleware' => "system.exist:account-title"]);
+			Route::post('edit/{id?}',['uses' => "AccountTitleController@update",'middleware' => "system.exist:account-title"]);
+			Route::any('delete/{id?}',['as' => "destroy",'uses' => "AccountTitleController@destroy",'middleware' => "system.exist:account-title"]);
+		});
+
 		Route::group(['as' => "application.",'prefix' => "application"], function(){
 			Route::get('/',['as' => "index",'uses' => "ApplicationController@index"]);
 			Route::get('create',['as' => "create",'uses' => "ApplicationController@create"]);

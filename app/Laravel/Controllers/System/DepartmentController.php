@@ -51,7 +51,8 @@ class DepartmentController extends Controller
 		try{
 			$new_department = new Department;
 			$new_department->name = $request->get('name');
-			
+			$new_department->code = $request->get('code');
+
 			$new_department->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -78,6 +79,7 @@ class DepartmentController extends Controller
 
 			$department = $request->get('department_data');
 			$department->name = $request->get('name');
+			$new_department->code = $request->get('code');
 			$department->save();
 
 			DB::commit();
@@ -131,7 +133,6 @@ class DepartmentController extends Controller
 		         $failure->errors(); // Actual error messages from Laravel validator
 		         $failure->values(); // The values of the row that has failed.
 		     }
-		    dd($failures);
 		    session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Something went wrong.");
 			return redirect()->route('system.department.index');

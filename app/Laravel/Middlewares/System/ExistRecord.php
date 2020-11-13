@@ -3,7 +3,7 @@
 namespace App\Laravel\Middlewares\System;
 
 use Closure, Helper,Str;
-use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements};
+use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements,AccountTitle};
 
 use App\Laravel\Models\{AccountCode};
 
@@ -85,7 +85,15 @@ class ExistRecord
                     $module = "application-requirements.index";
                 }
             break;
-            
+            case 'account-title':
+                if(! $this->__exist_account_title($request)) {
+                    $found_record = false;
+                    session()->flash('notification-status', "failed");
+                    session()->flash('notification-msg', "No record found or resource already removed.");
+
+                    $module = "account-title.index";
+                }
+            break;
         }
 
         if($found_record) {
@@ -152,6 +160,17 @@ class ExistRecord
 
         if($requirements){
             $request->merge(['requirement_data' => $requirements]);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+     private function __exist_account_title($request){
+        $account_titles= AccountTitle::find($this->reference_id);
+
+        if($account_titles){
+            $request->merge(['account_title_data' => $account_titles]);
             return TRUE;
         }
 

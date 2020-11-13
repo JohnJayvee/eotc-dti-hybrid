@@ -26,8 +26,10 @@ class ApplicationController extends Controller
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
-		$this->data['department'] = ['' => "All Department"] + Department::pluck('name','id')->toArray();
+		$this->data['department'] = ['' => "All Bureau/Office"] + Department::pluck('name','id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
+
+		$this->data['collections'] = ['' => "Choose Collection Type",'gf_income' => "GF Income",'ra' => "RA","testing_fee" => "Testing Fee" , "iso_manuals" => "PNS/ ISO  Manuals",'pab' => "PAB" ,"ntf" => "NTF","bid_securities" => "Bid Securities","dst" => "DST"];
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
@@ -64,7 +66,9 @@ class ApplicationController extends Controller
 		try{
 			$new_application = new Application;
 			$new_application->department_id = $request->get('department_id');
+			$new_application->account_title_id = $request->get('account_title_id');
 			$new_application->name = $request->get('name');
+			$new_application->collection_type = $request->get('collection_type');
 			$new_application->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			// $new_application->processing_days = $request->get('processing_days');
@@ -95,6 +99,7 @@ class ApplicationController extends Controller
 			$application = $request->get('application_data');
 			$application->department_id = $request->get('department_id');
 			$application->name = $request->get('name');
+			$application->collection_type = $request->get('collection_type');
 			$application->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			$application->processing_days = $request->get('processing_days');

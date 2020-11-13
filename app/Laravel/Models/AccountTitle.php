@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
 use Str;
 
-class Transaction extends Model{
+class AccountTitle extends Model{
     
     use SoftDeletes,DateFormatter;
     
@@ -16,7 +16,7 @@ class Transaction extends Model{
      *
      * @var string
      */
-    protected $table = "transaction";
+    protected $table = "account_title";
 
     /**
      * The database connection used by the model.
@@ -36,7 +36,7 @@ class Transaction extends Model{
      *
      * @var array
      */
-    protected $fillable = ['company_name','department_id'];
+    protected $fillable = ['name'];
 
 
     /**
@@ -63,29 +63,8 @@ class Transaction extends Model{
     protected $casts = [
     ];
 
-    public function type(){
-        return $this->BelongsTo("App\Laravel\Models\Application",'application_id','id');
+    public function Department(){
+        return $this->BelongsTo("App\Laravel\Models\Department", 'department_id', 'id');
     }
-
-    public function department(){
-        return $this->BelongsTo("App\Laravel\Models\Department",'department_id','id');
-    }
-    public function account(){
-        return $this->BelongsTo("App\Laravel\Models\AccountTitle",'account_title_id','id');
-    }
-
-    public function customer(){
-        return $this->BelongsTo("App\Laravel\Models\Customer",'customer_id','id');
-    }
-
-     public function admin(){
-        return $this->BelongsTo("App\Laravel\Models\User",'processor_user_id','id');
-    }
-    public function getCustomerNameAttribute(){
-        return Str::title("{$this->fname} {$this->lname} ");
-    }
-    
-  
-   
 
 }

@@ -18,6 +18,7 @@
             <form method="POST" action="" enctype="multipart/form-data">
             {!!csrf_field()!!}
                 <input type="hidden" name="department_name" id="input_department_name" value="{{old('department_name')}}">
+                <input type="hidden" name="account_title" id="input_account_title" value="{{old('account_title')}}">
                 <input type="hidden" name="application_name" id="input_application_name" value="{{old('application_name')}}">
                 <!-- <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}"> -->
                 <div class="card-body px-5 py-0">
@@ -84,6 +85,15 @@
                             </div>
                             @if($errors->first('department_id'))
                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('department_id')}}</small>
+                            @endif
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Account Title</label>
+                                {!!Form::select("account_title_id", ['' => "--Choose Account Title --"], old('account_title_id'), ['id' => "input_account_title_id", 'class' => "form-control form-control-sm classic ".($errors->first('account_title_id') ? 'border-red' : NULL)])!!}
+                            </div>
+                            @if($errors->first('account_title_id'))
+                                <small class="form-text pl-1" style="color:red;">{{$errors->first('account_title_id')}}</small>
                             @endif
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
@@ -225,7 +235,35 @@ $(document).ready(function() {
         $('#file_count').val(files.length);
     });
 
+    $.fn.get_account_title = function(department_id,input_account_title,selected){
+      $(input_account_title).empty().prop('disabled',true)
+      $(input_account_title).append($('<option>', {
+        value: "",
+        text: "Loading Content..."
+      }));
+      $.getJSON( "{{route('web.get_account_title')}}?department_id="+department_id, function( result ) {
+          $(input_account_title).empty().prop('disabled',true)
+          $.each(result.data,function(index,value){
+            // console.log(index+value)
+            $(input_account_title).append($('<option>', {
+                value: index,
+                text: value
+            }));
+          })
 
+          $(input_account_title).prop('disabled',false)
+          $(input_account_title).prepend($('<option>',{value : "",text : "--Choose Application Type--"}))
+
+          if(selected.length > 0){
+            $(input_account_title).val($(input_account_title+" option[value="+selected+"]").val());
+
+          }else{
+            $(input_account_title).val($(input_account_title+" option:first").val());
+            //$(this).get_extra(selected)
+          }
+      });
+        // return result;
+    };
 
     $.fn.get_application_type = function(department_id,input_purpose,selected){
         $(input_purpose).empty().prop('disabled',true)
@@ -308,8 +346,15 @@ $(document).ready(function() {
     $("#input_department_id").on("change",function(){
       var department_id = $(this).val()
       var _text = $("#input_department_id option:selected").text();
-      $(this).get_application_type(department_id,"#input_application_id","")
+      $(this).get_account_title(department_id,"#input_account_title_id","")
       $('#input_department_name').val(_text);
+    })
+
+    $("#input_account_title_id").on("change",function(){
+      var account_title_id = $(this).val()
+      var _text = $("#input_account_title_id option:selected").text();
+      $(this).get_application_type(account_title_id,"#input_application_id","")
+      $('#input_account_title').val(_text);
     })
 
     $("#input_regional_id").on("change",function(){
@@ -338,10 +383,15 @@ $(document).ready(function() {
     @if(old('department_id'))
         $(this).get_application_type("{{old('department_id')}}","#input_application_id","")
     @endif
-    @if(old('department_id') and  old('application_id'))
-        $(this).get_application_type("{{old('department_id')}}","#input_application_id","{{old('application_id')}}")
+    @if(old('account_title_id') and  old('application_id'))
+        $(this).get_application_type("{{old('account_title_id')}}","#input_application_id","{{old('application_id')}}")
         $(this).get_requirements_id("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
         $(this).get_partial_amount("{{old('application_id')}}","#input_application_id","{{old('application_id')}}")
+    @endif
+
+    @if(old('account_title_id'))
+        $(this).get_application_type("{{old('account_title_id')}}","#input_application_id","{{old('application_id')}}")
+        $(this).get_account_title("{{old('department_id')}}","#input_account_title_id","{{old('account_title_id')}}")
     @endif
  });
 </script>

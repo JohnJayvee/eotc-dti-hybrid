@@ -3,13 +3,13 @@
 use Session,Auth;
 use App\Laravel\Requests\RequestManager;
 
-class DepartmentRequest extends RequestManager{
+class AccountTitleRequest extends RequestManager{
 
 	public function rules(){
 
 		$rules = [
-			'name' => "required|unique:department,name,NULL,id,deleted_at,NULL",
-			'code' => "required|unique:department,code,NULL,id,deleted_at,NULL"
+			'name' => "required",
+			'department_id' => "required"
 		];
 
 		return $rules;

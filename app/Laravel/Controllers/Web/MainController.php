@@ -9,13 +9,15 @@ use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\Application;
 use App\Laravel\Models\Transaction;
 use App\Laravel\Models\ApplicationRequirements;
+use App\Laravel\Models\AccountTitle;
+use App\Laravel\Models\Exports\RCDExport;
 /*
  * Models
  */
 
 /* App Classes
  */
-use Helper, Carbon, Session, Str,Auth,Input,DB;
+use Helper, Carbon, Session, Str,Auth,Input,DB,Excel;
 
 class MainController extends Controller{
 
@@ -42,8 +44,19 @@ class MainController extends Controller{
 
 	public function get_application_type(PageRequest $request){
 		$id = $request->get('department_id');
-		$application = Application::where('department_id',$id)->get()->pluck('name', 'id');
+		$application = Application::where('account_title_id',$id)->get()->pluck('name', 'id');
 		$response['msg'] = "List of Application";
+		$response['status_code'] = "TYPE_LIST";
+		$response['data'] = $application;
+		callback:
+
+		return response()->json($response, 200);
+	}
+
+	public function get_account_title(PageRequest $request){
+		$id = $request->get('department_id');
+		$application = AccountTitle::where('department_id',$id)->get()->pluck('name', 'id');
+		$response['msg'] = "List of Account Title";
 		$response['status_code'] = "TYPE_LIST";
 		$response['data'] = $application;
 		callback:
@@ -123,5 +136,28 @@ class MainController extends Controller{
 		return redirect()->route('web.main.index');
 
 	}
+	public function rcd(PageRequest $request){
 
+		if ($request->get('start_date')) {
+			$auth = Auth::user();
+		 	$first_record = Transaction::orderBy('created_at','ASC')->first();
+			$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
+
+			if($first_record){
+				$start_date = $request->get('start_date',$first_record->created_at->format("Y-m-d"));
+			}
+			$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
+			$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
+
+
+	        $transactions = Transaction::where('status', "APPROVED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->orderBy('created_at',"DESC")->get();
+
+	        return Excel::download(new RCDExport($transactions), 'RCD-record'.Carbon::now()->format('Y-m-d').'.xlsx');
+		}
+		else{
+			goto end;
+		}
+		end:
+	 	 
+    }
 }

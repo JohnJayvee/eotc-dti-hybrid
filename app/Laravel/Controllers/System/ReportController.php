@@ -8,6 +8,7 @@ namespace App\Laravel\Controllers\System;
 use App\Laravel\Requests\PageRequest;
 
 use App\Laravel\Models\Exports\ReportTransactionExport;
+use App\Laravel\Models\Exports\RCDExport;
 use App\Laravel\Models\{Transaction,Department,Application};
 
 /* App Classes
@@ -268,5 +269,7 @@ class ReportController extends Controller
 		return $pdf->download("report.pdf");	
 
     }
+
+    
 
 }

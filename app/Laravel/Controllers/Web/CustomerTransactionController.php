@@ -70,6 +70,8 @@ class CustomerTransactionController extends Controller
 			$new_transaction->application_name = $request->get('application_name');
 			$new_transaction->department_id = $request->get('department_id');
 			$new_transaction->department_name = $request->get('department_name');
+			$new_transaction->account_title = $request->get('account_title');
+			$new_transaction->account_title_id = $request->get('account_title_id');
 			$new_transaction->payment_status = $request->get('processing_fee') > 0 ? "UNPAID" : "PAID";
 			$new_transaction->transaction_status = $request->get('processing_fee') > 0 ? "PENDING" : "COMPLETED";
 			$new_transaction->process_by = "customer";
@@ -284,7 +286,7 @@ class CustomerTransactionController extends Controller
 			session()->put('transaction.code', $code);
 
 			$request_body = Helper::digipep_transaction([
-				'title' => $transaction->application_name,
+				'title' => $transaction->account_title,
 				'trans_token' => $code,
 				'transaction_type' => "", 
 				'amount' => $amount,

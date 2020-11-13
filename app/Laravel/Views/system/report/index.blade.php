@@ -53,8 +53,12 @@
         <div class="col-md-4 p-2">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.report.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
-          <a href="{{route('system.report.export')}}?keyword={{$keyword}}&start_date={{$start_date}}&end_date={{$end_date}}&type={{$selected_type}}&department_id={{$selected_department_id}}&application_id={{$selected_application_id}}&payment_method={{$selected_payment_method}}&payment_status={{$selected_payment_status}}" class="btn btn-primary btn-sm p-2 float-right">Export Excel</a>
-          <a href="{{route('system.report.pdf')}}?keyword={{$keyword}}&start_date={{$start_date}}&end_date={{$end_date}}&type={{$selected_type}}&department_id={{$selected_department_id}}&application_id={{$selected_application_id}}&payment_method={{$selected_payment_method}}&payment_status={{$selected_payment_status}}" class="btn btn-primary btn-sm p-2 float-right mr-2">Export PDF</a>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-4 ">
+          <a href="{{route('system.report.export')}}?keyword={{$keyword}}&start_date={{$start_date}}&end_date={{$end_date}}&type={{$selected_type}}&department_id={{$selected_department_id}}&application_id={{$selected_application_id}}&payment_method={{$selected_payment_method}}&payment_status={{$selected_payment_status}}" class="btn btn-primary btn-sm p-2">Export Excel</a>
+          <a href="{{route('system.report.pdf')}}?keyword={{$keyword}}&start_date={{$start_date}}&end_date={{$end_date}}&type={{$selected_type}}&department_id={{$selected_department_id}}&application_id={{$selected_application_id}}&payment_method={{$selected_payment_method}}&payment_status={{$selected_payment_status}}" class="btn btn-primary btn-sm p-2 ">Export PDF</a>
         </div>
       </div>
     </form>
@@ -136,6 +140,9 @@
   .input-daterange input{ background: #fff!important; }  
   .btn-sm{
     border-radius: 10px;
+  }
+  .form-group{
+    margin-bottom: 5px!important;
   }
 </style>
 
