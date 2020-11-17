@@ -50,7 +50,7 @@ Route::group(['as' => "web.",
 	Route::get('show-pdf/{id?}',['as' => "show-pdf", 'uses' => "CustomerTransactionController@show_pdf"]);
 	Route::get('physical-copy/{id?}',['as' => "physical-copy", 'uses' => "CustomerTransactionController@physical_pdf"]);
 	Route::get('certificate/{id?}',['as' => "certificate", 'uses' => "CustomerTransactionController@certificate"]);
-	Route::get('rcd',['as' => "rcd",'uses' => "MainController@rcd"]);
+	Route::any('rcd',['as' => "rcd",'uses' => "MainController@rcd"]);
 
 	Route::group(['prefix' => "digipep",'as' => "digipep."],function(){
 		Route::any('success/{code}',['as' => "success",'uses' => "DigipepController@success"]);

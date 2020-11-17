@@ -495,4 +495,27 @@ class CustomerTransactionController extends Controller
 		return $pdf->stream("certificate.pdf");	
 
 	}
+	/*public function get_rcd(PageRequest $request){
+		
+		
+
+		return view('web.page.rcd',$this->data);
+	}
+
+	public function post_rcd(PageRequest $request){
+		
+			$request_body = [
+				'start_date' => $request->get('start_date'),
+				'end_date' => $request->get('end_date'),
+				'Token' => env('RCD_TOKEN')
+			];    
+			
+			$data = json_encode($request_body);
+
+			$str = 'Some String';
+
+			$encoded = urlencode( base64_encode( $data ) );
+
+			return redirect()->to('http://eotc-dti.localhost.com/rcd?parameter='.$encoded);
+	}*/
 }
