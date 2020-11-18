@@ -50,7 +50,7 @@
       <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
         <thead>
           <tr>
-            <th width="25%" class="text-title p-3">Application Name</th>
+            <th width="25%" class="text-title p-3">Particulars Name</th>
             <th width="25%" class="text-title p-3">Payment Fee</th>
             <th width="25%" class="text-title p-3">Department</th>
             <th width="25%" class="text-title p-3">Account Title</th>

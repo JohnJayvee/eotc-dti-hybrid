@@ -34,7 +34,7 @@ class ApplicationController extends Controller
 	}
 
 	public function  index(PageRequest $request){
-		$this->data['page_title'] = "Application";
+		$this->data['page_title'] = "Particulars";
 		$auth = Auth::user();
 
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
