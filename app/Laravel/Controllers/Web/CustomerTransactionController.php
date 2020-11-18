@@ -223,7 +223,7 @@ class CustomerTransactionController extends Controller
 	}
 
 	public function pay(PageRequest $request, $code = null){
-
+		$auth = Auth::user();
 		$code = $request->has('code') ? $request->get('code') : $code;
 		$prefix = explode('-', $code)[0];
 
@@ -278,7 +278,10 @@ class CustomerTransactionController extends Controller
 			$transaction->save();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg','Thank you, Your Transaction is completed');
-			return redirect()->route('web.transaction.history');
+			if ($auth) {
+				return redirect()->route('web.transaction.history');
+			}
+			return redirect()->route('web.main.index');
 		}
 		$customer = $transaction->customer;
 		
