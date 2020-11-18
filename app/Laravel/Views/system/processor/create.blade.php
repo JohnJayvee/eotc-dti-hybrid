@@ -126,13 +126,14 @@
 @section('page-scripts')
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
-  $.fn.get_application_type = function(department_id,input_application_id,selected){
+  
+  $.fn.get_application = function(department_id,input_application_id,selected){
     $(input_application_id).empty().prop('disabled',true)
     $(input_application_id).append($('<option>', {
               value: "",
               text: "Loading Content..."
           }));
-    $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
+    $.getJSON( "{{route('web.get_application')}}?department_id="+department_id, function( result ) {
       $(input_application_id).empty().prop('disabled',true)
       $.each(result.data,function(index,value){
         $(input_application_id).append($('<option>', {
@@ -150,7 +151,7 @@
   $("#input_department_id").on("change",function(){
     var department_id = $(this).val()
     var _text = $("#input_department_id option:selected").text();
-    $(this).get_application_type(department_id,"#input_application_id","")
+    $(this).get_application(department_id,"#input_application_id","")
     $('#input_department_name').val(_text);
     if (department_id == "office_head") {
       $("#application_container").hide();

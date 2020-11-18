@@ -53,6 +53,17 @@ class MainController extends Controller{
 		return response()->json($response, 200);
 	}
 
+	public function get_application(PageRequest $request){
+		$id = $request->get('department_id');
+		$application = Application::where('department_id',$id)->get()->pluck('name', 'id');
+		$response['msg'] = "List of Application";
+		$response['status_code'] = "TYPE_LIST";
+		$response['data'] = $application;
+		callback:
+
+		return response()->json($response, 200);
+	}
+
 	public function get_account_title(PageRequest $request){
 		$id = $request->get('department_id');
 		$application = AccountTitle::where('department_id',$id)->get()->pluck('name', 'id');

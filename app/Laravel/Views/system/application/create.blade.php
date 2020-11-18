@@ -4,8 +4,8 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{route('system.dashboard')}}">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="{{route('system.application.index')}}">Application Type Management</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Add New Application Type</li>
+    <li class="breadcrumb-item"><a href="{{route('system.application.index')}}">Particulars Type Management</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Add New Particulars Type</li>
   </ol>
 </nav>
 @stop
@@ -14,13 +14,13 @@
 <div class="col-md-8 grid-margin stretch-card">
   <div class="card">
     <div class="card-body">
-      <h4 class="card-title">Application Type Create Form</h4>
+      <h4 class="card-title">Particulars Type Create Form</h4>
       <form class="create-form" method="POST" enctype="multipart/form-data">
         @include('system._components.notifications')
         {!!csrf_field()!!}
         <div class="form-group">
-          <label for="input_name">Application Name</label>
-          <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_name" name="name" placeholder="Application Name" value="{{old('name')}}">
+          <label for="input_name">Particulars Name</label>
+          <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_name" name="name" placeholder="Particulars Name" value="{{old('name')}}">
           @if($errors->first('name'))
           <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
           @endif
@@ -76,7 +76,7 @@
           @endif
         </div>
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
-        <a href="{{route('system.application.index')}}" class="btn btn-light">Return to Application Type list</a>
+        <a href="{{route('system.application.index')}}" class="btn btn-light">Return to Particulars list</a>
       </form>
     </div>
   </div>

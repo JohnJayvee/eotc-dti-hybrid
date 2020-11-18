@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Applications</p>
+        <p class="text-dim  float-right">EOR-PHP Processor Portal / Particulars</p>
       </div>
     </div>
   
@@ -61,10 +61,10 @@
         <tbody>
           @forelse($applications as $application)
           <tr>
-            <td>{{ $application->name}}</td>
+            <td class="text-uppercase">{{ $application->name}}</td>
             <td>PHP {{ Helper::money_format($application->processing_fee)}}</td>
-            <td>{{ $application->department ? Str::title($application->department->name) : "N/A"}}</td>
-            <td>{{ $application->title ? Str::title($application->title->name) : "N/A"}}</td>
+            <td class="text-uppercase">{{ $application->department ? ($application->department->name) : "N/A"}}</td>
+            <td class="text-uppercase">{{ $application->title ? ($application->title->name) : "N/A"}}</td>
             <td>{{ Helper::date_format($application->created_at)}}</th>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>

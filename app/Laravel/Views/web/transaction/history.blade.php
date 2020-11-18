@@ -27,7 +27,7 @@
                 @forelse($transactions as $transaction)
                 <tr class="text-center table-font">
                   <td>{{$transaction->company_name}}</th>
-                  <td>{{$transaction->type->name}}<br><a href="{{route('web.transaction.show',[$transaction->id])}}">{{$transaction->code}}</a></th>
+                  <td>{{$transaction->type ? $transaction->type->name : "N/A"}}<br><a href="{{route('web.transaction.show',[$transaction->id])}}">{{$transaction->code}}</a></th>
                   <td>
                     <div>{{$transaction->processing_fee ?: 0 }}</div>
                     <div>

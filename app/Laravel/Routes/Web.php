@@ -11,6 +11,7 @@ Route::group(['as' => "web.",
 		Route::get('/', [ 'as' => "index",'uses' => "MainController@index"]);
 	});
 	Route::get('type',['as' => "get_application_type",'uses' => "MainController@get_application_type"]);
+	Route::get('application',['as' => "get_application",'uses' => "MainController@get_application"]);
 	Route::get('acount_title',['as' => "get_account_title",'uses' => "MainController@get_account_title"]);
 	Route::get('amount',['as' => "get_payment_fee",'uses' => "MainController@get_payment_fee"]);
 	Route::get('requirements',['as' => "get_requirements",'uses' => "MainController@get_requirements"]);
