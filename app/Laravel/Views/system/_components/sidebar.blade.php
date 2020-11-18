@@ -69,7 +69,7 @@
         </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application.index','system.application.create','system.application.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.application.index')}}">
-            <i class="fa fa-file-text  menu-icon"></i>
+            <i class="fa fa-bookmark menu-icon"></i>
             <span class="menu-title">Particulars</span>
           </a>
         </li>
