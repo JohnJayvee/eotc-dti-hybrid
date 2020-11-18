@@ -151,13 +151,13 @@
 @section('page-scripts')
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script type="text/javascript">
-  $.fn.get_application_type = function(department_id,input_purpose,selected){
+  $.fn.get_application = function(department_id,input_purpose,selected){
         $(input_purpose).empty().prop('disabled',true)
         $(input_purpose).append($('<option>', {
                   value: "",
                   text: "Loading Content..."
               }));
-        $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
+        $.getJSON( "{{route('web.get_application')}}?department_id="+department_id, function( result ) {
             $(input_purpose).empty().prop('disabled',true)
             $.each(result.data,function(index,value){
               // console.log(index+value)
@@ -194,7 +194,7 @@
     $("#input_department_id").on("change",function(){
       var department_id = $(this).val()
       var _text = $("#input_department_id option:selected").text();
-      $(this).get_application_type(department_id,"#input_application_id","")
+      $(this).get_application(department_id,"#input_application_id","")
       $('#input_department_name').val(_text);
     })
 

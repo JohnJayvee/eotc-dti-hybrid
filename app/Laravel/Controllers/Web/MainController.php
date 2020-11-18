@@ -164,7 +164,6 @@ class MainController extends Controller{
 
 
 		        $transactions = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->orderBy('created_at',"DESC")->get();
-
 		        return Excel::download(new RCDExport($transactions), 'RCD-record'.Carbon::now()->format('Y-m-d').'.xlsx');
 			}
 			else{

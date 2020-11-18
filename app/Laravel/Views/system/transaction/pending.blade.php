@@ -32,10 +32,6 @@
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-3">
-          <label>Application Type</label>
-         {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
-        </div>
-        <div class="col-md-3">
           <label>Processing Fee Status</label>
           {!!Form::select("processing_fee_status", $status, $selected_processing_fee_status, ['id' => "input_processing_fee_status", 'class' => "custom-select"])!!}
         </div>
@@ -157,7 +153,7 @@
                 value: "",
                 text: "Loading Content..."
             }));
-      $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
+      $.getJSON( "{{route('web.get_application')}}?department_id="+department_id, function( result ) {
           $(input_purpose).empty().prop('disabled',true)
           $.each(result.data,function(index,value){
             // console.log(index+value)

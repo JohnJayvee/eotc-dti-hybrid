@@ -73,6 +73,7 @@ class TransactionController extends Controller{
 		$this->data['selected_department_id'] = $auth->type == "office_head" || $auth->type == "processor" ? $auth->department_id : $request->get('department_id');
 
 		$this->data['selected_application_id'] = $request->get('application_id');
+		$this->data['selected_account_title_id'] = $request->get('account_title_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['selected_application_ammount_status'] = $request->get('application_ammount_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
