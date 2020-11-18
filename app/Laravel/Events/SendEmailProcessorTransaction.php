@@ -41,7 +41,7 @@ class SendEmailProcessorTransaction extends Event {
 
 			$this->data['created_at'] = $value['created_at'];
 			
-
+			$this->data['link'] = env("APP_URL");
 
 
 			Mail::send('emails.processor-transaction', $this->data, function($message) use ($mailname,$user_email){
