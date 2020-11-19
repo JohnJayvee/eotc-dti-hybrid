@@ -27,7 +27,7 @@ class ApplicationRequirementsImport implements ToCollection
             if (!$is_exist) {
                  $requirements = ApplicationRequirements::create([
                 'name' => $row[0],
-                'is_required' => $row[1],
+                'is_required' => strtolower($row[1]),
                 ]);
                
                 $requirements->save();

@@ -163,7 +163,9 @@ class MainController extends Controller{
 				$this->data['end_date'] = Carbon::parse($response->end_date ?:Carbon::now())->format("Y-m-d");
 
 
-		        $transactions = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->orderBy('created_at',"DESC")->get();
+		        $transactions = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->orderBy('created_at',"ASC")->get();
+
+		        /*$sub_total = Transaction::select("created_at","collection_type", DB::raw('SUM(processing_fee) AS amount_sum'))->groupBy(DB::raw("DATE(created_at)"),"collection_type")->get();*/
 		        return Excel::download(new RCDExport($transactions), 'RCD-record'.Carbon::now()->format('Y-m-d').'.xlsx');
 			}
 			else{

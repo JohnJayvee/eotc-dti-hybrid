@@ -44,7 +44,6 @@ class  RCDExport implements WithEvents,FromCollection,WithMapping,WithHeadings,S
 
     public function map($value): array
     {   
-        $string = "100000100001000";
         return [
             Helper::date_format($value->created_at),
             $value->department ? $value->department->code : "N/A",
