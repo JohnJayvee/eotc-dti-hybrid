@@ -72,7 +72,7 @@
 			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Eor Url:</th>
-				<th style="text-align: right;">{{$eor_url}}</th>
+				<th style="text-align: right;"><a href="{{$eor_url}}">Click this to download EOR</a></th>
 			</tr>
 			
 			<tr>
