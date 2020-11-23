@@ -47,7 +47,7 @@ class AuthController extends Controller{
 				$user = Auth::guard('customer')->user();
 				session()->put('auth_id', Auth::guard('customer')->user()->id);
 				session()->flash('notification-status','success');
-				session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
+				session()->flash('notification-msg',"Welcome to DTI Online Pay, {$user->full_name}!");
 				
 				return redirect()->route('web.transaction.create');
 			}

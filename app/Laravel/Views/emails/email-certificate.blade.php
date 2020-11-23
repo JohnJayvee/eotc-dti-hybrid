@@ -89,7 +89,7 @@
 				<th colspan="2">
 					<p style="float: left;text-align: justify;">Please refer to the attached file to download your Digital Certificate.</p><br>
 					<p><a href="{{$link}}">Click this link to download your Certificate</a></p>
-					<p>Thank you for choosing EOTC-PHP!</p>
+					<p>Thank you for choosing DTI Online Pay!</p>
 				</th>
 			</tr>
 		

@@ -7,7 +7,7 @@ class SendCode{
 		$code = rand(1111,9999);
 		$nexmo = Nexmo::message()->send([
 			'to' => '+63'.(int)$phone,
-			'from' => 'EOTCPH' ,
+			'from' => 'DTI Online Pay' ,
 			'text' => 'Verification Code ' . $code,
 		]);
 		return $code;

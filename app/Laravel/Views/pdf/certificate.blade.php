@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>EOTC Certificate</title>
+	<title>DTI Online Pay Certificate</title>
 </head>
 <style type="text/css">
 	.text-center{
@@ -20,7 +20,7 @@
 <div class="text-center">
 	<p style="font-size: 18px;">This certifies that</p>
 	<p style="font-size: 20px;font-weight: bold;">{{$transaction->customer ? $transaction->customer->full_name : $transaction->customer_name}}</p>
-	<p style="font-size: 18px;">has successfully completed the application in DTI EOTC-PHP with the following details:</p>
+	<p style="font-size: 18px;">has successfully completed the application in DTI Online Pay with the following details:</p>
 	<p style="font-size: 18px;">Application Name:</p>
 	<p style="font-size: 20px;font-weight: bold;">{{str::title($transaction->application_name)}}</p>
 	<p style="font-size: 18px;">Department Name:</p>

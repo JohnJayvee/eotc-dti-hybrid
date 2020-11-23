@@ -36,7 +36,7 @@ class SendProcessorTransaction extends Event {
 
 			$nexmo = Nexmo::message()->send([
 				'to' => '+63'.(int)$phone,
-				'from' => 'EOTCPH' ,
+				'from' => 'DTI Online Pay' ,
 				'text' => "Hello " . $full_name . ",\r\nGood day. We are pleased to inform you that your application has been approved by our processor and is now for payment. \r\n\nBelow are your transaction details: \r\nApplication: ".$application_name."\r\nDepartment: ".$department_name."\r\nDate: ".$created_at."\r\nFirst Payment:\r\nPayment Reference Number: ".$ref_num."\r\nProcessing Fee: ".Helper::money_format($processing_fee)."\r\nSecond Payment:\rPayment Reference Number: " .$transaction_code."\r\nApplication Fee: ".Helper::money_format($amount)."\r\n\nPlease visit the ".env("APP_URL")." and input the payment reference number to the E-Payment section to pay. This payment reference number will expire at 11:59 PM. You can pay via online(Debit/Credit card, e-wallet, etc.) or over-the-counter (7Eleven, Bayad Center, Cebuana Lhuillier, and to other affiliated partners)",
 			]);
 			
