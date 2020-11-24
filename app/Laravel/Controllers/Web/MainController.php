@@ -148,32 +148,22 @@ class MainController extends Controller{
 
 	}
 	public function rcd(PageRequest $request){
-		$encoded = $request->get('parameter');
-		$decoded = base64_decode( urldecode( $encoded ) );
-		if ($encoded) {
-			$response = json_decode($decoded);
-	  		if (env('RCD_TOKEN') == $response->Token) {
+		
 			 	$first_record = Transaction::orderBy('created_at','ASC')->first();
 				$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
 
-				if($first_record){
+				/*if($first_record){
 					$start_date = $response->start_date;
-				}
-				$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
-				$this->data['end_date'] = Carbon::parse($response->end_date ?:Carbon::now())->format("Y-m-d");
+				}*/
+				$this->data['start_date'] = Carbon::parse("11/10/2020")->format("Y-m-d");
+				$this->data['end_date'] =  Carbon::parse("11/25/2020")->format("Y-m-d");
 
 
 		        $transactions = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->orderBy('created_at',"ASC")->get();
 
 		        /*$sub_total = Transaction::select("created_at","collection_type", DB::raw('SUM(processing_fee) AS amount_sum'))->groupBy(DB::raw("DATE(created_at)"),"collection_type")->get();*/
 		        return Excel::download(new RCDExport($transactions), 'RCD-record'.Carbon::now()->format('Y-m-d').'.xlsx');
-			}
-			else{
-				abort(404);
-			}
-		}else{
-			abort(404);
-		}
+			
   		
 	 	 
     }
