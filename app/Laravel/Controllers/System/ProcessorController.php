@@ -148,12 +148,12 @@ class ProcessorController extends Controller
 					'ref_id' => $new_processor->reference_id,
 	                'contact_number' => $new_processor->contact_number,
 	                'otp' => $new_processor->otp,
-	                'type' => $new_processor->type
+	                'type' => $new_processor->type,
 	                'email' => $new_processor->email
 	            ];	
 				$notification_data = new SendProcessorReference($insert);
 			    Event::dispatch('send-sms-processor', $notification_data);
-			    
+
 			    $notification_email_data = new SendEmailProcessorReference($insert);
 		    	Event::dispatch('send-email-reference', $notification_email_data);
 
