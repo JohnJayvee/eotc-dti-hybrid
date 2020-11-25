@@ -19,7 +19,7 @@ use App\Laravel\Models\Application;
  */
 
 use App\Laravel\Events\SendProcessorReference;
-
+use App\Laravel\Events\SendEmailProcessorReference;
 use Carbon,Auth,DB,Str,Hash,ImageUploader,Event;
 
 class ProcessorController extends Controller
@@ -149,13 +149,17 @@ class ProcessorController extends Controller
 	                'contact_number' => $new_processor->contact_number,
 	                'otp' => $new_processor->otp,
 	                'type' => $new_processor->type
+	                'email' => $new_processor->email
 	            ];	
 				$notification_data = new SendProcessorReference($insert);
 			    Event::dispatch('send-sms-processor', $notification_data);
+			    
+			    $notification_email_data = new SendEmailProcessorReference($insert);
+		    	Event::dispatch('send-email-reference', $notification_email_data);
 
 				DB::commit();
 				session()->flash('notification-status', "success");
-				session()->flash('notification-msg', "New ".str::title($new_processor->type)." has been added.");
+				session()->flash('notification-msg', "New ".str::title(str_replace("_", " ", $new_processor->type))." has been added.");
 				return redirect()->route('system.processor.index');
 			}
 			

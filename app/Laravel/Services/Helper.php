@@ -164,6 +164,7 @@ class Helper{
 			case 'pending' : $result = "warning"; break;
 			case 'cancelled':
 			case 'declined' : $result = "danger"; break;
+			case 'void' : $result = "danger"; break;
 		}
 		return $result;
 	}
