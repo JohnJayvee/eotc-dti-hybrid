@@ -35,10 +35,12 @@ class TransactionController extends Controller{
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
 
-		if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {
-			$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::pluck('name', 'id')->toArray();
-		}elseif (Auth::user()->type == "office_head" || Auth::user()->type == "processor") {
-			$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
+		if(Auth::user()){
+			if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {
+				$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::pluck('name', 'id')->toArray();
+			}elseif (Auth::user()->type == "office_head" || Auth::user()->type == "processor") {
+				$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
+			}
 		}
 
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
@@ -375,6 +377,7 @@ class TransactionController extends Controller{
 			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');
+			$new_transaction->collection_type = $request->get('collection_type');
 			$new_transaction->department_id = $request->get('department_id');
 			$new_transaction->department_name = $request->get('department_name');
 			$new_transaction->account_title = $request->get('account_title');

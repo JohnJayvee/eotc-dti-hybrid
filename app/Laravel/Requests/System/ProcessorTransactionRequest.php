@@ -18,10 +18,11 @@ class ProcessorTransactionRequest extends RequestManager{
 			'department_id' => "required",
 			'processing_fee' => "required",
 			/*'regional_id' => "required",*/
-			'email' => "required",
+			'email' => "required|email",
 			'amount' => "required|transaction_amount:application_id,amount",
 			'contact_number' => "required|max:10|phone:PH",
 			'requirements_id' => "required",
+			'hereby_check' =>"required",
     		
 		];
 

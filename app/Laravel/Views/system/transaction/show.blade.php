@@ -129,6 +129,7 @@
         </div>
       </div>  
     @endif
+    <a href="{{route('system.transaction.'.strtolower($transaction->status))}}" class="btn btn-light float-right mt-2">Return to Transaction list</a>
     @if(Auth::user()->type == "processor")
       @if(in_array($transaction->status, ['PENDING', 'ONGOING']) AND $transaction->transaction_status == "COMPLETED")
         <a data-url="{{route('system.transaction.process',[$transaction->id])}}?status_type=approved"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>

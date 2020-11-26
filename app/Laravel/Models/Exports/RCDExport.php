@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\Fill;
 use Maatwebsite\Excel\Events\AfterSheet;
 use App\Schedule;
 
@@ -18,9 +19,12 @@ class  RCDExport implements WithEvents,FromCollection,WithMapping,WithHeadings,S
 {
     use Exportable;
 
-    public function __construct(Collection $transactions)
+    public function __construct(Collection $transactions,$transaction_count,$per_type_total,$total_per_or)
     {
         $this->transactions = $transactions;
+        $this->transaction_count = $transaction_count;
+        $this->per_type_total = $per_type_total;
+        $this->total_per_or = $total_per_or;
     }
 
     public function headings(): array
@@ -44,12 +48,7 @@ class  RCDExport implements WithEvents,FromCollection,WithMapping,WithHeadings,S
 
     public function map($value): array
     {   
-        $this->transaction_count = DB::table('transaction')
-                            ->select(DB::raw('count(*) as count, DATE(created_at) as date'))
-                            ->groupBy('date')
-                            ->get();
         
-
 
         return [
             Helper::date_format($value->created_at),
@@ -91,12 +90,12 @@ class  RCDExport implements WithEvents,FromCollection,WithMapping,WithHeadings,S
                 $event->writer->getProperties()->setCreator('Sistema de alquileres');
             },
             AfterSheet::class => function(AfterSheet $event) use ($styleTitulos){
-                $event->sheet->setCellValue('A'. ($event->sheet->getHighestRow()+1),"Total");
+                $event->sheet->getStyle("A1:M1")->applyFromArray($styleTitulos);
                 $this->filas = [];
-
+                $this->limites = [];
                 foreach ($this->transaction_count as $key => $value) {
 
-                    
+                     array_push($this->limites, $value->count);
                     if ($key > 1) {
                         array_push($this->filas, $value->count + $this->filas[$key-1] + 1 );
                     }else{
@@ -107,6 +106,53 @@ class  RCDExport implements WithEvents,FromCollection,WithMapping,WithHeadings,S
                     $fila++;
                     $event->sheet->insertNewRowBefore($fila, 1);
                     
+                    $event->sheet->getDelegate()->getStyle('A'.$fila.':'.$event->sheet->getDelegate()->getHighestColumn().$fila)
+                    ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffff15');
+                    $event->sheet->setCellValue("E{$fila}", "=SUM(E".($fila - $this->limites[$index]).":E".($fila - 1).")");
+                    $event->sheet->setCellValue("F{$fila}", "=SUM(F".($fila - $this->limites[$index]).":F".($fila - 1).")");
+                    $event->sheet->setCellValue("G{$fila}", "=SUM(G".($fila - $this->limites[$index]).":G".($fila - 1).")");
+                    $event->sheet->setCellValue("H{$fila}", "=SUM(H".($fila - $this->limites[$index]).":H".($fila - 1).")");
+                    $event->sheet->setCellValue("I{$fila}", "=SUM(I".($fila - $this->limites[$index]).":I".($fila - 1).")");
+                    $event->sheet->setCellValue("J{$fila}", "=SUM(J".($fila - $this->limites[$index]).":J".($fila - 1).")");
+                    $event->sheet->setCellValue("K{$fila}", "=SUM(K".($fila - $this->limites[$index]).":K".($fila - 1).")");
+                    $event->sheet->setCellValue("L{$fila}", "=SUM(L".($fila - $this->limites[$index]).":L".($fila - 1).")");
+                    $event->sheet->setCellValue("M{$fila}", "=SUM(M".($fila - $this->limites[$index]).":M".($fila - 1).")");
+                    $event->sheet->setCellValue("D{$fila}","SUBTOTAL");
+                    
+                    
+                }
+                $event->sheet->setCellValue('D'. ($event->sheet->getHighestRow() + 1),"GRAND TOTAL");
+                $event->sheet->setCellValue('E'. ($event->sheet->getHighestRow()), $this->total_per_or->amount_sum);
+                 $event->sheet->getDelegate()->getStyle('A'.$event->sheet->getHighestRow().':'.$event->sheet->getDelegate()->getHighestColumn().$event->sheet->getHighestRow())
+                    ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('92D050');
+
+                foreach ($this->per_type_total as $key => $value) {
+                    if ($value->collection_type == "testing_fee") {
+                        $event->sheet->setCellValue('G'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    if ($value->collection_type == "gf_income") {
+                        $event->sheet->setCellValue('F'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    if ($value->collection_type == "ra") {
+                        $event->sheet->setCellValue('H'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    if ($value->collection_type == "iso_manuals") {
+                        $event->sheet->setCellValue('I'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    if ($value->collection_type == "pab") {
+                        $event->sheet->setCellValue('J'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    if ($value->collection_type == "ntf") {
+                        $event->sheet->setCellValue('K'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    if ($value->collection_type == "bid_securities") {
+                        $event->sheet->setCellValue('L'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    if ($value->collection_type == "DST") {
+                        $event->sheet->setCellValue('M'. ($event->sheet->getHighestRow()), $value->amount_sum);
+                    }
+                    
+                   
                 }
             }
         ];

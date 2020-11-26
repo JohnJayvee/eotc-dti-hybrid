@@ -68,6 +68,10 @@
 				</th>
 			</tr>
 			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Portal Link:</th>
+				<th style="text-align: right;"><a href="{{env('APP_URL_PROCESSOR')}}">{{env("APP_URL_PROCESSOR")}}</a> </th>
+			</tr>
+			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Reference Number:</th>
 				<th style="text-align: right;">{{$ref_id}}</th>
 			</tr>
@@ -76,12 +80,12 @@
 				<th style="text-align: right;">{{$otp}}</th>
 			</tr>
 			
-			<!-- <tr>
+			<tr>
 				<th colspan="2">
-					<p style="float: left;text-align: justify;">Please visit the <a href="{{env('APP_URL')}}">{{env("APP_URL")}}</a> and input the payment reference number to the E-Payment section to pay. This payment reference number will expire at 11:59 PM. You can pay via online(Debit/Credit card, e-wallet, etc.) or over-the-counter (7Eleven, Bayad Center, Cebuana Lhuillier, and to other affiliated partners)</p><br>
+					<p style="float: left;text-align: justify;">If you didn't request this or believe that you received this in error, please ignore this EMAIL.</p><br>
 					<p>Thank you for choosing DTI Online Pay!</p>
 				</th>
-			</tr> -->
+			</tr>
 		
 	</table>
 	

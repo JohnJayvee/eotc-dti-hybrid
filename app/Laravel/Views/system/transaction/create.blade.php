@@ -21,6 +21,7 @@
         <input type="hidden" name="department_id" id="input_department_id" value="{{Auth::user()->department_id}}">
         <input type="hidden" name="application_name" id="input_application_name" value="{{old('application_name')}}">
         <input type="hidden" name="account_title" id="input_account_title" value="{{old('account_title')}}">
+        <input type="hidden" name="collection_type" id="input_collection_type" value="{{old('collection_type')}}">
         <!-- <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}"> -->
         <div class="row">
           <div class="col-md-4">
@@ -159,7 +160,9 @@
           <div class="col-lg-12 col-lg-12 mb-4">
             <input type="checkbox" name="hereby_check" value="yes">
               I hereby agree that I have read and reviewed the requirements listed above, and the physical copies of it are under my possession.
-            
+            @if($errors->first('hereby_check'))
+              <p class="mt-1 text-danger">{!!$errors->first('hereby_check')!!}</p>
+            @endif
           </div> 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
         <a href="{{route('system.transaction.approved')}}" class="btn btn-light">Return to Transaction list</a>
@@ -234,8 +237,10 @@
   $('#input_application_id').change(function() {
     var _text = $("#input_application_id option:selected").text();
     $.getJSON('/amount?type_id='+this.value, function(result){
-      amount = parseFloat(result.data)
+      amount = parseFloat(result.data[0])
+      collection_type = result.data[2]
       $('#input_processing_fee').val(formatNumber(amount));
+      $('#input_collection_type').val(formatNumber(collection_type));
     });
     var application_id = $(this).val()
     $('#input_application_name').val(_text);

@@ -20,6 +20,7 @@
                 <input type="hidden" name="department_name" id="input_department_name" value="{{old('department_name')}}">
                 <input type="hidden" name="account_title" id="input_account_title" value="{{old('account_title')}}">
                 <input type="hidden" name="application_name" id="input_application_name" value="{{old('application_name')}}">
+                <input type="hidden" name="collection_type" id="input_collection_type" value="{{old('collection_type')}}">
                 <!-- <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}"> -->
                 <div class="card-body px-5 py-0">
                     <h5 class="text-title text-uppercase pt-5">Application information</h5>
@@ -47,7 +48,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Your Email Address</label>
-                                <input type="text" class="form-control form-control-sm" name="email" placeholder="Email Address" value="{{old('email',Auth::guard('customer')->user()->email)}}">
+                                <input type="email" class="form-control form-control-sm" name="email" placeholder="Email Address" value="{{old('email',Auth::guard('customer')->user()->email)}}">
                                 @if($errors->first('email'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
                                 @endif
@@ -159,8 +160,8 @@
                         <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;"  id="old_requirements">
                             <thead>
                                 <tr>
-                                    <th class="text-title fs-15 fs-500 p-3" width="15%">Requirement Name</th>
-                                    <th class="text-title fs-15 fs-500 p-3" width="15%">File</th>
+                                    <th class="text-title fs-15 fs-500 p-3" width="15%">Requirement Name </code></th>
+                                    <th class="text-title fs-15 fs-500 p-3" width="15%">File <code>(Only PDF file extensions is allowed)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -216,6 +217,9 @@
     }
     #input_partial_label:focus{
          outline:none;
+    }
+    .table thead th {
+        vertical-align: top;
     }
 </style>
 @endsection
@@ -309,7 +313,7 @@ $(document).ready(function() {
 
             })
             $("#requirements").find('tbody').append(html);
-             $("#requirements").find('thead').append("<tr><th class='text-title fs-15 fs-500 p-3' width='15%''>Requirement Name</th><th class='text-title fs-15 fs-500 p-3' width='15%'>File</th></tr>");
+             $("#requirements").find('thead').append("<tr><th class='text-title fs-15 fs-500 p-3' width='15%''>Requirement Name </th><th class='text-title fs-15 fs-500 p-3' width='15%'>File<code>(Only PDF file extensions is allowed)</code></th></tr>");
             $("#requirements_id_containter").val(resultString);
         });
         // return result;
@@ -332,6 +336,7 @@ $(document).ready(function() {
         $.getJSON('/amount?type_id='+application_id, function(result){
             amount = parseFloat(result.data[0])
             partial_amount = parseFloat(result.data[1])
+            collection_type = result.data[2]
             if (partial_amount > 0) {
                 $('#input_partial_amount').prop("readonly" ,false);
             }else{
@@ -339,6 +344,7 @@ $(document).ready(function() {
                 $('#input_partial_amount').prop("readonly" ,true);
             }
             $('#input_processing_fee').val(formatNumber(amount));
+            $('#input_collection_type').val(formatNumber(collection_type));
         });
         // return result;
     };

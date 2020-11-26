@@ -68,7 +68,7 @@
                     <thead>
                       <tr>
                         <th class="text-title fs-15 fs-500 p-3" width="15%">Requirement Name</th>
-                        <th class="text-title fs-15 fs-500 p-3" width="15%">File</th>
+                        <th class="text-title fs-15 fs-500 p-3" width="15%">File <code>(Only PDF file extensions is allowed)</th>
                       </tr>
                       <tbody>
                         @forelse($transaction_requirements as $index => $requirement)

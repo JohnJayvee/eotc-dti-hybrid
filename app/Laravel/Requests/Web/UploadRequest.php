@@ -25,6 +25,7 @@ class UploadRequest extends RequestManager{
 	public function messages(){
 		return [
 			'required'	=> "Field is required.",
+			'mimes' => 'Invalid file format.',
 		];
 	}
 }

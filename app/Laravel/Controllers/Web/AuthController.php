@@ -51,6 +51,11 @@ class AuthController extends Controller{
 				
 				return redirect()->route('web.transaction.create');
 			}
+			if ($email == NULL and $password == NULL) {
+				session()->flash('notification-status','error');
+				session()->flash('notification-msg','Invalid username or password.');
+				return redirect()->back();
+			}
 			session()->flash('notification-status','error');
 			session()->flash('notification-msg','Wrong username or password.');
 			return redirect()->back();

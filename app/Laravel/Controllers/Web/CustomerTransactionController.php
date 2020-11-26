@@ -68,6 +68,7 @@ class CustomerTransactionController extends Controller
 			$new_transaction->partial_amount = Helper::db_amount($request->get('partial_amount') ?: 0);
 			$new_transaction->application_id = $request->get('application_id');
 			$new_transaction->application_name = $request->get('application_name');
+			$new_transaction->collection_type = $request->get('collection_type');
 			$new_transaction->department_id = $request->get('department_id');
 			$new_transaction->department_name = $request->get('department_name');
 			$new_transaction->account_title = $request->get('account_title');

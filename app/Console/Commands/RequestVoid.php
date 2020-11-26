@@ -62,11 +62,13 @@ class RequestVoid extends Command
                     if ($pf) {
                         $pf->payment_status = strtoupper($value->status);
                         $pf->transaction_status = strtoupper($value->status);
+                        $pf->status = strtoupper($value->status);
                         $pf->save();
                     }
                     if ($app) {
                         $app->application_payment_status = strtoupper($value->status);
                         $app->application_transaction_status = strtoupper($value->status);
+                        $app->status = strtoupper($value->status);
                         $app->save();
                     }
                 }

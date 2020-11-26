@@ -81,7 +81,7 @@ class MainController extends Controller{
 		$payment_amount = Application::find($id);
 		$response['msg'] = "List of Application";
 		$response['status_code'] = "TYPE_LIST";
-		$response['data'] = [$payment_amount->processing_fee,$payment_amount->partial_amount];
+		$response['data'] = [$payment_amount->processing_fee,$payment_amount->partial_amount,$payment_amount->collection_type];
 		callback:
 		
 		return response()->json($response, 200);
@@ -148,23 +148,42 @@ class MainController extends Controller{
 
 	}
 	public function rcd(PageRequest $request){
+			$encoded = $request->get('parameter');
+			$decoded = base64_decode( urldecode( $encoded ) );
+			if ($encoded) {
+				$response = json_decode($decoded);
+	  			if (env('RCD_TOKEN') == $response->Token) {
 		
 			 	$first_record = Transaction::orderBy('created_at','ASC')->first();
 				$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
 
-				/*if($first_record){
+				if($first_record){
 					$start_date = $response->start_date;
-				}*/
-				$this->data['start_date'] = Carbon::parse("11/10/2020")->format("Y-m-d");
-				$this->data['end_date'] =  Carbon::parse("11/25/2020")->format("Y-m-d");
+				}
+				$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
+				$this->data['end_date'] = Carbon::parse($response->end_date ?:Carbon::now())->format("Y-m-d");
 
 
 		        $transactions = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->orderBy('created_at',"ASC")->get();
 
+		        $transaction_count = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->select(DB::raw('count(*) as count, DATE(created_at) as date'))
+                            ->groupBy('date')
+                            ->get();
+        
+		        $per_type_total = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->select("collection_type", DB::raw('SUM(processing_fee) AS amount_sum'))->groupBy("collection_type")->get();
+
+		        $total_per_or = Transaction::where('transaction_status', "COMPLETED")->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])->select("*", DB::raw('SUM(processing_fee) AS amount_sum'))->first();
+
 		        /*$sub_total = Transaction::select("created_at","collection_type", DB::raw('SUM(processing_fee) AS amount_sum'))->groupBy(DB::raw("DATE(created_at)"),"collection_type")->get();*/
-		        return Excel::download(new RCDExport($transactions), 'RCD-record'.Carbon::now()->format('Y-m-d').'.xlsx');
+		        return Excel::download(new RCDExport($transactions,$transaction_count,$per_type_total,$total_per_or), 'RCD-record'.Carbon::now()->format('Y-m-d').'.xlsx');
 			
-  		
+  			}else{
+				abort(404);
+			}
+
+		}else{
+			abort(404);
+		}
 	 	 
     }
 }

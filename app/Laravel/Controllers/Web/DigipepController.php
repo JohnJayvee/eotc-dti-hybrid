@@ -224,12 +224,14 @@ class DigipepController extends Controller
 		if($transaction->status != "COMPLETED" AND $prefix == "APP") {
 			$transaction->payment_date = Carbon::now();
 			$transaction->application_transaction_status  = "CANCELLED";
+			$transaction->status  = "CANCELLED";
 			$transaction->save();
 		}
 
 		if($transaction->status != "COMPLETED" AND $prefix == "PF") {
 			$transaction->payment_date = Carbon::now();
 			$transaction->transaction_status  = "CANCELLED";
+			$transaction->status  = "CANCELLED";
 			$transaction->save();
 		}
 
