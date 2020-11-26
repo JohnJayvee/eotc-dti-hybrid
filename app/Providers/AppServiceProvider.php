@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Schema;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+use URL;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,7 +27,11 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
+    {   
+        If(env('APP_ENV') !== 'local') { 
+            URL::forceScheme('https');
+        }
+
         Schema::defaultStringLength(191);
         Validator::resolver(function($translator, $data, $rules, $messages)
         {
