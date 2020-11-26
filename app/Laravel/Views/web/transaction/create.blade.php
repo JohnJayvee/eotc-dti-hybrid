@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Your Name</label>
+                                <label for="exampleInputEmail1" class="text-form pb-2">Name</label>
                                 <input type="text" class="form-control form-control-sm {{ $errors->first('full_name') ? 'is-invalid': NULL  }}"  placeholder="Last Name, First Name, Middle Name" name="full_name" value="{{old('full_name',Auth::guard('customer')->user()->name) }}">
                                 @if($errors->first('full_name'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('full_name')}}</small>
@@ -47,7 +47,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Your Email Address</label>
+                                <label for="exampleInputEmail1" class="text-form pb-2">Email Address</label>
                                 <input type="email" class="form-control form-control-sm" name="email" placeholder="Email Address" value="{{old('email',Auth::guard('customer')->user()->email)}}">
                                 @if($errors->first('email'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
