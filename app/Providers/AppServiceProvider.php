@@ -27,7 +27,9 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
+    {   
+        If(env('APP_ENV') !== 'local') { $url->forceSchema('https'); }
+        
         Schema::defaultStringLength(191);
         Validator::resolver(function($translator, $data, $rules, $messages)
         {
