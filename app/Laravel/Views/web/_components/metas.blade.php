@@ -1,7 +1,7 @@
 <meta name="description"
-      content="Trillion Dollar View">
-<meta name="author" content="HIGHLY SUCCEED INC">
-
+      content="DTI Online Pay">
+<meta name="author" content="ZIAPLEX INC.">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
 <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
 <meta property="og:site_name" content=""/> <!-- website name -->
 <meta property="og:site" content=""/> <!-- website link -->
