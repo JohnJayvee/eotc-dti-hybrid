@@ -13,28 +13,28 @@
 	    <div class="col-md-3">
 	      <div class="card-counter info">
 	        <i class="fa fa-hourglass-half"></i>
-	        <span class="count-numbers">{{$pending}}</span>
+	        <span class="count-numbers">{{$pending ?: "0"}}</span>
 	        <span class="count-name">Pending Applications</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter success">
 	        <i class="fa  fa-check-circle"></i>
-	        <span class="count-numbers">{{$approved}}</span>
+	        <span class="count-numbers">{{$approved ?: "0"}}</span>
 	        <span class="count-name">Approved Applications</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter primary">
 	        <i class="fa fa-file"></i>
-	        <span class="count-numbers">{{$application_today}}</span>
+	        <span class="count-numbers">{{$application_today ?: "0"}}</span>
 	        <span class="count-name">Total Daily Applications</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter danger">
 	        <i class="fa fa-times-circle"></i>
-	        <span class="count-numbers">{{$declined}}</span>
+	        <span class="count-numbers">{{$declined ?: "0"}}</span>
 	        <span class="count-name">Disapproved Applications</span>
 	      </div>
 	    </div>
