@@ -31,7 +31,7 @@ class SendProcessorReference extends Event {
 			$type = $value['type'];
 
 			$nexmo = Nexmo::message()->send([
-				'to' => '+63'.(int)$phone,
+				'to' => '+63'.$phone,
 				'from' => 'DTI Online Pay' ,
 				'text' => "Congratulations, ".$full_name."! Your ". str::title($type) ." has successfully created your account. You may use this account credentials to log in to your Processor Portal.\r\n\n Processor Portal link: ".env("APP_URL_PROCESSOR")."\r\nReference number: ".$ref_id."\r\n One-time-password (OTP):".$otp."\r\n\n If you didn't request this or believe that you received this in error, please ignore this SMS.",
 			]);
