@@ -6,74 +6,137 @@
 
 
 <!--team section start-->
-<section class="px-120 pt-110 pb-80 gray-light-bg">
-    <div class="container">
+<section class="pt-110 pb-80 gray-light-bg">
+    <div class="container-fluid" style="padding: 0 6em;">
         @include('web._components.notifications')
         <div class="row">
-            <div class="col-md-4 equal"> 
+            <div class="col-md-7"> 
+                <h5 class="text-blue fs-15 m-2">Order Details</h5>
                 <div class="card"> 
                     <div class="card-body text-center">
-                        <h5 class="text-blue fs-14 m-0">SCAN 2 PAY</h5>
-                        {!! QrCode::size(200)->generate($transaction->processing_fee_code) !!}
-                       <p class="fw-bolder text-gray">Scan This QR code.</p>
-                       <hr class="hr-full-dashed pt-0">
-                        <h5 class="text-blue fs-14 m-0">INPUT 2 PAY</h5>
-                        <h3 class="text-yellow fw-bolder pt-3">{{ strtoupper($code) }}</h3>
-                       
-                        <p class="text-italic fs-14 text-gray">Keep a copy/screenshot of this reference code.</p>
-                        <a href="{{ route('web.transaction.pay', [$code]) }}" class="btn btn-badge-primary text-white fs-14"><i class="fa fa-check pr-2"></i>  Proceed to Pay </a>
+                       @forelse($order_details as $order_detail)
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Transaction Number:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->transaction_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Designation Number:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->designation_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Title:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->order_title}}</p>
+                            </div>
+                        </div>
+                        <hr>
+
+                       @empty
+
+                       @endforelse
                     </div>
                 </div>
             </div>
-            <div class="col-md-8 equal">
-                <div class="card">
+            <div class="col-md-5">
+                <h5 class="text-blue fs-15 m-2">Request form Details</h5>
+                <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="text-blue fs-14 m-0">SEND QR CODE/REFERENCE CODE</h5>
-                        <p class="text-yellow text-uppercase fs-14 fw-bolder pt-4">Contact Information</p>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="text" name="email" class="form-control" placeholder="Email Address">
+                                <p class="text-blue float-left">Distinction:</p>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
-                                      </div>
-                                      <input type="text" class="form-control br-left-white" placeholder="Contact Number" name="contact_number" value="{{old('contact_number')}}">
-                                    </div>
-                                    
-                                </div>
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->title}}</p>
                             </div>
-                            <button class="btn btn-badge-primary text-white fs-14 ml-3" type="submit"><i class="fa fa-paper-plane pr-2"></i>  Send </button><code class="pt-3 ml-3 text-italic">Pay Fee upon arrival on store/payment center</code>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">First Name:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->fname}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Transaction Number:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->mname}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Middle Initial :</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->lname}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Company name :</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->company_name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Company Address :</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->address}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Telephone Number :</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->contact_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Email :</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Sector :</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->sector}}</p>
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Purpose :</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->purpose}}</p>
+                            </div>
+                        </div>
+                        <img src="{{asset('web/img/PCIMS_logo.jpg')}}" alt="logo" class="img-fluid float-right" width="30%">
                     </div>
                 </div>
-                <div class="card mt-4 w-100">
-                    <div class="card-body">
-                        <h5 class="text-blue fs-14 m-0 text-uppercase mb-4">Pay at mobile pos/wallet</h5>
-                        <div class="row">
-                             <div class="col-md-3">
-                                 <button class="btn btn-badge-primary text-white fs-14 " type="submit"><i class="fa fa-list-alt pr-2"></i>  View list </button>
-                             </div>
-                             <div class="col-md-9 custom-margin">
-                                 <p class="m-0 text-black fs-14" style="line-height: 1.5em">View different mobile POS/Wallet payment methods</p>
-                                 <p class="m-0 text-gray fs-14 text-italic" style="line-height: 1.5em">Redirect to the selection page</p>
-                             </div>
-                        </div>
-                        <hr class="hr-full-dashed pt-0">
-                        <h5 class="text-blue fs-14 m-0 text-uppercase mb-4">Wallet App</h5>
-                        <div class="row">
-                             <div class="col-md-4">
-                                 <button class="btn btn-badge-primary text-white fs-14 " type="submit"><i class="fa fa-download  pr-2"></i>  Download App </button>
-                             </div>
-                             <div class="col-md-8 custom-margin-two">
-                                 <p class="m-0 text-black fs-14" style="line-height: 1.5em">Install Wallet App to your phone.</p>
-                                 <p class="m-0 text-gray fs-14 text-italic" style="line-height: 1.5em">Redirect to the download page</p>
-                             </div>
-                        </div>
-                    </div>
-                </div>
+
+                <a href="{{ route('web.pay', [$code]) }}" class="btn btn-badge-primary fs-14 float-right"><i class="fa fa-check pr-2"></i>  Proceed to Pay </a>
+                 <a href="{{route('system.department.index')}}" class="btn btn-badge-danger float-right mr-2">Cancel</a>
             </div>
         </div>
         

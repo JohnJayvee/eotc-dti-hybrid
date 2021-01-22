@@ -161,13 +161,31 @@
         border-radius: 8px;
         font-size:14px;
     }
+    .btn-badge-danger {
+        color: #f5f5f7;
+        background: #C9302C;
+        border-radius: 8px;
+        font-size:14px;
+    }
     .btn-badge-primary{
-        display: inline;
-        background-color: #0045A2 ;
-        padding: 0.8rem 1.5rem;
+        color: #f5f5f7;
+        background: #0045A2;
+        border-radius: 8px;
+        font-size:14px;
+    }
+    .btn-badge-danger:hover{
+        background: transparent;
+        color: #1d1d1f;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border: 1px solid #1d1d1f;
     }
     .btn-badge-primary:hover{
-        background-color: #27437D ;
+        background: transparent;
+        color: #1d1d1f;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        border: 1px solid #1d1d1f;
     }
     .secondary-solid-btn:hover {
         background: transparent;

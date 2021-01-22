@@ -40,6 +40,13 @@ Route::group(['as' => "auth."], function(){
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "TransactionController@destroy"]);
 		});
 
+		Route::group(['as' => "order_transaction.",'prefix' => "order-transaction"], function(){
+			Route::get('pending',['as' => "pending",'uses' => "OrderTransactionController@pending"]);
+			Route::get('show/{id?}',['as' => "show",'uses' => "OrderTransactionController@show",'middleware' => "system.exist:transaction"]);
+			Route::get('upload',['as' => "upload",'uses' => "OrderTransactionController@upload"]);
+			Route::post('upload',['uses' => "OrderTransactionController@upload_order"]);
+		});
+
 
 		Route::group(['as' => "profile.",'prefix' => "profile"], function(){
 			Route::get('/',['as' => "index",'uses' => "ProfileController@index"]);

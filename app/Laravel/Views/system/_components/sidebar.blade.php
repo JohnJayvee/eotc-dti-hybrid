@@ -59,6 +59,19 @@
         @endif
       </div>
     </li>
+     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.order_transaction.show','system.order_transaction.pending')) ? 'active' : ''}}">
+      <a class="nav-link" data-toggle="collapse" href="#order_transaction" aria-expanded="false" aria-controls="order_transaction">
+        <i class="fa fa-file menu-icon"></i>
+        <span class="menu-title">Order Transactions</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="order_transaction">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{route('system.order_transaction.pending')}}">Pending
+          </a></li>
+        </ul>
+      </div>
+    </li>
     @if(in_array($auth->type,['super_user','admin','office_head']))
       @if(in_array($auth->type,['super_user','admin']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.account_title.index','system.account_title.create','system.account_title.edit')) ? 'active' : ''}}">

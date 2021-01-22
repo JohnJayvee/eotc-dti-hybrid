@@ -37,7 +37,7 @@
                          <div class="col-lg-12 pt-4">
                             <h5 style="letter-spacing: 3px;"><i class="fa fa-calculator"></i> E<span class="font-weight-lighter">PAYMENT</span></h5>
                         </div>
-                        <form method="GET" action={{ route('web.pay') }}>
+                        <form method="GET" action={{ route('web.payment') }}>
                             <div class="col-lg-12 pt-2">
                                <input type="text" name="code" class="form-control input-transparent" placeholder="Enter Transaction Code">
                             </div>

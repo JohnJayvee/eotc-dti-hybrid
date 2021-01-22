@@ -12,7 +12,7 @@ use App\Laravel\Requests\Web\UploadRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{Transaction,Department,RegionalOffice,ApplicationRequirements,Application,TransactionRequirements};
+use App\Laravel\Models\{Transaction,Department,RegionalOffice,ApplicationRequirements,Application,TransactionRequirements,OrderTransaction,OrderDetails};
 
 
 /* App Classes
@@ -171,9 +171,7 @@ class CustomerTransactionController extends Controller
 
 
 	public function payment(PageRequest $request, $code = NULL){
-		$this->data['auth'] = Auth::guard('customer')->user();
 
-		$user = Auth::guard('customer')->user()->id;
 		$code = $request->has('code') ? $request->get('code') : $code;
 		$prefix = explode('-', $code)[0];
 		$code = strtolower($code);
@@ -181,10 +179,14 @@ class CustomerTransactionController extends Controller
 		$status = NULL;
 		switch (strtoupper($prefix)) {
 			case 'APP':
-				$transaction = Transaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
+				return redirect()->route('web.pay',[$code]);
+				break;
+			case 'OT':
+				$transaction = OrderTransaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
+				$order_details = OrderDetails::where("transaction_number" , $transaction->order_transaction_number)->get();
 				break;
 			default:
-				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  =  '{$code}'")->first();
+				return redirect()->route('web.pay',[$code]);
 				break;
 		}
 
@@ -222,6 +224,7 @@ class CustomerTransactionController extends Controller
 		
 		$this->data['transaction'] = $transaction;
 		$this->data['code'] = $code;
+		$this->data['order_details'] = $order_details;
 		return view('web.transaction.db-pay', $this->data);
 	}
 
@@ -236,10 +239,18 @@ class CustomerTransactionController extends Controller
 		switch (strtoupper($prefix)) {
 			case 'APP':
 				$transaction = Transaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
+				$amount = Helper::db_amount($transaction->amount - $transaction->partial_amount);
+				$title = $transaction->account_title;
 				break;
-			
+			case 'OT':
+				$transaction = OrderTransaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
+				$amount =  Helper::db_amount($transaction ? $transaction->total_amount : 0);
+				$title = $transaction ? $transaction->order->purpose : " ";
+				break;
 			default:
 				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  =  '{$code}'")->first();
+				$amount =  Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
+				$title = $transaction->account_title;
 				break;
 		}
 
@@ -257,7 +268,7 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 
-		if($prefix == "PF" AND $transaction->transaction_status != "PENDING") {
+		if(($prefix == "PF" || $prefix == "OT") AND $transaction->transaction_status != "PENDING") {
 			session()->flash('notification-status',"warning");
 			session()->flash('notification-msg', "Transaction can not be modified anymore. No more action needed.");
 			return redirect()->back();
@@ -274,7 +285,7 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-msg', "The processor has not yet validated your application.");
 			return redirect()->back();
 		}
-		$amount = $prefix == 'APP' ?  Helper::db_amount($transaction->amount - $transaction->partial_amount) : Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
+		
 		if ($amount == 0) {
 			$transaction->application_payment_status = $amount > 0 ? "UNPAID" : "PAID";
 			$transaction->application_transaction_status =  $amount > 0 ? "PENDING" : "COMPLETED";
@@ -286,13 +297,12 @@ class CustomerTransactionController extends Controller
 			}
 			return redirect()->route('web.main.index');
 		}
-		$customer = $transaction->customer;
 		
 		try{
 			session()->put('transaction.code', $code);
 
 			$request_body = Helper::digipep_transaction([
-				'title' => $transaction->account_title,
+				'title' => $title,
 				'trans_token' => $code,
 				'transaction_type' => "", 
 				'amount' => $amount,
@@ -320,19 +330,15 @@ class CustomerTransactionController extends Controller
 			 
 			if($response->status == "200"){
 				$content = $response->content;
-
 				return redirect()->away($content['checkoutUrl']);
-
 			}else{
 				Log::alert("DIGIPEP Request System Error ($code): ", array($response));
 				session()->flash('notification-status',"failed");
 				session()->flash('notification-msg',"There's an error while connecting to our online payment. Please try again.");
 				return redirect()->back();
 			}
-
 		}catch(\Exception $e){
 			DB::rollBack();
-			
 			session()->flash('notification-status',"failed");
 			session()->flash('notification-msg',"Server Error. Please try again.".$e->getMessage());
 			return redirect()->back();
