@@ -85,7 +85,6 @@
 				<th style="text-align: left;padding: 10px;">Title:</th>
 				<th style="text-align: right;">{{ $detail['order_title']}}</th>
 			</tr>
-			<hr>
 			@empty
 			@endforelse
 			<tr>

@@ -34,7 +34,7 @@ class CreateOrderTransactionTable extends Migration
             $table->date('payment_date')->nullable();
             $table->string('total_amount')->nullable();
             $table->string('eor_url')->nullable();
-            $table->string('is_email_send')->defeault(0)->nullable();
+            $table->string('is_email_send')->default(0)->nullable();
 
             $table->timestamps();
             $table->softDeletes();

@@ -44,7 +44,7 @@ class SendOrderTransactionEmail extends Event {
 			Mail::send('emails.order-transaction', $this->data, function($message) use ($mailname,$user_email){
 				$message->from('eotcph-noreply@ziaplex.biz');
 				$message->to($user_email);
-				$message->subject("Application Details");
+				$message->subject("Order Transaction Details");
 			});
 		}
 	}

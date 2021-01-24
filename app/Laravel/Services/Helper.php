@@ -1,9 +1,11 @@
 <?php 
 
 namespace App\Laravel\Services;
-use App\Laravel\Models\Transaction;
+use App\Laravel\Models\{Transaction, OrderDetails,OrderTransaction};
 use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod;
+use App\Laravel\Events\SendOrderTransactionEmail;
 
+use Event;
 class Helper{
 
 	public static function convert_to_hr_min($time, $format = '%02d Hr. %02d Min.') {
@@ -561,6 +563,30 @@ class Helper{
 
 		return $application_count;
 		
+	}
+
+	public static function email_send($array){
+
+		$details = OrderDetails::where('transaction_number' , $array)->get();
+        $exist = OrderTransaction::where('order_transaction_number' ,$array)->first();
+        if ($exist->is_email_send == 0) {
+            $insert[] = [
+                'email' => $exist->email,
+                'contact_number' => $exist->contact_number,
+                'ref_num' => $exist->transaction_code,
+                'amount' => $exist->total_amount,
+                'full_name' => $exist->order->full_name,
+                'purpose' => $exist->order->purpose,
+                'sector' => $exist->order->sector,
+                'order_details' =>  $details,
+                'company_name' =>  $exist->company_name,
+                'created_at' => Helper::date_only($exist->created_at)
+            ];  
+            $notification_email_data = new SendOrderTransactionEmail($insert);
+            Event::dispatch('send-email-order-transaction', $notification_email_data);
+        }
+
+		  		
 	}
 }
 
