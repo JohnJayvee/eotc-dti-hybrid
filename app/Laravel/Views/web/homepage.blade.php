@@ -40,6 +40,9 @@
                         <form method="GET" action={{ route('web.payment') }}>
                             <div class="col-lg-12 pt-2">
                                <input type="text" name="code" class="form-control input-transparent" placeholder="Enter Transaction Code">
+                                @if($errors->first('code'))
+                                    <small class="form-text pl-1" style="color:#ffff;">{{$errors->first('code')}}</small>
+                                @endif
                             </div>
                             <div class="col-lg-12 pt-2">
                                <button class="btn btn-white" type="submit"><i class="fa fa-money-bill"></i> Pay</button> 

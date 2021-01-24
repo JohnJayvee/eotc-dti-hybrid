@@ -39,11 +39,20 @@
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->order_title}}</p>
                             </div>
                         </div>
+                         <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Amount:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase text-black" style="text-align: right;"> <b>PHP {{Helper::money_format($order_detail->price)}} </b></p>
+                            </div>
+                        </div>
                         <hr>
 
                        @empty
 
                        @endforelse
+                       <h5 class="float-right">Total Amount : PHP {{  Helper::money_format($total_price)}}</h5>
                     </div>
                 </div>
             </div>

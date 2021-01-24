@@ -8,6 +8,8 @@ namespace App\Laravel\Controllers\Web;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\Web\TransactionRequest;
 use App\Laravel\Requests\Web\UploadRequest;
+use App\Laravel\Requests\Web\PaymentRequest;
+
 
 /*
  * Models
@@ -170,7 +172,7 @@ class CustomerTransactionController extends Controller
 	}
 
 
-	public function payment(PageRequest $request, $code = NULL){
+	public function payment(PaymentRequest $request, $code = NULL){
 
 		$code = $request->has('code') ? $request->get('code') : $code;
 		$prefix = explode('-', $code)[0];
@@ -184,6 +186,8 @@ class CustomerTransactionController extends Controller
 			case 'OT':
 				$transaction = OrderTransaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
 				$order_details = OrderDetails::where("transaction_number" , $transaction->order_transaction_number)->get();
+				$total_price = OrderDetails::where("transaction_number" , $transaction->order_transaction_number)->sum('price');
+
 				break;
 			default:
 				return redirect()->route('web.pay',[$code]);
@@ -225,6 +229,7 @@ class CustomerTransactionController extends Controller
 		$this->data['transaction'] = $transaction;
 		$this->data['code'] = $code;
 		$this->data['order_details'] = $order_details;
+		$this->data['total_price'] = $total_price;
 		return view('web.transaction.db-pay', $this->data);
 	}
 
