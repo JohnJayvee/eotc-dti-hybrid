@@ -52,7 +52,7 @@ class OrderTransactionController extends Controller
 
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
-		$this->data['order_transactions'] = OrderTransaction::where('transaction_status',"PENDING")->whereHas('order',function($query){
+		$this->data['order_transactions'] = OrderTransaction::whereHas('order',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
 							->orWhereRaw("LOWER(order_transaction_number)  LIKE  '%{$this->data['keyword']}%'")
