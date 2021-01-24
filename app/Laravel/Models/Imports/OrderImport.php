@@ -8,14 +8,16 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-use Str, Helper, Carbon;
+use App\Laravel\Events\SendOrderTransactionEmail;
+
+use Str, Helper, Carbon,Event;
 
 class OrderImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
         // dd($rows);
-        
+        $len = count($rows);
         $transaction_number = [];
         foreach ($rows as $index => $row) 
         {  
@@ -69,16 +71,18 @@ class OrderImport implements ToCollection
                     $new_order->save();
                     $new_order->transaction_code =  'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_order->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
                     $new_order->save();
+
                     array_push($transaction_number, $new_order->order_transaction_number);
                }
             }
+            
         }
         if(!$is_exist){
             foreach ($transaction_number as $key => $value) {
                 $sum_amount = OrderDetails::where('transaction_number' , $value)->sum('price');
                 OrderTransaction::where('order_transaction_number',$value)->update(['total_amount' => $sum_amount]);
             }
-            
         }
+
     }
 }

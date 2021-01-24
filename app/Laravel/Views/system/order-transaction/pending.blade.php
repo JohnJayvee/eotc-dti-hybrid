@@ -31,7 +31,7 @@
         <div class="col-md-4 p-2">
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Keyword">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="First Name . Last Name , company name , transaction number">
           </div>
         </div>
         <div class="col-md-4 p-2">
@@ -53,7 +53,7 @@
           <tr class="text-center">
             <th class="text-title p-3">Transaction Number</th>
             <th class="text-title p-3">Transaction Date</th>
-            <th class="text-title p-3">Transaction Code</th>
+            <th class="text-title p-3">Payment Reference Number</th>
             <th class="text-title p-3">Submitted By</th>
             <th class="text-title p-3">Company Name</th>
             <th class="text-title p-3">Amount/Status</th>

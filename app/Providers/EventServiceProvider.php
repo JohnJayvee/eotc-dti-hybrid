@@ -58,6 +58,9 @@ class EventServiceProvider extends ServiceProvider
         'send-email-reference' => [
             'App\Laravel\Listeners\SendEmailProcessorReferenceListener'
         ],
+         'send-email-order-transaction' => [
+            'App\Laravel\Listeners\SendOrderTransactionListener'
+        ],
 
     ];
 
