@@ -35,7 +35,7 @@ class OrderTransactionController extends Controller
 	
 
 	public function pending (PageRequest $request){
-		$this->data['page_title'] = "Pending Transactions";
+		$this->data['page_title'] = "For Payment Transaction List";
 
 		$auth = Auth::user();
 		$this->data['auth'] = Auth::user();
@@ -51,12 +51,12 @@ class OrderTransactionController extends Controller
 
 
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
-		
 
-		$this->data['order_transactions'] = OrderTransaction::where('transaction_status',"PENDING")->where(function($query){
+		$this->data['order_transactions'] = OrderTransaction::where('transaction_status',"PENDING")->whereHas('order',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(order_transaction_number)  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(concat(first_name,' ',last_name))  LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
@@ -91,5 +91,13 @@ class OrderTransactionController extends Controller
 			session()->flash('notification-msg', "Something went wrong.");
 			return redirect()->route('system.order_transaction.pending');
 		}
+	}
+	public function show(PageRequest $request,$id = NULL){
+
+		$this->data['transaction'] = $request->get('order_transaction_data');
+		$this->data['order_details'] = OrderDetails::where("transaction_number" , $this->data['transaction']->order_transaction_number)->get();
+
+		$this->data['page_title'] = "Order Transaction Details";
+		return view('system.order-transaction.show',$this->data);
 	}
 }

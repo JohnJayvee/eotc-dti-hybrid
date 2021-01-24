@@ -26,7 +26,7 @@
               @endif
             </div>
 
-            <p class="help-block">Please download the <a href="{{asset('template/template.xlsx')}}"><strong>mass upload template(.xls) <i class="fa fa-download"></i> </strong></a> template to upload bulk order transactions.</p>
+            <p class="help-block">Please download the <a href="{{asset('template/order_template.xlsx')}}"><strong>mass upload template(.xls) <i class="fa fa-download"></i> </strong></a> template to upload bulk order transactions.</p>
 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
         <a href="{{route('system.order_transaction.pending')}}" class="btn btn-light">Return to Order Transactions list</a>

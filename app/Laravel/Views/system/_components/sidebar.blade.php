@@ -67,7 +67,7 @@
       </a>
       <div class="collapse" id="order_transaction">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{{route('system.order_transaction.pending')}}">Pending
+          <li class="nav-item"> <a class="nav-link" href="{{route('system.order_transaction.pending')}}">For Payment
           </a></li>
         </ul>
       </div>

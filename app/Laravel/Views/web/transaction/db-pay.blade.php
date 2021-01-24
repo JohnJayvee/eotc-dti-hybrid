@@ -69,7 +69,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">Transaction Number:</p>
+                                <p class="text-blue float-left">Middle Initial:</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->mname}}</p>
@@ -77,7 +77,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">Middle Initial :</p>
+                                <p class="text-blue float-left">Last Name :</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->lname}}</p>
@@ -101,7 +101,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">Telephone Number :</p>
+                                <p class="text-blue float-left">Telephone/Mobile Number :</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->contact_number}}</p>
@@ -136,7 +136,7 @@
                 </div>
 
                 <a href="{{ route('web.pay', [$code]) }}" class="btn btn-badge-primary fs-14 float-right"><i class="fa fa-check pr-2"></i>  Proceed to Pay </a>
-                 <a href="{{route('system.department.index')}}" class="btn btn-badge-danger float-right mr-2">Cancel</a>
+                 <a href="{{route('web.main.index')}}" class="btn btn-badge-danger float-right mr-2">Cancel</a>
             </div>
         </div>
         

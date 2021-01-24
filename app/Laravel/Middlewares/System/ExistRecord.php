@@ -3,7 +3,7 @@
 namespace App\Laravel\Middlewares\System;
 
 use Closure, Helper,Str;
-use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements,AccountTitle};
+use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements,AccountTitle,OrderTransaction};
 
 use App\Laravel\Models\{AccountCode};
 
@@ -94,6 +94,15 @@ class ExistRecord
                     $module = "account-title.index";
                 }
             break;
+            case 'order-transaction':
+                if(! $this->__exist_order_transaction($request)) {
+                    $found_record = false;
+                    session()->flash('notification-status', "failed");
+                    session()->flash('notification-msg', "No record found or resource already removed.");
+
+                    $module = "order-transaction.pending";
+                }
+            break;
         }
 
         if($found_record) {
@@ -166,11 +175,21 @@ class ExistRecord
         return FALSE;
     }
 
-     private function __exist_account_title($request){
+    private function __exist_account_title($request){
         $account_titles= AccountTitle::find($this->reference_id);
 
         if($account_titles){
             $request->merge(['account_title_data' => $account_titles]);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+    private function __exist_order_transaction($request){
+        $order_transactions= OrderTransaction::find($this->reference_id);
+
+        if($order_transactions){
+            $request->merge(['order_transaction_data' => $order_transactions]);
             return TRUE;
         }
 

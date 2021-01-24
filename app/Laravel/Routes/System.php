@@ -42,7 +42,7 @@ Route::group(['as' => "auth."], function(){
 
 		Route::group(['as' => "order_transaction.",'prefix' => "order-transaction"], function(){
 			Route::get('pending',['as' => "pending",'uses' => "OrderTransactionController@pending"]);
-			Route::get('show/{id?}',['as' => "show",'uses' => "OrderTransactionController@show",'middleware' => "system.exist:transaction"]);
+			Route::get('show/{id?}',['as' => "show",'uses' => "OrderTransactionController@show",'middleware' => "system.exist:order-transaction"]);
 			Route::get('upload',['as' => "upload",'uses' => "OrderTransactionController@upload"]);
 			Route::post('upload',['uses' => "OrderTransactionController@upload_order"]);
 		});

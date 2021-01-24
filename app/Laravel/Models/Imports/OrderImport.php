@@ -25,8 +25,7 @@ class OrderImport implements ToCollection
 
 
             $is_exist = OrderDetails::where('order_id',$row[0])->first();
-
-            if (!$is_exist) {
+            if (!$is_exist and $row[23] != NULL) {
                 $order_details = OrderDetails::create([
                     $date = intval($row[1]),
                     'order_id' => $row[0],

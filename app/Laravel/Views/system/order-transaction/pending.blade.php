@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Transactions</p>
+        <p class="text-dim  float-right">EOR-PHP Processor Portal / For Payment Transaction List</p>
       </div>
     </div>
   
@@ -36,7 +36,7 @@
         </div>
         <div class="col-md-4 p-2">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
-          <a href="{{route('system.transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
+          <a href="{{route('system.order_transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
       </div>
     </form>
@@ -44,13 +44,14 @@
   <div class="col-md-12">
     <h4 class="pb-4">Record Data
       <span class="float-right">
-        <a href="{{route('system.order_transaction.upload')}}" class="btn btn-sm btn-primary">Upload Order</a>
+        <a href="{{route('system.order_transaction.upload')}}" class="btn btn-sm btn-primary">Upload Excel File</a>
       </span>
     </h4>
     <div class="shadow-sm fs-15 table-responsive">
       <table class="table table-striped table-wrap">
         <thead>
           <tr class="text-center">
+            <th class="text-title p-3">Transaction Number</th>
             <th class="text-title p-3">Transaction Date</th>
             <th class="text-title p-3">Transaction Code</th>
             <th class="text-title p-3">Submitted By</th>
@@ -62,9 +63,10 @@
         <tbody>
           @forelse($order_transactions as $order_transaction)
           <tr class="text-center">
+            <td> {{$order_transaction->order_transaction_number}} </td>
             <td>{{ Helper::date_format($order_transaction->created_at)}}</td>
             <td>{{ $order_transaction->transaction_code}}</td>
-            <td>sample name</td>
+            <td>{{ $order_transaction->order->full_name }}</td>
             <td>{{ $order_transaction->company_name}}</td>
             <td>
               <div>{{Helper::money_format($order_transaction->total_amount) ?: 0 }}</div>
@@ -74,7 +76,7 @@
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                <a class="dropdown-item" href="{{route('system.transaction.show',[$order_transaction->id])}}">View transaction</a>
+                <a class="dropdown-item" href="{{route('system.order_transaction.show',[$order_transaction->id])}}">View transaction</a>
                <!--  <a class="dropdown-item action-delete"  data-url="#" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
               </div>
             </td>
