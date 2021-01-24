@@ -18,6 +18,11 @@
       <h5 class="text-blue fs-15 m-2">Order Details</h5>
       <div class="card"> 
         <div class="card-body text-center">
+            <div class="row">
+              <div class="col-12">
+                <h5 class="float-left">Payment Reference Number: {{$transaction->transaction_code}}</h5>
+              </div>
+            </div>
           @forelse($order_details as $order_detail)
             <div class="row">
               <div class="col-md-6">
