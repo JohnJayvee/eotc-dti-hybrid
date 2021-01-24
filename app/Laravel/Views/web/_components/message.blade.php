@@ -49,14 +49,14 @@
                     <div class="card login-signup-card shadow-lg mb-0">
                         <div class="card-body px-md-5 py-5">
                             <div class="text-center">
-                                @if(($prefix == "APP" AND $transaction->application_transaction_status == "COMPLETED") || ($prefix == "PF" AND $transaction->transaction_status == "COMPLETED"))
+                                @if(($prefix == "APP" AND $transaction->application_transaction_status == "COMPLETED") || ($prefix == "PF" AND $transaction->transaction_status == "COMPLETED") || ($prefix == "OT" AND $transaction->transaction_status == "COMPLETED"))
                                     <span class="text-6xl">
                                         <i class="fas fa-check-circle status-success"></i>
                                     </span> 
                                     <h2 class="status-success">Success!</h2>
                                     <p class="text-status">Transaction Success</p>
                                     <p class="text-label"> Your payment has been processed. This is to confirm your Online Application was successful.</p>
-                                @elseif(($prefix == "APP" AND $transaction->application_transaction_status == "PENDING") || ($prefix == "PF" AND $transaction->transaction_status == "PENDING"))
+                                @elseif(($prefix == "APP" AND $transaction->application_transaction_status == "PENDING") || ($prefix == "PF" AND $transaction->transaction_status == "PENDING") || ($prefix == "OT" AND $transaction->transaction_status == "PENDING"))
                                     <span class="text-6xl">
                                     <i class="fas fa-check-circle status-pending"></i>
                                     </span> 
