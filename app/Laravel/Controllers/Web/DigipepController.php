@@ -7,6 +7,8 @@ use App\Laravel\Requests\PageRequest;
 
 
 use App\Laravel\Models\Transaction;
+use App\Laravel\Models\OrderTransaction;
+
 use App\Laravel\Events\SendCertificate;
 
 use Helper, Carbon, Session, Str, DB,Input,Event,Signature,Curl,Log,PDF,Mail;
