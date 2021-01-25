@@ -569,6 +569,7 @@ class Helper{
 
 		$details = OrderDetails::where('transaction_number' , $array)->get();
         $exist = OrderTransaction::where('order_transaction_number' ,$array)->first();
+
         if ($exist->is_email_send == 0) {
             $insert[] = [
                 'email' => $exist->email,
@@ -585,7 +586,7 @@ class Helper{
             $notification_email_data = new SendOrderTransactionEmail($insert);
             Event::dispatch('send-email-order-transaction', $notification_email_data);
         }
-
+        OrderTransaction::where('order_transaction_number',$array)->update(['is_email_send' => 1]);
 		  		
 	}
 }

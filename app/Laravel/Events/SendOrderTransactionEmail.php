@@ -35,7 +35,6 @@ class SendOrderTransactionEmail extends Event {
 			$this->data['ref_num'] = $value['ref_num'];
 			$this->data['amount'] = $value['amount'];
 			$this->data['company_name'] = $value['company_name'];
-
 			$this->data['created_at'] = $value['created_at'];
 			$this->data['order_details'] = $value['order_details']->toArray(); 
 

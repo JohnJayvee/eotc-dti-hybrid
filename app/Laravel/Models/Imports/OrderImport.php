@@ -77,9 +77,10 @@ class OrderImport implements ToCollection
             
         }
         foreach ($transaction_number as $key => $value) {
-            Helper::email_send($value);
+           
             $sum_amount = OrderDetails::where('transaction_number' , $value)->sum('price');
-            OrderTransaction::where('order_transaction_number',$value)->update(['total_amount' => $sum_amount,'is_email_send' => 1]);
+            OrderTransaction::where('order_transaction_number',$value)->update(['total_amount' => $sum_amount]);
+            Helper::email_send($value);
         }
 
     }

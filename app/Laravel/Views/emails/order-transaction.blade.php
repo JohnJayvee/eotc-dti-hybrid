@@ -63,17 +63,18 @@
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
 			<tr>
-				<th colspan="2"><p style="float: left;text-align: justify;">Hello {{Str::title($full_name)}}, <p>
-					<p style="float: left;text-align: justify;">Good day. We are pleased to inform you that your application has been approved by our processor and is now for payment.</p>
-				</th>
+				<th colspan="2"><p style="float: left;text-align: justify;">Hello {{Str::title($full_name)}},</th>
 			</tr>
-			
+			<tr>
+				<th colspan="2"><p style="float: left;text-align: justify;">Good day. We are pleased to inform you that your transaction is now for Payment. </th>
+			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Order Details</th>
+				<th style="text-align: right;">Payment Reference Number : {{$ref_num}}</th>
 			</tr>
 
 			@forelse($order_details as $detail)
-			<tr class="text-blue">
+			<tr class="text-blue" style="border-top: solid 1px black;">
 				<th style="text-align: left;padding: 10px;">Transaction Number:</th>
 				<th style="text-align: right;">{!! $detail['transaction_number'] !!}</th>
 			</tr>
@@ -81,12 +82,20 @@
 				<th style="text-align: left;padding: 10px;">Designation Number:</th>
 				<th style="text-align: right;">{{ $detail['designation_number'] }}</th>
 			</tr>
-			<tr class="text-blue">
+			<tr class="text-blue" style="border-bottom: solid 1px black;">
 				<th style="text-align: left;padding: 10px;">Title:</th>
 				<th style="text-align: right;">{{ $detail['order_title']}}</th>
 			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Amount:</th>
+				<th style="text-align: right;">PHP {{ Helper::money_format($detail['price'])}}</th>
+			</tr>
 			@empty
 			@endforelse
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Total Amount:</th>
+				<th style="text-align: right;">PHP {{Helper::money_format($amount)}}</th>
+			</tr>
 			<tr>
 				<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
 			</tr>
@@ -109,10 +118,8 @@
 				<th style="text-align: left;padding: 10px;">Purpose:</th>
 				<th style="text-align: right;">{{$purpose}}</th>
 			</tr>
-			<th style="text-align: left;padding: 10px;">Reference Number:</th>
-				<th style="text-align: right;">{{$ref_num}}</th>
-			<tr>
-				<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
+			
+			<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
 			</tr>
 			<tr>
 				<th colspan="2">

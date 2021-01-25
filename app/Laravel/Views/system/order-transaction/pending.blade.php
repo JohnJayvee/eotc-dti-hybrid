@@ -26,7 +26,7 @@
           {!!Form::select("payment_status", $status, $selected_payment_status, ['id' => "input_payment_status", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-3">
-          <label>Payment Status</label>
+          <label>Date Range</label>
           <div class="input-group input-daterange d-flex align-items-center">
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly" name="start_date">
             <div class="input-group-addon mx-2">to</div>
