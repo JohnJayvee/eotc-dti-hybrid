@@ -53,7 +53,7 @@
                 <p class="text-blue float-left">Amount:</p>
               </div>
               <div class="col-md-6">
-                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->price}}</p>
+                <p class="float-right text-uppercase" style="text-align: right;">PHP {{ Helper::money_format($order_detail->price)}}</p>
               </div>
             </div>
             <hr>
