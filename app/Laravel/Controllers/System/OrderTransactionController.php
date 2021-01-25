@@ -6,6 +6,8 @@ namespace App\Laravel\Controllers\System;
  * Request Validator
  */
 use App\Laravel\Requests\PageRequest;
+use App\Laravel\Requests\System\ExcelUploadRequest;
+
 
 /*
  * Models
@@ -49,14 +51,19 @@ class OrderTransactionController extends Controller
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
 
-
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
+		$this->data['selected_payment_status'] = $request->get('payment_status');
 
 		$this->data['order_transactions'] = OrderTransaction::whereHas('order',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
 							->orWhereRaw("LOWER(order_transaction_number)  LIKE  '%{$this->data['keyword']}%'")
 							->orWhereRaw("LOWER(concat(first_name,' ',last_name))  LIKE  '%{$this->data['keyword']}%'");
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_payment_status']) > 0){
+						return $query->where('payment_status',$this->data['selected_payment_status']);
 					}
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
@@ -71,7 +78,7 @@ class OrderTransactionController extends Controller
 		return view('system.order-transaction.upload-order',$this->data);
 	}
 
-	public function upload_order(PageRequest $request){
+	public function upload_order(ExcelUploadRequest $request){
 		try {
 		    Excel::import(new OrderImport, request()->file('file'));
 
@@ -96,6 +103,7 @@ class OrderTransactionController extends Controller
 
 		$this->data['transaction'] = $request->get('order_transaction_data');
 		$this->data['order_details'] = OrderDetails::where("transaction_number" , $this->data['transaction']->order_transaction_number)->get();
+		$this->data['total_price'] = OrderDetails::where("transaction_number" , $this->data['transaction']->order_transaction_number)->sum('price');
 
 		$this->data['page_title'] = "Order Transaction Details";
 		return view('system.order-transaction.show',$this->data);

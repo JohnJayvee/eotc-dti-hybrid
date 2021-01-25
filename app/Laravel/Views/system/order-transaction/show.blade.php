@@ -48,9 +48,25 @@
                 <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->order_title}}</p>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-blue float-left">Amount:</p>
+              </div>
+              <div class="col-md-6">
+                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->price}}</p>
+              </div>
+            </div>
             <hr>
           @empty
           @endforelse
+          <div class="row">
+            <div class="col-6">
+              <h5 class="float-left">Total Price: PHP {{Helper::money_format($total_price)}}</h5>
+            </div>
+             <div class="col-6">
+              <h5 class="float-right">Payment Status: <span class="badge badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></h5>
+            </div>
+          </div>
         </div>
       </div>
       <a href="{{route('system.order_transaction.pending')}}" class="btn btn-light float-right mt-2">Return to Order Transaction list</a>

@@ -21,20 +21,26 @@
         
       </div>
       <div class="row">
-        <div class="col-md-4 p-2">
+        <div class="col-md-2">
+          <label>Payment Status</label>
+          {!!Form::select("payment_status", $status, $selected_payment_status, ['id' => "input_payment_status", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-3">
+          <label>Payment Status</label>
           <div class="input-group input-daterange d-flex align-items-center">
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly" name="start_date">
             <div class="input-group-addon mx-2">to</div>
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly" name="end_date">
           </div>
         </div>
-        <div class="col-md-4 p-2">
+        <div class="col-md-5">
+          <label>Keyword</label>
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="First Name . Last Name , company name , transaction number">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Search: Transaction Number, Company, Submitter Name">
           </div>
         </div>
-        <div class="col-md-4 p-2">
+        <div class="col-md-2" style="margin-top: 2em">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.order_transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
