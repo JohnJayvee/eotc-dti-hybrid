@@ -140,7 +140,7 @@
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->purpose}}</p>
                             </div>
                         </div>
-                        <img src="{{asset('web/img/PCIMS_logo.jpg')}}" alt="logo" class="img-fluid float-right" width="30%">
+                        <img src="{{asset('web/img/dti-logo.png')}}" alt="logo" class="img-fluid float-right" width="30%">
                     </div>
                 </div>
 

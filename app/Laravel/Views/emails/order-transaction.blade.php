@@ -69,10 +69,11 @@
 				<th colspan="2"><p style="float: left;text-align: justify;">Good day. We are pleased to inform you that your transaction is now for Payment. </th>
 			</tr>
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Order Details</th>
-				<th style="text-align: right;">Payment Reference Number : {{$ref_num}}</th>
+				<th style="text-align: left;padding: 10px;" colspan="2">Payment Reference Number : {{$ref_num}}</th>
 			</tr>
-
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Order Details</th>
+			</tr>
 			@forelse($order_details as $detail)
 			<tr class="text-blue" style="border-top: solid 1px black;">
 				<th style="text-align: left;padding: 10px;">Transaction Number:</th>
