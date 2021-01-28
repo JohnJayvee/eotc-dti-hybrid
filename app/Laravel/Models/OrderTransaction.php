@@ -5,6 +5,7 @@ namespace App\Laravel\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
+use App\Console\Commands\SendMail;
 use Str,Carbon,Helper;
 
 class OrderTransaction extends Model{
@@ -73,8 +74,14 @@ class OrderTransaction extends Model{
            foreach ($data as $key => $value) {
                 $sum_amount = OrderDetails::where('transaction_number' , $value->order_transaction_number)->sum('price');
                 OrderTransaction::where('order_transaction_number',$value->order_transaction_number)->update(['total_amount' => $sum_amount]);
-                Helper::email_send($value->order_transaction_number);
-            }    
+               
+            }
+
+            $details = [
+                'subject' => 'Order Payment Details'
+            ];
+            $job = (new SendMail($details))->delay(now()->addSeconds(10)); 
+            dispatch($job);   
         }
         
     }
