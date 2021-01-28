@@ -89,13 +89,13 @@
 			</tr>
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Amount:</th>
-				<th style="text-align: right;">PHP {{ Helper::money_format($detail['price'])}}</th>
+				<th style="text-align: right;">PHP {{ $detail['price']}}</th>
 			</tr>
 			@empty
 			@endforelse
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Total Amount:</th>
-				<th style="text-align: right;">PHP {{Helper::money_format($amount)}}</th>
+				<th style="text-align: right;">PHP {{$amount}}</th>
 			</tr>
 			<tr>
 				<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>

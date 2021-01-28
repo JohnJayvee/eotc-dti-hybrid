@@ -213,6 +213,11 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-msg', "Transaction can not be modified anymore. No more action needed.");
 			return redirect()->back();
 		}
+		if($prefix == "OT" AND $transaction->transaction_status != "PENDING") {
+			session()->flash('notification-status',"warning");
+			session()->flash('notification-msg', "Transaction can not be modified anymore. No more action needed.");
+			return redirect()->back();
+		}
 
 		if($transaction->processing_fee > 0 AND $transaction->payment_status != "PAID" AND $prefix == "APP") {
 			session()->flash('notification-status',"warning");

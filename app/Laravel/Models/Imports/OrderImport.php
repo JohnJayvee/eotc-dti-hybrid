@@ -7,17 +7,16 @@ use App\Laravel\Models\{OrderDetails,OrderTransaction};
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 use App\Laravel\Events\SendOrderTransactionEmail;
 
 use Str, Helper, Carbon,Event;
 
-class OrderImport implements ToCollection
+class OrderImport implements ToCollection, WithBatchInserts
 {
     public function collection(Collection $rows)
     {
-        // dd($rows);
-        $len = count($rows);
         $transaction_number = [];
         foreach ($rows as $index => $row) 
         {  
@@ -80,8 +79,13 @@ class OrderImport implements ToCollection
            
             $sum_amount = OrderDetails::where('transaction_number' , $value)->sum('price');
             OrderTransaction::where('order_transaction_number',$value)->update(['total_amount' => $sum_amount]);
-            Helper::email_send($value);
+            //Helper::email_send($value);
         }
 
+    }
+
+     public function batchSize(): int
+    {
+        return 200;
     }
 }
