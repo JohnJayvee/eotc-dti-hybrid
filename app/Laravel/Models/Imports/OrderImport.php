@@ -100,7 +100,7 @@ class OrderImport implements WithEvents,ToModel, WithChunkReading, ShouldQueue,W
     }
     public static function afterImport(AfterImport $event) 
     {
-        //OrderTransaction::Test();
+        OrderTransaction::Import();
     }
 
   
