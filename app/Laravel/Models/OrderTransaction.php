@@ -5,7 +5,7 @@ namespace App\Laravel\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
-use Str;
+use Str,Carbon,Helper;
 
 class OrderTransaction extends Model{
     
@@ -65,6 +65,18 @@ class OrderTransaction extends Model{
 
     public function order(){
         return $this->BelongsTo("App\Laravel\Models\OrderDetails",'order_transaction_number','transaction_number');
+    }
+
+    public function scopeImport(){
+        $data= $this->where('created_at', '>=', Carbon::now()->subMinutes(10)->toDateTimeString())->get();
+        if ($data) {
+           foreach ($data as $key => $value) {
+                $sum_amount = OrderDetails::where('transaction_number' , $value->order_transaction_number)->sum('price');
+                OrderTransaction::where('order_transaction_number',$value->order_transaction_number)->update(['total_amount' => $sum_amount]);
+                Helper::email_send($value->order_transaction_number);
+            }    
+        }
+        
     }
 
 }

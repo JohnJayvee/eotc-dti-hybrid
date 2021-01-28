@@ -83,11 +83,11 @@
 				<th style="text-align: left;padding: 10px;">Designation Number:</th>
 				<th style="text-align: right;">{{ $detail['designation_number'] }}</th>
 			</tr>
-			<tr class="text-blue" style="border-bottom: solid 1px black;">
+			<tr class="text-blue" >
 				<th style="text-align: left;padding: 10px;">Title:</th>
 				<th style="text-align: right;">{{ $detail['order_title']}}</th>
 			</tr>
-			<tr class="text-blue">
+			<tr class="text-blue" style="border-bottom: solid 1px black;">
 				<th style="text-align: left;padding: 10px;">Amount:</th>
 				<th style="text-align: right;">PHP {{ $detail['price']}}</th>
 			</tr>

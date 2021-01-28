@@ -80,6 +80,8 @@ class OrderTransactionController extends Controller
 
 	public function upload_order(ExcelUploadRequest $request){
 		try {
+
+			
 		    Excel::import(new OrderImport, request()->file('file'));
 
 		    session()->flash('notification-status', "success");
