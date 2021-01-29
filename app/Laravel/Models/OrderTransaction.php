@@ -71,17 +71,16 @@ class OrderTransaction extends Model{
     public function scopeImport(){
         $data= $this->where('created_at', '>=', Carbon::now()->subMinutes(10)->toDateTimeString())->get();
         if ($data) {
-           foreach ($data as $key => $value) {
+            foreach ($data as $key => $value) {
                 $sum_amount = OrderDetails::where('transaction_number' , $value->order_transaction_number)->sum('price');
                 OrderTransaction::where('order_transaction_number',$value->order_transaction_number)->update(['total_amount' => $sum_amount]);
                
             }
-
-            $details = [
-                'subject' => 'Order Payment Details'
-            ];
-            $job = (new SendMail($details))->delay(now()->addSeconds(10)); 
-            dispatch($job);   
+            //$details = [
+                //'subject' => 'Order Payment Details'
+            // ];
+            //$job = (new SendMail($details))->delay(now()->addSeconds(10)); 
+            //dispatch($job);   
         }
         
     }

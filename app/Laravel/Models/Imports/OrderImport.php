@@ -80,7 +80,7 @@ class OrderImport implements WithEvents,ToModel, WithChunkReading, ShouldQueue,W
                 $new_order->save();
                 $new_order->transaction_code =  'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_order->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
                 $new_order->save();
-               
+                
            }
         }
     }

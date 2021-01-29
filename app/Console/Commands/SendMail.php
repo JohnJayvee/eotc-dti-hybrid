@@ -3,22 +3,14 @@
 namespace App\Console\Commands;
 use App\Laravel\Requests\PageRequest;
 use Illuminate\Console\Command;
-use App\Laravel\Models\Transaction;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use App\Laravel\Models\{OrderTransaction,OrderDetails};
 use App\Laravel\Events\SendOrderTransactionEmail;
 
 use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,Log;
 
-class SendMail extends Command implements ShouldQueue
+class SendMail extends Command
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $details;
-    public $timeout = 7200; // 2 hours
+    
 
     /**
      * The name and signature of the console command.
@@ -39,9 +31,9 @@ class SendMail extends Command implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct()
     {
-       $this->details = $details;
+        parent::__construct();
     }
 
     /**
@@ -51,7 +43,7 @@ class SendMail extends Command implements ShouldQueue
      */
     public function handle(PageRequest $request)
     {
-        $array = OrderTransaction::where('is_email_send' , 0)->get();
+        $array = OrderTransaction::where('is_email_send' , 0)->take(30)->get();
 
         foreach ($array as $key => $value) {
             $details = OrderDetails::where('transaction_number' , $value->order_transaction_number)->get();
