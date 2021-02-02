@@ -29,6 +29,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('command:sendmail')
                  ->everyMinute();
+        $schedule->command('command:createtransaction')
+                 ->everyMinute();
     }
 
     /**
