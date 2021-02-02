@@ -142,10 +142,9 @@
                         </div>
                        
                     </div>
-                   <input type="hidden" name="requirements_id" id="requirements_id_containter">
+                    <input type="hidden" name="requirements_id" id="requirements_id_containter">
                    
                     <div id="requirements_container">
-                        
                         <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;" id="requirements">
                             <thead>
                                
@@ -157,31 +156,31 @@
                     </div>
                     <div id="old_requirements_container">
                         @if(old('requirements_id'))
-                        <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;"  id="old_requirements">
-                            <thead>
-                                <tr>
-                                    <th class="text-title fs-15 fs-500 p-3" width="15%">Requirement Name </code></th>
-                                    <th class="text-title fs-15 fs-500 p-3" width="15%">File <code>(Only PDF file extensions is allowed)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach(explode(",",old('requirements_id')) as $index => $value)
-                                    @foreach($all_requirements as $req)
-                                         @if($value == $req->id)
-                                        <tr>
-                                            <td>{{$req->name}} {{$req->is_required == "yes" ? "(Required)" : "(Optional)"}}</td>
-                                            <td><input type="file" name="file{{$value}}" accept="application/pdf,application/vnd.ms-excel">
-                                            @if($errors->first('file'.$value))
-                                                <small class="form-text pl-1" style="color:red;">{{$errors->first('file'.$value)}}</small>
+                            <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;"  id="old_requirements">
+                                <thead>
+                                    <tr>
+                                        <th class="text-title fs-15 fs-500 p-3" width="15%">Requirement Name </code></th>
+                                        <th class="text-title fs-15 fs-500 p-3" width="15%">File <code>(Only PDF file extensions is allowed)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(explode(",",old('requirements_id')) as $index => $value)
+                                        @foreach($all_requirements as $req)
+                                            @if($value == $req->id)
+                                                <tr>
+                                                    <td>{{$req->name}} {{$req->is_required == "yes" ? "(Required)" : "(Optional)"}}</td>
+                                                    <td><input type="file" name="file{{$value}}" accept="application/pdf,application/vnd.ms-excel">
+                                                    @if($errors->first('file'.$value))
+                                                        <small class="form-text pl-1" style="color:red;">{{$errors->first('file'.$value)}}</small>
+                                                    @endif
+                                                    </td>
+                                                </tr>
                                             @endif
-                                            </td>
-                                        </tr>
-                                        @endif
+                                        @endforeach
                                     @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>
-                         @endif
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                 </div>
                 <hr class="form pt-0">
@@ -383,9 +382,11 @@ $(document).ready(function() {
         $('#input_application_name').val(_text);
 
     });
+
     function formatNumber (num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
     }
+
     @if(old('department_id'))
         $(this).get_application_type("{{old('department_id')}}","#input_application_id","")
     @endif

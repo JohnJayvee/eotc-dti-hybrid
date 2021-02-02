@@ -5,7 +5,7 @@ namespace App\Laravel\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
-use Str,Carbon,Helper;
+use Str,Carbon,Helper,DB;
 
 class OrderDetails extends Model{
     
@@ -76,10 +76,26 @@ class OrderDetails extends Model{
 
         if ($data) {
             foreach ($data as $key => $value) {
-                $order_transaction = OrderTransaction::where('order_transaction_number' , $value->transaction_number)->first();
-                $sum_amount = OrderDetails::where('transaction_number' , $value->transaction_number)->sum('price');
+                //$order_transaction = OrderTransaction::where('order_transaction_number' , $value->transaction_number)->first();
+                    
+                    $sum_amount = OrderDetails::where('transaction_number' , $value->transaction_number)->sum('price');
+                    OrderTransaction::firstOrCreate(
+                        ['order_transaction_number' => $value->transaction_number],
+                        [
+                            'fname' => $value->first_name , 
+                            'mname' => $value->middle_name,
+                            'lname' => $value->last_name , 
+                            'company_name' => $value->company_name , 
+                            'email' => $value->email,
+                            'contact_number' => $value->tel_no,
+                            'total_amount' => $sum_amount,
+                            'transaction_code' => 'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($value->order_id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3))
+                        ]);
+                            
+                  
+                /*if(!$order_transaction){
 
-                if(!$order_transaction){
+                    OrderTransaction::where('order_transaction_number' , $value->transaction_number)->update(['order'])
                     $new_order = new OrderTransaction();
                     $new_order->order_transaction_number = $value->transaction_number;
                     $new_order->fname = $value->first_name;
@@ -91,7 +107,7 @@ class OrderDetails extends Model{
                     $new_order->total_amount = $sum_amount;
                     $new_order->transaction_code =  'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($value->order_id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
                     $new_order->save();
-               }
+               }*/
                
             }
             //$details = [

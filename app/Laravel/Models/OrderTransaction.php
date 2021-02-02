@@ -37,7 +37,7 @@ class OrderTransaction extends Model{
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['order_transaction_number','fname','mname','lname','company_name','email','contact_number','total_amount','transaction_code'];
 
 
     /**
