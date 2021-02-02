@@ -43,7 +43,7 @@ class SendMail extends Command
      */
     public function handle(PageRequest $request)
     {
-        $data= OrderDetails::where('created_at', '>=', Carbon::now()->subMinutes(10)->toDateTimeString())->take(30)->get();
+        $data= OrderDetails::where('created_at', '>=', Carbon::now()->subMinutes(30)->toDateTimeString())->take(100)->get();
 
         if ($data) {
             foreach ($data as $key => $value) {
