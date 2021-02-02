@@ -26,11 +26,11 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('command:requestvoid')
                  ->everyMinute();
-
-        $schedule->command('command:sendmail')
-                 ->everyMinute();
         $schedule->command('command:createtransaction')
                  ->everyMinute();
+        $schedule->command('command:sendmail')
+                 ->everyMinute();
+
     }
 
     /**
