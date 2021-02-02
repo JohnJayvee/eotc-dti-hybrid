@@ -43,7 +43,7 @@ class SendMail extends Command
      */
     public function handle(PageRequest $request)
     {
-        $array = OrderTransaction::where('is_email_send' , 0)->take(30)->get();
+        $array = OrderTransaction::where('is_email_send' , 0)->take(100)->get();
         $data = [];
         foreach ($array as $key => $value) {
             array_push($data, $value->order_transaction_number);

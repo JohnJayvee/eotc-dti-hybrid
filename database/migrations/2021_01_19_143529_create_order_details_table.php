@@ -40,6 +40,7 @@ class CreateOrderDetailsTable extends Migration
             $table->string('purpose')->nullable();
             $table->string('price')->nullable();
             $table->string('payment_status')->default("PENDING")->nullable();
+            $table->string('created_transaction')->default("0")->nullable();
             
             $table->timestamps();
             $table->softDeletes();

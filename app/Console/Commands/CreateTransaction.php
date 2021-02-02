@@ -8,7 +8,7 @@ use App\Laravel\Events\SendOrderTransactionEmail;
 
 use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,Log;
 
-class SendMail extends Command
+class CreateTransaction extends Command
 {
     
 
@@ -43,11 +43,12 @@ class SendMail extends Command
      */
     public function handle(PageRequest $request)
     {
-        $data= OrderDetails::where('created_at', '>=', Carbon::now()->subMinutes(30)->toDateTimeString())->take(100)->get();
+        $data= OrderDetails::where('created_transaction', 0)->take(100)->get();
 
         if ($data) {
             foreach ($data as $key => $value) {
             $sum_amount = OrderDetails::where('transaction_number' , $value->transaction_number)->sum('price');
+
             OrderTransaction::firstOrCreate(
                 ['order_transaction_number' => $value->transaction_number],
                 [
@@ -60,6 +61,8 @@ class SendMail extends Command
                     'total_amount' => $sum_amount,
                     'transaction_code' => 'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($value->order_id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3))
                 ]);
+
+                OrderDetails::where('transaction_number',$value->transaction_number)->update(["created_transaction" => "1"]);
             }
         }
     }
