@@ -57,8 +57,8 @@
       <table class="table table-striped table-wrap">
         <thead>
           <tr class="text-center">
-            <th class="text-title p-3">Transaction Number</th>
             <th class="text-title p-3">Transaction Date</th>
+            <th class="text-title p-3">Reference/Transaction/Serial Number</th>
             <th class="text-title p-3">Department</th>
             <th class="text-title p-3">Payment Reference Number</th>
             <th class="text-title p-3">Payor</th>
@@ -69,9 +69,9 @@
         <tbody>
           @forelse($order_transactions as $order_transaction)
           <tr class="text-center">
+            <td>{{ Helper::date_format($order_transaction->created_at)}}</td>
             <td> {{$order_transaction->order_transaction_number}} </td>
             <td> {{Helper::order_department($order_transaction->department)}} </td>
-            <td>{{ Helper::date_format($order_transaction->created_at)}}</td>
             <td>{{ $order_transaction->transaction_code}}</td>
             <td>{{ $order_transaction->payor}}</td>
             <td>

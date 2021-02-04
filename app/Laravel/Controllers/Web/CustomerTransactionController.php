@@ -186,7 +186,7 @@ class CustomerTransactionController extends Controller
 			case 'OT':
 				$transaction = OrderTransaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
 				$order_details = OrderDetails::where("transaction_number" , $transaction->order_transaction_number)->get();
-				$total_price = OrderDetails::where("transaction_number" , $transaction->order_transaction_number)->sum('price');
+				$total_price = OrderDetails::where("transaction_number" , $transaction->order_transaction_number)->sum('amount');
 
 				break;
 			default:

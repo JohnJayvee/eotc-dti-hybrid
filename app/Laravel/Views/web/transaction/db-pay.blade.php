@@ -23,28 +23,20 @@
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->transaction_number}}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="text-blue float-left">Designation Number:</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->designation_number}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="text-blue float-left">Title:</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->order_title}}</p>
-                            </div>
-                        </div>
                          <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-blue float-left">Particulars:</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->particulars}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <p class="text-blue float-left">Amount:</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="float-right text-uppercase text-black" style="text-align: right;"> <b>PHP {{Helper::money_format($order_detail->price)}} </b></p>
+                                <p class="float-right text-uppercase text-black" style="text-align: right;"> <b>PHP {{Helper::money_format($order_detail->amount)}} </b></p>
                             </div>
                         </div>
                         <hr>
@@ -68,33 +60,11 @@
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->title}}</p>
                             </div>
                         </div>
+                       
+                       
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">First Name:</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->fname}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="text-blue float-left">Middle Initial:</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->mname}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="text-blue float-left">Last Name :</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->lname}}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="text-blue float-left">Company name :</p>
+                                <p class="text-blue float-left">Payor:</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->company_name}}</p>
@@ -102,7 +72,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">Company Address :</p>
+                                <p class="text-blue float-left">Address :</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->address}}</p>
@@ -124,20 +94,13 @@
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->email}}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p class="text-blue float-left">Sector :</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->sector}}</p>
-                            </div>
-                        </div>
+                      
                         <div class="row mb-5">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">Purpose :</p>
+                                <p class="text-blue float-left">Department :</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->purpose}}</p>
+                                <p class="float-right text-uppercase" style="text-align: right;">{{str_replace("_" , " " , $transaction->department)}}</p>
                             </div>
                         </div>
                         <img src="{{asset('web/img/dti-logo.png')}}" alt="logo" class="img-fluid float-right" width="30%">
