@@ -54,6 +54,7 @@ class CreateTransaction extends Command
                 [
                     'payor' => $value->payor , 
                     'email' => $value->email,
+                    'address' => $value->address,
                     'contact_number' => $value->contact_number,
                     'department' => $value->department_code,
                     'payment_category' => $value->payment_category,

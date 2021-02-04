@@ -587,11 +587,9 @@ class Helper{
                 'contact_number' => $exist->contact_number,
                 'ref_num' => $exist->transaction_code,
                 'amount' => $exist->total_amount,
-                'full_name' => $exist->order->full_name,
-                'purpose' => $exist->order->purpose,
-                'sector' => $exist->order->sector,
                 'order_details' =>  $details,
-                'company_name' =>  $exist->company_name,
+                'payor' =>  $exist->payor,
+                'department' =>  str_replace("_", " ", $exist->department),
                 'created_at' => Helper::date_only($exist->created_at)
             ];  
             $notification_email_data = new SendOrderTransactionEmail($insert);

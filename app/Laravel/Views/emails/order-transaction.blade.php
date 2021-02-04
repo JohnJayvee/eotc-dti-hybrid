@@ -62,15 +62,16 @@
 			<tr>
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;" colspan="2">Payment Reference Number : {{$ref_num}}</th>
+			</tr>
 			<tr>
-				<th colspan="2"><p style="float: left;text-align: justify;">Hello {{Str::title($full_name)}},</th>
+				<th colspan="2"><p style="float: left;text-align: justify;">Hello {{Str::title($payor)}},</th>
 			</tr>
 			<tr>
 				<th colspan="2"><p style="float: left;text-align: justify;">Good day. We are pleased to inform you that your transaction is now for Payment. </th>
 			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;" colspan="2">Payment Reference Number : {{$ref_num}}</th>
-			</tr>
+			
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Order Details</th>
 			</tr>
@@ -79,17 +80,13 @@
 				<th style="text-align: left;padding: 10px;">Transaction Number:</th>
 				<th style="text-align: right;">{!! $detail['transaction_number'] !!}</th>
 			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Designation Number:</th>
-				<th style="text-align: right;">{{ $detail['designation_number'] }}</th>
-			</tr>
 			<tr class="text-blue" >
-				<th style="text-align: left;padding: 10px;">Title:</th>
-				<th style="text-align: right;">{{ $detail['order_title']}}</th>
+				<th style="text-align: left;padding: 10px;">Particulars:</th>
+				<th style="text-align: right;">{{ $detail['particulars']}}</th>
 			</tr>
 			<tr class="text-blue" style="border-bottom: solid 1px black;">
 				<th style="text-align: left;padding: 10px;">Amount:</th>
-				<th style="text-align: right;">PHP {{ $detail['price']}}</th>
+				<th style="text-align: right;">PHP {{ $detail['amount']}}</th>
 			</tr>
 			@empty
 			@endforelse
@@ -104,21 +101,15 @@
 				<th  style="text-align: left;padding: 10px;"><p>Requestor Details<p></th>
 			</tr>
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Full Name:</th>
-				<th style="text-align: right;">{{$full_name}}</th>
+				<th style="text-align: left;padding: 10px;">Payor:</th>
+				<th style="text-align: right;">{{$payor}}</th>
 			</tr>
+			
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Company Name:</th>
-				<th style="text-align: right;">{{$company_name}}</th>
+				<th style="text-align: left;padding: 10px;">Department:</th>
+				<th style="text-align: right;">{{str::title($department)}}</th>
 			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Sector:</th>
-				<th style="text-align: right;">{{$sector}}</th>
-			</tr>
-			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Purpose:</th>
-				<th style="text-align: right;">{{$purpose}}</th>
-			</tr>
+			
 			
 			<th colspan="2" style="border: none;padding-top: 20px;"><hr class="new2"></th>
 			</tr>

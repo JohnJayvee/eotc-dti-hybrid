@@ -37,7 +37,7 @@ class OrderTransaction extends Model{
      *
      * @var array
      */
-    protected $fillable = ['order_transaction_number','payor','email','contact_number','department','transaction_code','payment_category','total_amount'];
+    protected $fillable = ['order_transaction_number','payor','email','contact_number','department','transaction_code','payment_category','total_amount','address'];
 
 
     /**

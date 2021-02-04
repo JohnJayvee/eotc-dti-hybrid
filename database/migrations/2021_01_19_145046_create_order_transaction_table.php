@@ -20,6 +20,7 @@ class CreateOrderTransactionTable extends Migration
             $table->string('payor')->nullable();
             $table->string('email')->nullable();
             $table->string('contact_number')->nullable();
+            $table->string('address')->nullable();
             $table->string('department')->nullable();
             $table->string('payment_category')->nullable();
             

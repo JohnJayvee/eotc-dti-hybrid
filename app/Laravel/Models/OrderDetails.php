@@ -63,10 +63,7 @@ class OrderDetails extends Model{
     protected $casts = [
     ];
 
-     public function getAddressAttribute(){
-        return Str::title("{$this->unit_no} {$this->street_name} , {$this->brgy} , {$this->municipality} , {$this->province} , {$this->region} {$this->zip_code}");
-    }
-
+    
     public function getFullNameAttribute(){
         return Str::title("{$this->first_name} {$this->last_name} ");
     }

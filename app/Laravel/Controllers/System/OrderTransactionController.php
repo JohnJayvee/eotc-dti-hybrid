@@ -110,7 +110,7 @@ class OrderTransactionController extends Controller
 
 		$this->data['transaction'] = $request->get('order_transaction_data');
 		$this->data['order_details'] = OrderDetails::where("transaction_number" , $this->data['transaction']->order_transaction_number)->get();
-		$this->data['total_price'] = OrderDetails::where("transaction_number" , $this->data['transaction']->order_transaction_number)->sum('price');
+		$this->data['total_price'] = OrderDetails::where("transaction_number" , $this->data['transaction']->order_transaction_number)->sum('amount');
 
 		$this->data['page_title'] = "Order Transaction Details";
 		return view('system.order-transaction.show',$this->data);

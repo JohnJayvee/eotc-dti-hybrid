@@ -32,20 +32,13 @@
                 <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->transaction_number}}</p>
               </div>
             </div>
+           
             <div class="row">
               <div class="col-md-6">
-                <p class="text-blue float-left">Designation Number:</p>
+                <p class="text-blue float-left">Particulars:</p>
               </div>
               <div class="col-md-6">
-                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->designation_number}}</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <p class="text-blue float-left">Title:</p>
-              </div>
-              <div class="col-md-6">
-                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->order_title}}</p>
+                <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->particulars}}</p>
               </div>
             </div>
             <div class="row">
@@ -53,7 +46,7 @@
                 <p class="text-blue float-left">Amount:</p>
               </div>
               <div class="col-md-6">
-                <p class="float-right text-uppercase" style="text-align: right;">PHP {{ Helper::money_format($order_detail->price)}}</p>
+                <p class="float-right text-uppercase" style="text-align: right;">PHP {{ Helper::money_format($order_detail->amount)}}</p>
               </div>
             </div>
             <hr>
@@ -75,52 +68,21 @@
       <h5 class="text-blue fs-15 m-2">Request form Details</h5>
       <div class="card mb-4">
         <div class="card-body">
+          
           <div class="row">
             <div class="col-md-6">
-              <p class="text-blue float-left">Distinction:</p>
+              <p class="text-blue float-left">Payor:</p>
             </div>
             <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->title}}</p>
+              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->payor}}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <p class="text-blue float-left">First Name:</p>
+              <p class="text-blue float-left">Address :</p>
             </div>
             <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->fname}}</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <p class="text-blue float-left">Middle Initial:</p>
-            </div>
-            <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->mname}}</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <p class="text-blue float-left">Last Name :</p>
-            </div>
-            <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->lname}}</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <p class="text-blue float-left">Company name :</p>
-            </div>
-            <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->company_name}}</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <p class="text-blue float-left">Company Address :</p>
-            </div>
-            <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->address}}</p>
+              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->address}}</p>
             </div>
           </div>
           <div class="row">
@@ -141,18 +103,10 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <p class="text-blue float-left">Sector :</p>
+              <p class="text-blue float-left">Department :</p>
             </div>
             <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->sector}}</p>
-            </div>
-          </div>
-          <div class="row mb-5">
-            <div class="col-md-6">
-              <p class="text-blue float-left">Purpose :</p>
-            </div>
-            <div class="col-md-6">
-              <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->purpose}}</p>
+              <p class="float-right text-uppercase" style="text-align: right;">{{str_replace("_"," " , $transaction->department)}}</p>
             </div>
           </div>
           <img src="{{asset('web/img/dti-logo.png')}}" alt="logo" class="img-fluid float-right" width="30%">
