@@ -35,7 +35,7 @@ class ProcessorController extends Controller
 			if (Auth::user()->type == "admin" || Auth::user()->type == "office_head") {
 				$this->data['user_type'] = ['' => "Choose Type",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
 			}else {
-				$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
+				$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'pcims_admin' => "PCIMS Admin",'bps_library_admin' => "BPS Library Admin",'bps_testing_admin' => "BPS Testing Admin",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
 			}
 
 			if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {

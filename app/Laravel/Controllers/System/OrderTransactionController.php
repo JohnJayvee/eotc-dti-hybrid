@@ -62,6 +62,11 @@ class OrderTransactionController extends Controller
 					}
 				})
 				->where(function($query){
+					if (strlen($this->data['auth']->type) > 0) {
+						return $query->where('department',$this->data['auth']->type);
+					}
+				})
+				->where(function($query){
 					if(strlen($this->data['selected_payment_status']) > 0){
 						return $query->where('payment_status',$this->data['selected_payment_status']);
 					}

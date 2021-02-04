@@ -47,6 +47,17 @@ class Helper{
 		return $result;
 	}
 
+	public static function order_department($value = NULL){
+		$result = "N/A";
+		switch($value){
+			case 'bps_library_admin': $result = "BPS LIBRARY";break;
+			case 'pcims_admin': $result = "PCIMS";break;
+			case 'bps_testing_admin': $result = "BPS TESTING CENTER";break;
+			default: $result = "N/A"; break;
+		}
+		return $result;
+	}
+
 	public static function digipep_transaction(array $param){
 		$trans_id = $param['trans_token'];
 		// .Str::upper(Str::random(6))

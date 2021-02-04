@@ -17,43 +17,42 @@ class OrderImport implements ToCollection
     public function collection(Collection $rows)
     {
         // dd($rows);
-        $len = count($rows);
-        $transaction_number = [];
         foreach ($rows as $index => $row) 
         {  
             if($index == 0) {
                 continue;
             }
 
-
             $is_exist = OrderDetails::where('order_id',$row[0])->first();
-            if (!$is_exist and $row[23] != NULL) {
+            if (!$is_exist and $row[10] != NULL) {
+                    switch ($row[1]) {
+                        case "BPSLIBRARY":
+                            $code = "bps_library_admin";
+                            break;
+                        case 'PCIMS':
+                            $code = "pcims_admin";
+                            break;
+                        case "BPSTESTINGCENTER":
+                            $code = "bps_testing_admin";
+                            break;
+                        default:
+                            $code = "admin";
+                            break;
+                    }
                 $order_details = OrderDetails::create([
-                    $date = intval($row[1]),
+                    $date = intval($row[2]),    
                     'order_id' => $row[0],
-                    'request_time' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($date)->format('Y-m-d'),
-                    'transaction_number' => $row[2],
-                    'designation_number' => $row[3],
-                    'no_of_pages' => $row[4],
-                    'no_of_copies' => $row[5],
-                    'company_name' => $row[6],
-                    'order_title' => $row[7],
-                    'title' => $row[8],
-                    'first_name' => $row[9],
-                    'middle_name' => $row[10],
-                    'last_name' => $row[11],
-                    'email' => $row[12],
-                    'tel_no' => $row[13],
-                    'unit_no' => $row[14],
-                    'street_name' => $row[15],
-                    'brgy' => $row[16],
-                    'municipality' => $row[17],
-                    'province' => $row[18],
-                    'region' => $row[19],
-                    'zip_code' => $row[20],
-                    'sector' => $row[21],
-                    'purpose' => $row[22],
-                    'price' => $row[23],
+                    'department_code' => $code,
+                    'date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($date)->format('Y-m-d'),
+                    'transaction_number' => $row[3],
+                    'payor' => $row[4],
+                    'address' => $row[5],
+                    'contact_number' => $row[6],
+                    'email' => $row[7],
+                    'particulars' => $row[8],
+                    'payment_category' => $row[9],
+                    'amount' => $row[10],
+                    'payment_status' => $row[11],
                 ]);
                 $order_details->save();
             }

@@ -8,7 +8,7 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
-    @if(in_array($auth->type,['super_user','admin','processor','office_head']))
+    @if(in_array($auth->type,['super_user','admin','processor','office_head','pcims_admin','bps_library_admin','bps_testing_admin']))
       @if(in_array($auth->type,['super_user','admin','office_head']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.processor.list','system.processor.show' )) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.processor.list')}}">

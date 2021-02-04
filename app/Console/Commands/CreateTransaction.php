@@ -47,17 +47,16 @@ class CreateTransaction extends Command
 
         if ($data) {
             foreach ($data as $key => $value) {
-            $sum_amount = OrderDetails::where('transaction_number' , $value->transaction_number)->sum('price');
+            $sum_amount = OrderDetails::where('transaction_number' , $value->transaction_number)->sum('amount');
 
             OrderTransaction::firstOrCreate(
                 ['order_transaction_number' => $value->transaction_number],
                 [
-                    'fname' => $value->first_name , 
-                    'mname' => $value->middle_name,
-                    'lname' => $value->last_name , 
-                    'company_name' => $value->company_name , 
+                    'payor' => $value->payor , 
                     'email' => $value->email,
-                    'contact_number' => $value->tel_no,
+                    'contact_number' => $value->contact_number,
+                    'department' => $value->department_code,
+                    'payment_category' => $value->payment_category,
                     'total_amount' => $sum_amount,
                     'transaction_code' => 'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($value->order_id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3))
                 ]);

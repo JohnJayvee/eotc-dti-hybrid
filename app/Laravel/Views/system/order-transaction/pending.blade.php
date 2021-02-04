@@ -59,9 +59,9 @@
           <tr class="text-center">
             <th class="text-title p-3">Transaction Number</th>
             <th class="text-title p-3">Transaction Date</th>
+            <th class="text-title p-3">Department</th>
             <th class="text-title p-3">Payment Reference Number</th>
-            <th class="text-title p-3">Submitted By</th>
-            <th class="text-title p-3">Company Name</th>
+            <th class="text-title p-3">Payor</th>
             <th class="text-title p-3">Amount/Status</th>
             <th class="text-title p-3">Action</th>
           </tr>
@@ -70,10 +70,10 @@
           @forelse($order_transactions as $order_transaction)
           <tr class="text-center">
             <td> {{$order_transaction->order_transaction_number}} </td>
+            <td> {{Helper::order_department($order_transaction->department)}} </td>
             <td>{{ Helper::date_format($order_transaction->created_at)}}</td>
             <td>{{ $order_transaction->transaction_code}}</td>
-            <td>{{ $order_transaction->order->full_name }}</td>
-            <td>{{ $order_transaction->company_name}}</td>
+            <td>{{ $order_transaction->payor}}</td>
             <td>
               <div>{{Helper::money_format($order_transaction->total_amount) ?: 0 }}</div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($order_transaction->payment_status)}} p-2">{{Str::upper($order_transaction->payment_status)}}</span></small></div>

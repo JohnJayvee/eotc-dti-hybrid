@@ -17,13 +17,12 @@ class CreateOrderTransactionTable extends Migration
             $table->bigIncrements('id');
             $table->string('order_transaction_number')->nullable();
             $table->string('transaction_code')->nullable();
-            $table->string('fname')->nullable();
-            $table->string('mname')->nullable();
-            $table->string('lname')->nullable();
-            $table->string('company_name')->nullable();
+            $table->string('payor')->nullable();
             $table->string('email')->nullable();
             $table->string('contact_number')->nullable();
-
+            $table->string('department')->nullable();
+            $table->string('payment_category')->nullable();
+            
             $table->string('payment_reference')->nullable();
             $table->string('payment_type')->nullable();
             $table->string('payment_option')->nullable();
