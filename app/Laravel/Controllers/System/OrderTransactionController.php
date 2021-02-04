@@ -62,7 +62,7 @@ class OrderTransactionController extends Controller
 					}
 				})
 				->where(function($query){
-					if (strlen($this->data['auth']->type) > 0) {
+					if ($this->data['auth']->type != "super_user" ) {
 						return $query->where('department',$this->data['auth']->type);
 					}
 				})
