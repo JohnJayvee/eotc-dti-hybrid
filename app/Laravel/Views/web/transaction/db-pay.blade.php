@@ -54,20 +54,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">Distinction:</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->title}}</p>
-                            </div>
-                        </div>
-                       
-                       
-                        <div class="row">
-                            <div class="col-md-6">
                                 <p class="text-blue float-left">Payor:</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->company_name}}</p>
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->payor}}</p>
                             </div>
                         </div>
                         <div class="row">
@@ -75,7 +65,7 @@
                                 <p class="text-blue float-left">Address :</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->order->address}}</p>
+                                <p class="float-right text-uppercase" style="text-align: right;">{{$transaction->address}}</p>
                             </div>
                         </div>
                         <div class="row">

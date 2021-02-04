@@ -2,14 +2,15 @@
   <h6 class="pl-3 pt-4">Menu</h6>
   <ul class="nav">
     
-    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.dashboard')) ? 'active' : ''}}">
-      <a class="nav-link" href="{{route('system.dashboard')}}">
-        <i class="fa fa-home menu-icon"></i>
-        <span class="menu-title">Dashboard</span>
-      </a>
-    </li>
+    
     @if(in_array($auth->type,['super_user','admin','processor','office_head','pcims_admin','bps_library_admin','bps_testing_admin']))
       @if(in_array($auth->type,['super_user','admin','office_head']))
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.dashboard')) ? 'active' : ''}}">
+          <a class="nav-link" href="{{route('system.dashboard')}}">
+            <i class="fa fa-home menu-icon"></i>
+            <span class="menu-title">Dashboard</span>
+          </a>
+        </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.processor.list','system.processor.show' )) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.processor.list')}}">
             <i class="fa fa-user-circle menu-icon"></i>
@@ -17,61 +18,63 @@
           </a>
         </li>
       @endif
-    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.transaction.index','system.transaction.show','system.transaction.declined','system.transaction.pending','system.transaction.approved','system.transaction.resent')) ? 'active' : ''}}">
-      <a class="nav-link" data-toggle="collapse" href="#my_report" aria-expanded="false" aria-controls="my_report">
-        <i class="fa fa-file menu-icon"></i>
-        <span class="menu-title">Transactions</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="my_report">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.pending')}}">Pending
-            <!-- @if($counter['pending'] > 0)
-              <span class="badge badge-sm badge-primary">{{$counter['pending']}}</span>
-            @endif -->
-          </a></li>
-        </ul>
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.approved')}}">Approved
-            <!-- @if($counter['approved'] > 0)
-              <span class="badge badge-sm badge-primary">{{$counter['approved']}}</span>
-            @endif -->
-          </a></li>
-        </ul>
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.declined')}}">Declined
-            <!-- @if($counter['declined'] > 0)
-              <span class="badge badge-sm badge-primary">{{$counter['declined']}}</span>
-            @endif -->
-          </a></li>
-        </ul>
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.resent')}}">Resent
-           <!--  @if($counter['resent'] > 0)
-              <span class="badge badge-sm badge-primary">{{$counter['resent']}}</span>
-            @endif -->
-          </a></li>
-        </ul>
-        @if(in_array($auth->type,['processor']))
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.create')}}">Create New</a></li>
-        </ul>
-        @endif
-      </div>
-    </li>
-     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.order_transaction.show','system.order_transaction.pending')) ? 'active' : ''}}">
-      <a class="nav-link" data-toggle="collapse" href="#order_transaction" aria-expanded="false" aria-controls="order_transaction">
-        <i class="fa fa-file menu-icon"></i>
-        <span class="menu-title">Order Transactions</span>
-        <i class="menu-arrow"></i>
-      </a>
-      <div class="collapse" id="order_transaction">
-        <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="{{route('system.order_transaction.pending')}}">For Payment
-          </a></li>
-        </ul>
-      </div>
-    </li>
+      @if(in_array($auth->type,['super_user','admin','office_head','processor']))
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.transaction.index','system.transaction.show','system.transaction.declined','system.transaction.pending','system.transaction.approved','system.transaction.resent')) ? 'active' : ''}}">
+          <a class="nav-link" data-toggle="collapse" href="#my_report" aria-expanded="false" aria-controls="my_report">
+            <i class="fa fa-file menu-icon"></i>
+            <span class="menu-title">Transactions</span>
+            <i class="menu-arrow"></i>
+          </a>
+          <div class="collapse" id="my_report">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.pending')}}">Pending
+                <!-- @if($counter['pending'] > 0)
+                  <span class="badge badge-sm badge-primary">{{$counter['pending']}}</span>
+                @endif -->
+              </a></li>
+            </ul>
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.approved')}}">Approved
+                <!-- @if($counter['approved'] > 0)
+                  <span class="badge badge-sm badge-primary">{{$counter['approved']}}</span>
+                @endif -->
+              </a></li>
+            </ul>
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.declined')}}">Declined
+                <!-- @if($counter['declined'] > 0)
+                  <span class="badge badge-sm badge-primary">{{$counter['declined']}}</span>
+                @endif -->
+              </a></li>
+            </ul>
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.resent')}}">Resent
+               <!--  @if($counter['resent'] > 0)
+                  <span class="badge badge-sm badge-primary">{{$counter['resent']}}</span>
+                @endif -->
+              </a></li>
+            </ul>
+            @if(in_array($auth->type,['processor']))
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.create')}}">Create New</a></li>
+            </ul>
+            @endif
+          </div>
+        </li>
+      @endif
+      <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.order_transaction.show','system.order_transaction.pending')) ? 'active' : ''}}">
+        <a class="nav-link" data-toggle="collapse" href="#order_transaction" aria-expanded="false" aria-controls="order_transaction">
+          <i class="fa fa-file menu-icon"></i>
+          <span class="menu-title">Order Transactions</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="order_transaction">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{route('system.order_transaction.pending')}}">For Payment
+            </a></li>
+          </ul>
+        </div>
+      </li>
     @if(in_array($auth->type,['super_user','admin','office_head']))
       @if(in_array($auth->type,['super_user','admin']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.account_title.index','system.account_title.create','system.account_title.edit')) ? 'active' : ''}}">

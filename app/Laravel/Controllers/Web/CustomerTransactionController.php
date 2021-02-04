@@ -246,30 +246,40 @@ class CustomerTransactionController extends Controller
 		$code = strtolower($code);
 		$amount = 0;
 		$status = NULL;
+		
+
 		switch (strtoupper($prefix)) {
 			case 'APP':
 				$transaction = Transaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
-				$amount = Helper::db_amount($transaction->amount - $transaction->partial_amount);
-				$title = $transaction->account_title;
+				if ($transaction) {
+					$amount = Helper::db_amount($transaction->amount - $transaction->partial_amount);
+					$title = $transaction->account_title;
+					$payor = $transaction->company_name;
+				}
 				break;
 			case 'OT':
 				$transaction = OrderTransaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
-				$amount =  Helper::db_amount($transaction ? $transaction->total_amount : 0);
-				$title = $transaction ? $transaction->order->purpose : " ";
+				if ($transaction) {
+					$amount =  Helper::db_amount($transaction ? $transaction->total_amount : 0);
+					$title = "Order Transaction";
+					$payor = $transaction->payor;
+				}
 				break;
 			default:
 				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  =  '{$code}'")->first();
-				$amount =  Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
-				$title = $transaction->account_title;
+				if ($transaction) {
+					$amount =  Helper::db_amount($transaction->processing_fee + $transaction->partial_amount);
+					$title = $transaction->account_title;
+					$payor = $transaction->company_name;
+				}
+				
 				break;
 		}
-
 		if(!$transaction){
 			session()->flash('notification-status',"failed");
 			session()->flash('notification-msg',"Record not found");
 			return redirect()->back();
 		}
-		
 		$prefix = strtoupper($prefix);
 
 		if($prefix == "APP" AND $transaction->application_transaction_status != "PENDING") {
@@ -323,7 +333,7 @@ class CustomerTransactionController extends Controller
 				'cancel_url' => route('web.digipep.cancel',[$code]),
 				'return_url' => route('web.confirmation',[$code]),
 				'failed_url' => route('web.digipep.failed',[$code]),
-				'first_name' => $transaction->company_name,
+				'first_name' => $payor,
 				'contact_number' => $transaction->contact_number,
 				'email' => $transaction->email
 			]);  
