@@ -56,9 +56,9 @@ class OrderTransactionController extends Controller
 
 		$this->data['order_transactions'] = OrderTransaction::with('order')->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
-					return $query->WhereRaw("LOWER(company_name)  LIKE  '%{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(order_transaction_number)  LIKE  '%{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'");
+					return $query->WhereRaw("LOWER(payor)  LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(transaction_code) LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(order_transaction_number) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
