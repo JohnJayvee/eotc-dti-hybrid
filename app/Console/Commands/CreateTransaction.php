@@ -58,11 +58,11 @@ class CreateTransaction extends Command
                     'contact_number' => $value->contact_number,
                     'department' => $value->department_code,
                     'payment_category' => $value->payment_category,
-                    'total_amount' => $sum_amount,
                     'transaction_code' => 'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($value->order_id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3))
                 ]);
 
                 OrderDetails::where('transaction_number',$value->transaction_number)->update(["created_transaction" => "1"]);
+                OrderTransaction::where('transaction_number',$value->transaction_number)->update(['total_amount' => $sum_amount]);
             }
         }
     }
