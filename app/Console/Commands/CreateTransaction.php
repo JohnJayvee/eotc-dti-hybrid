@@ -62,7 +62,7 @@ class CreateTransaction extends Command
                 ]);
 
                 OrderDetails::where('transaction_number',$value->transaction_number)->update(["created_transaction" => "1"]);
-                OrderTransaction::where('transaction_number',$value->transaction_number)->update(['total_amount' => $sum_amount]);
+                OrderTransaction::where('order_transaction_number',$value->transaction_number)->update(["total_amount" => $sum_amount]);
             }
         }
     }
