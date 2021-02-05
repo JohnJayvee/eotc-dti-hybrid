@@ -41,14 +41,14 @@
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly" name="end_date">
           </div>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-4">
           <label>Keyword</label>
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Search: Payment Reference Number, Payor, Reference/Transaction/Serial Number">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Reference Number, Payor, Reference/Transaction/Serial Number">
           </div>
         </div>
-        <div class="col-md-1" style="margin-top: 2em">
+        <div class="col-md-2" style="margin-top: 2em">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.order_transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
