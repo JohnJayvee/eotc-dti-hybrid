@@ -21,11 +21,19 @@
         
       </div>
       <div class="row">
+        @if(Auth::user())
+          @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
+            <div class="col-md-2">
+              <label>Department</label>
+              {!!Form::select("department_type", $department, $selected_department_type, ['id' => "input_department_type", 'class' => "custom-select"])!!}
+            </div>
+          @endif
+        @endif
         <div class="col-md-2">
           <label>Payment Status</label>
           {!!Form::select("payment_status", $status, $selected_payment_status, ['id' => "input_payment_status", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label>Date Range</label>
           <div class="input-group input-daterange d-flex align-items-center">
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly" name="start_date">
@@ -37,10 +45,10 @@
           <label>Keyword</label>
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Search: Transaction Number, Company, Submitter Name">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Search: Payment Reference Number, Payor, Reference/Transaction/Serial Number">
           </div>
         </div>
-        <div class="col-md-2" style="margin-top: 2em">
+        <div class="col-md-1" style="margin-top: 2em">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.order_transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
@@ -60,6 +68,7 @@
             <th class="text-title p-3">Transaction Date</th>
             <th class="text-title p-3">Reference/Transaction/Serial Number</th>
             <th class="text-title p-3">Department</th>
+            <th class="text-title p-3">Payment Category</th>
             <th class="text-title p-3">Payment Reference Number</th>
             <th class="text-title p-3">Payor</th>
             <th class="text-title p-3">Amount/Status</th>
@@ -72,6 +81,7 @@
             <td>{{ Helper::date_format($order_transaction->created_at)}}</td>
             <td> {{$order_transaction->order_transaction_number}} </td>
             <td> {{Helper::order_department($order_transaction->department)}} </td>
+            <td>{{ str::title($order_transaction->payment_category)}}</td>
             <td>{{ $order_transaction->transaction_code}}</td>
             <td>{{ $order_transaction->payor}}</td>
             <td>

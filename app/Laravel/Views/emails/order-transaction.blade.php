@@ -77,7 +77,7 @@
 			</tr>
 			@forelse($order_details as $detail)
 			<tr class="text-blue" style="border-top: solid 1px black;">
-				<th style="text-align: left;padding: 10px;">Transaction Number:</th>
+				<th style="text-align: left;padding: 10px;">Reference/Transaction/Serial Number:</th>
 				<th style="text-align: right;">{!! $detail['transaction_number'] !!}</th>
 			</tr>
 			<tr class="text-blue" >
@@ -107,7 +107,7 @@
 			
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Department:</th>
-				<th style="text-align: right;">{{str::title($department)}}</th>
+				<th style="text-align: right;">{{Helper::order_department($department)}}</th>
 			</tr>
 			
 			

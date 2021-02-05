@@ -17,7 +17,7 @@
                        @forelse($order_details as $order_detail)
                         <div class="row">
                             <div class="col-md-6">
-                                <p class="text-blue float-left">Transaction Number:</p>
+                                <p class="text-blue float-left">Reference/Transaction/Serial Number:</p>
                             </div>
                             <div class="col-md-6">
                                 <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->transaction_number}}</p>
@@ -90,7 +90,7 @@
                                 <p class="text-blue float-left">Department :</p>
                             </div>
                             <div class="col-md-6">
-                                <p class="float-right text-uppercase" style="text-align: right;">{{str_replace("_" , " " , $transaction->department)}}</p>
+                                <p class="float-right text-uppercase" style="text-align: right;">{{Helper::order_department($transaction->department)}}</p>
                             </div>
                         </div>
                         <img src="{{asset('web/img/dti-logo.png')}}" alt="logo" class="img-fluid float-right" width="30%">

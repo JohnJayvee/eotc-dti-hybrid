@@ -30,6 +30,7 @@ class OrderTransactionController extends Controller
 		array_merge($this->data, parent::get_data());
 
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
+		$this->data['department'] = ['' => "Choose Type",'pcims_admin' => "PCIMS",'bps_library_admin' => "BPS Library",'bps_testing_admin' => "BPS Testing"];
 
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
 	}
@@ -54,6 +55,8 @@ class OrderTransactionController extends Controller
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 		$this->data['selected_payment_status'] = $request->get('payment_status');
 
+		$this->data['selected_department_type'] = $request->get('department_type');
+
 		$this->data['order_transactions'] = OrderTransaction::with('order')->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(payor)  LIKE  '%{$this->data['keyword']}%'")
@@ -69,6 +72,11 @@ class OrderTransactionController extends Controller
 				->where(function($query){
 					if(strlen($this->data['selected_payment_status']) > 0){
 						return $query->where('payment_status',$this->data['selected_payment_status']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_department_type']) > 0){
+						return $query->where('department',$this->data['selected_department_type']);
 					}
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
