@@ -589,7 +589,7 @@ class Helper{
                 'amount' => $exist->total_amount,
                 'order_details' =>  $details,
                 'payor' =>  $exist->payor,
-                'department' =>  $exist->department,
+                'department' =>  Helper::order_department($exist->department),
                 'created_at' => Helper::date_only($exist->created_at)
             ];  
             $notification_email_data = new SendOrderTransactionEmail($insert);

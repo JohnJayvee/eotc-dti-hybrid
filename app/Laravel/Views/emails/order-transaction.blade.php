@@ -107,7 +107,7 @@
 			
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Department:</th>
-				<th style="text-align: right;">{{Helper::order_department($department)}}</th>
+				<th style="text-align: right;">{{$department}}</th>
 			</tr>
 			
 			
