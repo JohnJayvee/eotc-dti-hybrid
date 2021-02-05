@@ -68,7 +68,7 @@ class AuthController extends Controller{
 
 			session()->flash('notification-status','success');
 			session()->flash('notification-msg',"Welcome {$account->full_name}!");
-			if ($account->type == "pcims_admin" || $account->type == "bps_library_admin" || $account->type == "bps_testing_admin") {
+			if ($account->type == "pcims_admin" || $account->type == "bps_library_admin" || $account->type == "bps_testing_admin" || $account->type == "order_transaction_admin") {
 				return redirect()->route('system.order_transaction.pending');
 			}
 			return redirect()->route('system.dashboard');
@@ -95,7 +95,7 @@ class AuthController extends Controller{
 
 			session()->flash('notification-status','success');
 			session()->flash('notification-msg',"Welcome {$account->name}!");
-			if ($account->type == "pcims_admin" || $account->type == "bps_library_admin" || $account->type == "bps_testing_admin") {
+			if ($account->type == "pcims_admin" || $account->type == "bps_library_admin" || $account->type == "bps_testing_admin" || $account->type == "order_transaction_admin") {
 				return redirect()->route('system.order_transaction.pending');
 			}
 			return redirect()->route('system.dashboard');

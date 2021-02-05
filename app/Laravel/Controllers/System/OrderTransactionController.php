@@ -65,7 +65,7 @@ class OrderTransactionController extends Controller
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type == "pcims_admin" || $this->data['auth']->type == "bps_library_admin" || $this->data['auth']->type == "bps_testing_admin") {
+					if ($this->data['auth']->type != "order_transaction_admin") {
 						return $query->where('department',$this->data['auth']->type);
 					}
 				})

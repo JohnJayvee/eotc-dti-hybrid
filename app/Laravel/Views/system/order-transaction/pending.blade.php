@@ -22,7 +22,7 @@
       </div>
       <div class="row">
         @if(Auth::user())
-          @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
+          @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin" || Auth::user()->type == "order_transaction_admin")
             <div class="col-md-2">
               <label>Department</label>
               {!!Form::select("department_type", $department, $selected_department_type, ['id' => "input_department_type", 'class' => "custom-select"])!!}

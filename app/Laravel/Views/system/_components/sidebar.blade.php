@@ -3,7 +3,7 @@
   <ul class="nav">
     
     
-    @if(in_array($auth->type,['super_user','admin','processor','office_head','pcims_admin','bps_library_admin','bps_testing_admin']))
+    @if(in_array($auth->type,['super_user','admin','processor','office_head','pcims_admin','bps_library_admin','bps_testing_admin','order_transaction_admin']))
       @if(in_array($auth->type,['super_user','admin','office_head']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.dashboard')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.dashboard')}}">
