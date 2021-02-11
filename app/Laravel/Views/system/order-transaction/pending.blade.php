@@ -22,7 +22,7 @@
       </div>
       <div class="row">
         @if(Auth::user())
-          @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin" || Auth::user()->type == "order_transaction_admin")
+          @if(in_array($auth->type,['super_user','admin','order_transaction_admin','cashier']))
             <div class="col-md-2">
               <label>Department</label>
               {!!Form::select("department_type", $department, $selected_department_type, ['id' => "input_department_type", 'class' => "custom-select"])!!}
@@ -57,9 +57,11 @@
   </div>
   <div class="col-md-12">
     <h4 class="pb-4">Record Data
+      @if($auth->type != "cashier")
       <span class="float-right">
         <a href="{{route('system.order_transaction.upload')}}" class="btn btn-sm btn-primary">Upload Excel File</a>
       </span>
+      @endif
     </h4>
     <div class="shadow-sm fs-15 table-responsive">
       <table class="table table-striped table-wrap">

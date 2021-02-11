@@ -163,7 +163,7 @@
     if (type == "office_head") {
       $("#application_container").hide();
       $("#office_container").show();
-    }else if(type == "admin" || type == "pcims_admin" || type == "bps_library_admin" || type == "bps_testing_admin" || type == "order_transaction_admin"){
+    }else if(type == "admin" || type == "pcims_admin" || type == "bps_library_admin" || type == "bps_testing_admin" || type == "order_transaction_admin" || type == "cashier"){
       $("#office_container").hide();
       $("#application_container").hide();
     }

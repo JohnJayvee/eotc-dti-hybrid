@@ -30,8 +30,7 @@ class MainController extends Controller{
 	public function dashboard(PageRequest $request){
 		$auth = $request->user();
 		$this->data['page_title'] .= "Dashboard";
-
-		if ($auth->type == "admin" || $auth->type == "super_user" || $auth->type == "pcims_admin" || $auth->type == "bps_library_admin" || $auth->type == "bps_testing_admin" || $auth->type == "order_transaction_admin" ) {
+		if(in_array($auth->type,['super_user','admin','office_head','processor','pcims_admin','bps_library_admin','bps_testing_admin','order_transaction_admin','cashier'])){
 			$this->data['applications'] = Transaction::orderBy('created_at',"DESC")->get(); 
 			$this->data['pending'] = Transaction::where('status',"PENDING")->count();
 			$this->data['approved'] = Transaction::where('status',"APPROVED")->count(); 
