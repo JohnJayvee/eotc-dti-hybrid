@@ -583,7 +583,7 @@ class Helper{
 
         if ($exist->is_email_send == 0) {
             $insert[] = [
-                'email' => strtolower($exist->email),
+                'email' => $exist->email,
                 'contact_number' => $exist->contact_number,
                 'ref_num' => $exist->transaction_code,
                 'amount' => $exist->total_amount,
