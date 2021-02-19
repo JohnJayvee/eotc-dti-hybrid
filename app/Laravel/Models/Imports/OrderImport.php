@@ -16,7 +16,7 @@ class OrderImport implements ToCollection
 {
     public function collection(Collection $rows)
     {
-        // dd($rows);
+       
         foreach ($rows as $index => $row) 
         {  
             if($index == 0) {

@@ -53,7 +53,7 @@ class CreateTransaction extends Command
                 ['order_transaction_number' => $value->transaction_number],
                 [
                     'payor' => $value->payor , 
-                    'email' => $value->email,
+                    'email' => strtolower($value->email),
                     'address' => $value->address,
                     'contact_number' => $value->contact_number,
                     'department' => $value->department_code,
