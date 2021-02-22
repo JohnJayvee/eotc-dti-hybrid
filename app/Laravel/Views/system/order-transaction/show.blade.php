@@ -60,6 +60,14 @@
               <h5 class="float-right">Payment Status: <span class="badge badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></h5>
             </div>
           </div>
+          @if($transaction->payment_status == "UNPAID")
+          <hr>
+          <div class="row">
+            <div class="col-12">
+              <a data-url="{{route('system.order_transaction.paid',[$transaction->id])}}" class="text-white btn btn-primary float-right btn-paid"><i class="fa fa-money-bill mr-2"></i>PAID</a>
+            </div>
+          </div>
+          @endif
         </div>
       </div>
       <a href="{{route('system.order_transaction.pending')}}" class="btn btn-light float-right mt-2">Return to Order Transaction list</a>
@@ -141,7 +149,7 @@
   }
 </style>
 @stop
-<!-- 
+
 @section('page-scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script>
@@ -151,67 +159,26 @@
     $('.input-daterange').datepicker({
       format : "yyyy-mm-dd"
     });
-    $(".btn-decline").on('click', function(){
+   
+    $(".btn-paid").on('click', function(){
       var url = $(this).data('url');
-      var self = $(this)
+      var btn = $(this)
       Swal.fire({
-        title: "All the submitted requirements will be marked as declined. Are you sure you want to declined this application?",
-        
-        icon: 'warning',
-        input: 'text',
-        inputPlaceholder: "Put remarks",
-        showCancelButton: true,
-        confirmButtonText: 'Decline',
-        cancelButtonColor: '#d33'
-      }).then((result) => {
-        if (result.value === "") {
-          alert("You need to write something")
-          return false
-        }
-        if (result.value) {
-          window.location.href = url + "&remarks="+result.value;
-        }
-      });
-    });
-    $(".btn-approved").on('click', function(){
-      var url = $(this).data('url');
-      var self = $(this)
-      Swal.fire({
-        title: "All the submitted requirements will be marked as approved. Are you sure you want to approve this application?",
-        
+        title: 'Are you sure you want to paid this application?',
+        text: "You will not be able to undo this action, proceed?",
         icon: 'info',
-        input: 'text',
-        inputPlaceholder: "Put Amount",
         showCancelButton: true,
-        confirmButtonText: 'Approved!',
-        cancelButtonColor: '#d33'
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Proceed!'
       }).then((result) => {
-        if (result.value === "") {
-          alert("You need to write something")
-          return false
+        if (result.isConfirmed) {
+          window.location.href = url;
         }
-        if (result.value) {
-          window.location.href = url + "&amount="+result.value;
-        }
-      });
+      })
     });
 
-    $(".btn-approved-requirements").on('click', function(){
-      var url = $(this).data('url');
-      var self = $(this)
-      Swal.fire({
-        title: 'Are you sure you want to modify this requirements?',
-        text: "You will not be able to undo this action, proceed?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: `Proceed`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          window.location.href = url
-        }
-      });
-    });
+    
   })
 </script>
-@stop -->
+@stop

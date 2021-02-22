@@ -30,6 +30,7 @@ class OrderTransactionController extends Controller
 		array_merge($this->data, parent::get_data());
 
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
+		$this->data['method'] = ['' => "Choose Mode of Payment",'ONLINE' => "Online" , 'CASHIER' => "DTI Cashier"];
 		$this->data['department'] = ['' => "Choose Type",'pcims_admin' => "PCIMS",'bps_library_admin' => "BPS Library",'bps_testing_admin' => "BPS Testing"];
 
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
@@ -54,7 +55,7 @@ class OrderTransactionController extends Controller
 
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 		$this->data['selected_payment_status'] = $request->get('payment_status');
-
+		$this->data['selected_payment_method'] = $request->get('payment_method');
 		$this->data['selected_department_type'] = $request->get('department_type');
 
 		$this->data['order_transactions'] = OrderTransaction::with('order')->where(function($query){
@@ -72,6 +73,11 @@ class OrderTransactionController extends Controller
 				->where(function($query){
 					if(strlen($this->data['selected_payment_status']) > 0){
 						return $query->where('payment_status',$this->data['selected_payment_status']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_payment_method']) > 0){
+						return $query->where('payment_method',$this->data['selected_payment_method']);
 					}
 				})
 				->where(function($query){
@@ -122,5 +128,33 @@ class OrderTransactionController extends Controller
 
 		$this->data['page_title'] = "Order Transaction Details";
 		return view('system.order-transaction.show',$this->data);
+	}
+
+	public function paid(PageRequest $request, $id = NULL){
+
+		DB::beginTransaction();
+		try{
+			$transaction = $request->get('order_transaction_data');
+			$transaction->payment_type = "CASHIER";
+			$transaction->payment_option = "CASHIER";
+			$transaction->payment_method = "CASHIER";
+			$transaction->payment_status = "PAID";
+			$transaction->transaction_status = "COMPLETED";
+			$transaction->payment_date = Carbon::now();
+			$transaction->save();
+
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Order Transaction has been successfully paid.");
+			return redirect()->route('system.order_transaction.pending');
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
+
+		
+
 	}
 }

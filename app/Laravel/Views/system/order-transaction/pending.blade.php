@@ -23,32 +23,39 @@
       <div class="row">
         @if(Auth::user())
           @if(in_array($auth->type,['super_user','admin','order_transaction_admin','cashier']))
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label>Department</label>
               {!!Form::select("department_type", $department, $selected_department_type, ['id' => "input_department_type", 'class' => "custom-select"])!!}
             </div>
           @endif
         @endif
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label>Payment Status</label>
           {!!Form::select("payment_status", $status, $selected_payment_status, ['id' => "input_payment_status", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
+          <label>Mode of Payment</label>
+          {!!Form::select("payment_method", $method, $selected_payment_method, ['id' => "input_payment_method", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-3">
           <label>Date Range</label>
+
           <div class="input-group input-daterange d-flex align-items-center">
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly" name="start_date">
             <div class="input-group-addon mx-2">to</div>
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly" name="end_date">
           </div>
         </div>
+      </div>
+      <div class="row mt-3">
+        
         <div class="col-md-4">
-          <label>Keyword</label>
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
             <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Reference Number, Payor, Reference/Transaction/Serial Number">
           </div>
         </div>
-        <div class="col-md-2" style="margin-top: 2em">
+        <div class="col-md-2" >
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.order_transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
