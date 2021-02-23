@@ -56,7 +56,7 @@
           <hr>
           <div class="row">
             <div class="col-12">
-              <a data-url="{{route('system.order_transaction.paid',[$transaction->id])}}" class="text-white btn btn-primary float-right btn-paid"><i class="fa fa-money-bill mr-2"></i>PAID</a>
+              <a data-url="{{route('system.order_transaction.paid',[$transaction->id])}}" class="text-white btn btn-primary float-right btn-paid"><i class="fa fa-money-bill mr-2"></i>Mark as Paid</a>
             </div>
           </div>
           @endif
