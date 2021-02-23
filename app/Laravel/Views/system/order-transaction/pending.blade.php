@@ -81,6 +81,7 @@
             <th class="text-title p-3">Payment Reference Number</th>
             <th class="text-title p-3">Payor</th>
             <th class="text-title p-3">Amount/Status</th>
+            <th class="text-title p-3">Mode of Payment</th>
             <th class="text-title p-3">Action</th>
           </tr>
         </thead>
@@ -98,7 +99,8 @@
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($order_transaction->payment_status)}} p-2">{{Str::upper($order_transaction->payment_status)}}</span></small></div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($order_transaction->transaction_status)}} p-2 mt-1">{{Str::upper($order_transaction->transaction_status)}}</span></small></div>
             </td>
-            <td >
+            <td>{{ $order_transaction->payment_method}}</td>
+            <td>
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
                 <a class="dropdown-item" href="{{route('system.order_transaction.show',[$order_transaction->id])}}">View transaction</a>

@@ -41,14 +41,6 @@
                 <p class="float-right text-uppercase" style="text-align: right;">{{$order_detail->particulars}}</p>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
-                <p class="text-blue float-left">Amount:</p>
-              </div>
-              <div class="col-md-6">
-                <p class="float-right text-uppercase" style="text-align: right;">PHP {{ Helper::money_format($order_detail->amount)}}</p>
-              </div>
-            </div>
             <hr>
           @empty
           @endforelse
@@ -164,7 +156,7 @@
       var url = $(this).data('url');
       var btn = $(this)
       Swal.fire({
-        title: 'Are you sure you want to paid this application?',
+        title: 'Are you sure you want to tag as paid this application?',
         text: "You will not be able to undo this action, proceed?",
         icon: 'info',
         showCancelButton: true,
