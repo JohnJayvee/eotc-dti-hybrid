@@ -99,7 +99,7 @@
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($order_transaction->payment_status)}} p-2">{{Str::upper($order_transaction->payment_status)}}</span></small></div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($order_transaction->transaction_status)}} p-2 mt-1">{{Str::upper($order_transaction->transaction_status)}}</span></small></div>
             </td>
-            <td>{{ $order_transaction->payment_method}}</td>
+            <td>{{ $order_transaction->payment_method ?: "---"}}</td>
             <td>
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">

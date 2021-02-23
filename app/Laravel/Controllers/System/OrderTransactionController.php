@@ -66,7 +66,7 @@ class OrderTransactionController extends Controller
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type != "order_transaction_admin") {
+					if (!in_array($this->data['auth']->type, ["order_transaction_admin","cashier"])) {
 						return $query->where('department',$this->data['auth']->type);
 					}
 				})

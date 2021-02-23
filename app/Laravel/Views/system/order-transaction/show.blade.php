@@ -46,7 +46,7 @@
           @endforelse
           <div class="row">
             <div class="col-6">
-              <h5 class="float-left">Total Price: PHP {{Helper::money_format($total_price)}}</h5>
+              <h5 class="float-left">Total Amount: PHP {{Helper::money_format($total_price)}}</h5>
             </div>
              <div class="col-6">
               <h5 class="float-right">Payment Status: <span class="badge badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></h5>
