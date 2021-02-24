@@ -25,7 +25,9 @@ class OrderImport implements ToCollection
 
             $is_exist = OrderDetails::where('order_id',$row[0])->first();
             $is_exist_tn = OrderDetails::where('transaction_number',$row[3])->first();
-            
+            if ($is_exist and $is_exist_tn) {
+                session()->put('import_message',"yes");
+            }
             if (!$is_exist and $row[10] != NULL and !$is_exist_tn) {
                     switch ($row[1]) {
                         case "BPSLIBRARY":
