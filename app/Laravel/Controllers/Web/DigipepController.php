@@ -263,7 +263,9 @@ class DigipepController extends Controller
 			case 'APP':
 				$transaction = Transaction::whereRaw("LOWER(transaction_code)  LIKE  '%{$code}%'")->first();
 				break;
-			
+			case 'OT':
+				$transaction = OrderTransaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
+				break;
 			default:
 				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 				break;
