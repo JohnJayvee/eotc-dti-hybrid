@@ -104,7 +104,7 @@ class OrderTransactionController extends Controller
 		    Excel::import(new OrderImport, request()->file('file'));
 
 		    session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Importing data was successful , Please referesh the page.");
+			session()->flash('notification-msg', "Sorry, but the Excel File you're trying to upload has a duplicate. Please recheck the  Reference/Transaction/Serial Number Column. Don't worry, the other rows have been uploaded successfully. Please refresh the page to reflect the uploaded data");
 			return redirect()->route('system.order_transaction.pending');
 		} catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
 		     $failures = $e->failures();
