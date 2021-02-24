@@ -102,10 +102,11 @@ class OrderTransactionController extends Controller
 			$request->session()->forget('import_message');
 		    Excel::import(new OrderImport, request()->file('file'));
 
-		    session()->flash('notification-status', "success");
 		    if ($request->session()->get('import_message') == "yes") {
+		    	session()->flash('notification-status', "danger");
 		    	session()->flash('notification-msg', "Sorry, but the Excel File you're trying to upload has a duplicate. Please recheck the  Reference/Transaction/Serial Number Column. Don't worry, the other rows have been uploaded successfully. Please refresh the page to reflect the uploaded data.");
 		    }else{
+		    	session()->flash('notification-status', "success");
 		    	session()->flash('notification-msg', "Imported Successfully. All the rows from the Excel has been uploaded successfully.. Please refresh the page to reflect the uploaded data.");
 		    }
 		
