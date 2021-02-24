@@ -23,6 +23,7 @@ class CreateOrderTransactionTable extends Migration
             $table->string('address')->nullable();
             $table->string('department')->nullable();
             $table->string('payment_category')->nullable();
+            $table->string('receipt_number')->nullable();
             
             $table->string('payment_reference')->nullable();
             $table->string('payment_type')->nullable();
@@ -35,6 +36,7 @@ class CreateOrderTransactionTable extends Migration
             $table->string('total_amount')->nullable();
             $table->string('eor_url')->nullable();
             $table->string('is_email_send')->default(0)->nullable();
+            $table->string('process_by')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

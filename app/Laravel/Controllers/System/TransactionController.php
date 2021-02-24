@@ -362,73 +362,73 @@ class TransactionController extends Controller{
 	public function store(ProcessorTransactionRequest $request){
 
 		$full_name = $request->get('firstname') ." ". $request->get("middlename") ." ". $request->get('lastname');
+	
+	
+
+		$new_transaction = new Transaction;
+		$new_transaction->company_name = $request->get('company_name');
+		$new_transaction->fname = $request->get('firstname');
+		$new_transaction->mname = $request->get("middlename");
+		$new_transaction->lname = $request->get('lastname');
+		$new_transaction->email = $request->get('email');
+		$new_transaction->contact_number = $request->get('contact_number');
+		/*$new_transaction->regional_id = $request->get('regional_id');
+		$new_transaction->regional_name = $request->get('regional_name');*/
+		$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
+		$new_transaction->application_id = $request->get('application_id');
+		$new_transaction->application_name = $request->get('application_name');
+		$new_transaction->collection_type = $request->get('collection_type');
+		$new_transaction->department_id = $request->get('department_id');
+		$new_transaction->department_name = $request->get('department_name');
+		$new_transaction->account_title = $request->get('account_title');
+		$new_transaction->account_title_id = $request->get('account_title_id');
+		$new_transaction->payment_status = $request->get('processing_fee') > 0 ? "UNPAID" : "PAID";
+		$new_transaction->transaction_status = $request->get('processing_fee') > 0 ? "PENDING" : "COMPLETED";
+		$new_transaction->processor_user_id = Auth::user()->id;
+		$new_transaction->requirements_id = implode(",", $request->get('requirements_id'));
+		$new_transaction->process_by = "processor";
+		$new_transaction->status = "APPROVED";
+		$new_transaction->modified_at = Carbon::now();
+		$new_transaction->hereby_check = $request->get('hereby_check');
+		$new_transaction->amount = $request->get('amount');
+
+		$new_transaction->save();
+
+		$new_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+
+		$new_transaction->processing_fee_code = 'PF-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+
+		$new_transaction->transaction_code = 'APP-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+
+		$new_transaction->document_reference_code = 'EOTC-DOC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+
+		$new_transaction->save();
+
+
+		$insert[] = [
+			'email' => $new_transaction->email,
+        	'contact_number' => $new_transaction->contact_number,
+            'ref_num' => $new_transaction->processing_fee_code,
+            'amount' => $new_transaction->amount,
+            'transaction_code' => $new_transaction->transaction_code,
+            'processing_fee' => $new_transaction->processing_fee,
+            'full_name' => $new_transaction->customer_name,
+            'application_name' => $new_transaction->application_name,
+            'department_name' => $new_transaction->department_name,
+            'created_at' => Helper::date_only($new_transaction->created_at)
+    	];	
+
+		/*$notification_data = new SendProcessorTransaction($insert);
+	    Event::dispatch('send-transaction-processor', $notification_data);*/
+
+	    $notification_email_data = new SendEmailProcessorTransaction($insert);
+	    Event::dispatch('send-transaction-processor-email', $notification_email_data);
 		
-		
+		DB::commit();
 
-			$new_transaction = new Transaction;
-			$new_transaction->company_name = $request->get('company_name');
-			$new_transaction->fname = $request->get('firstname');
-			$new_transaction->mname = $request->get("middlename");
-			$new_transaction->lname = $request->get('lastname');
-			$new_transaction->email = $request->get('email');
-			$new_transaction->contact_number = $request->get('contact_number');
-			/*$new_transaction->regional_id = $request->get('regional_id');
-			$new_transaction->regional_name = $request->get('regional_name');*/
-			$new_transaction->processing_fee = Helper::db_amount($request->get('processing_fee'));
-			$new_transaction->application_id = $request->get('application_id');
-			$new_transaction->application_name = $request->get('application_name');
-			$new_transaction->collection_type = $request->get('collection_type');
-			$new_transaction->department_id = $request->get('department_id');
-			$new_transaction->department_name = $request->get('department_name');
-			$new_transaction->account_title = $request->get('account_title');
-			$new_transaction->account_title_id = $request->get('account_title_id');
-			$new_transaction->payment_status = $request->get('processing_fee') > 0 ? "UNPAID" : "PAID";
-			$new_transaction->transaction_status = $request->get('processing_fee') > 0 ? "PENDING" : "COMPLETED";
-			$new_transaction->processor_user_id = Auth::user()->id;
-			$new_transaction->requirements_id = implode(",", $request->get('requirements_id'));
-			$new_transaction->process_by = "processor";
-			$new_transaction->status = "APPROVED";
-			$new_transaction->modified_at = Carbon::now();
-			$new_transaction->hereby_check = $request->get('hereby_check');
-			$new_transaction->amount = $request->get('amount');
-
-			$new_transaction->save();
-
-			$new_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
-
-			$new_transaction->processing_fee_code = 'PF-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
-
-			$new_transaction->transaction_code = 'APP-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
-
-			$new_transaction->document_reference_code = 'EOTC-DOC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
-
-			$new_transaction->save();
-
-
-			$insert[] = [
-				'email' => $new_transaction->email,
-            	'contact_number' => $new_transaction->contact_number,
-                'ref_num' => $new_transaction->processing_fee_code,
-                'amount' => $new_transaction->amount,
-                'transaction_code' => $new_transaction->transaction_code,
-                'processing_fee' => $new_transaction->processing_fee,
-                'full_name' => $new_transaction->customer_name,
-                'application_name' => $new_transaction->application_name,
-                'department_name' => $new_transaction->department_name,
-                'created_at' => Helper::date_only($new_transaction->created_at)
-        	];	
-
-			/*$notification_data = new SendProcessorTransaction($insert);
-		    Event::dispatch('send-transaction-processor', $notification_data);*/
-
-		    $notification_email_data = new SendEmailProcessorTransaction($insert);
-		    Event::dispatch('send-transaction-processor-email', $notification_email_data);
-			
-			DB::commit();
-
-			session()->flash('notification-status', "success");
-			session()->flash('notification-msg','Application was successfully submitted.');
-			return redirect()->route('system.transaction.approved');
+		session()->flash('notification-status', "success");
+		session()->flash('notification-msg','Application was successfully submitted.');
+		return redirect()->route('system.transaction.approved');
 
 	}
 	public function process($id = NULL,PageRequest $request){
@@ -436,7 +436,6 @@ class TransactionController extends Controller{
 		DB::beginTransaction();
 		try{
 
-			
 
 			$transaction = $request->get('transaction_data');
 			$application = Application::find($transaction->application_id);

@@ -136,7 +136,6 @@ class OrderTransactionController extends Controller
 	}
 
 	public function paid(PageRequest $request, $id = NULL){
-
 		DB::beginTransaction();
 		try{
 			$transaction = $request->get('order_transaction_data');
@@ -146,6 +145,8 @@ class OrderTransactionController extends Controller
 			$transaction->payment_status = "PAID";
 			$transaction->transaction_status = "COMPLETED";
 			$transaction->payment_date = Carbon::now();
+			$transaction->receipt_number = $request->get('receipt_number');
+			$transaction->process_by = Auth::user()->id;
 			$transaction->save();
 
 			DB::commit();

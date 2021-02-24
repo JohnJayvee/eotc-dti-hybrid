@@ -151,23 +151,27 @@
     $('.input-daterange').datepicker({
       format : "yyyy-mm-dd"
     });
-   
     $(".btn-paid").on('click', function(){
       var url = $(this).data('url');
-      var btn = $(this)
+      var self = $(this)
       Swal.fire({
-        title: 'Are you sure you want to tag as paid this application?',
-        text: "You will not be able to undo this action, proceed?",
+        title: "Please put Receipt Number in the field below. Are you sure you want to tag as paid this application? You can't undo this action.?",
         icon: 'info',
+        input: 'text',
+        inputPlaceholder: "Put Receipt Number",
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Proceed!'
+        confirmButtonText: 'Proceed!',
+        cancelButtonColor: '#d33'
       }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = url;
+        if (result.value === "") {
+          alert("You need to write something")
+          return false
         }
-      })
+        if (result.value) {
+          window.location.href = url + "?receipt_number="+result.value;
+        }
+      });
     });
 
     

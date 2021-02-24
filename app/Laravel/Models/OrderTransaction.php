@@ -67,6 +67,9 @@ class OrderTransaction extends Model{
     public function order(){
         return $this->BelongsTo("App\Laravel\Models\OrderDetails",'order_transaction_number','transaction_number');
     }
+    public function admin(){
+        return $this->BelongsTo("App\Laravel\Models\User",'process_by','id');
+    }
 
 
 }
