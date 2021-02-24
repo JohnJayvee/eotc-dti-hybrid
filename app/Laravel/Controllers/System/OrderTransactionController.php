@@ -104,9 +104,9 @@ class OrderTransactionController extends Controller
 
 		    session()->flash('notification-status', "success");
 		    if ($request->session()->get('import_message') == "yes") {
-		    	session()->flash('notification-msg', "Sorry, but the Excel File you're trying to upload has a duplicate. Please recheck the  Reference/Transaction/Serial Number Column. Don't worry, the other rows have been uploaded successfully. Please refresh the page to reflect the uploaded data");
+		    	session()->flash('notification-msg', "Sorry, but the Excel File you're trying to upload has a duplicate. Please recheck the  Reference/Transaction/Serial Number Column. Don't worry, the other rows have been uploaded successfully. Please refresh the page to reflect the uploaded data.");
 		    }else{
-		    	session()->flash('notification-msg', "Imported Successfully. All the rows from the Excel has been uploaded successfully.. Please refresh the page to reflect the uploaded data");
+		    	session()->flash('notification-msg', "Imported Successfully. All the rows from the Excel has been uploaded successfully.. Please refresh the page to reflect the uploaded data.");
 		    }
 		
 			return redirect()->route('system.order_transaction.pending');
