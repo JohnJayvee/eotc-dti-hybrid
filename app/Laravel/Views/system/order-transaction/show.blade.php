@@ -52,7 +52,7 @@
               <h5 class="float-right">Payment Status: <span class="badge badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></h5>
             </div>
           </div>
-          @if($transaction->payment_status == "UNPAID")
+          @if($transaction->payment_status == "UNPAID" and Auth::user()->type == "cashier")
           <hr>
           <div class="row">
             <div class="col-12">
